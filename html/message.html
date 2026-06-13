@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>留言板 - XSY</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/common.css">
+  <style>
+    /* ===== 信纸表单 ===== */
+    .letter-form {
+      background: #FFFEF9;
+      border: 4px solid var(--primary);
+      box-shadow: 6px 6px 0 var(--secondary);
+      padding: 30px 30px 30px 50px;
+      margin-bottom: 30px;
+      position: relative;
+      overflow: hidden;
+      background-image:
+        repeating-linear-gradient(0deg, transparent, transparent 29px, #ECF0F4 29px, #ECF0F4 30px);
+    }
+
+    .letter-form::before {
+      content: '';
+      position: absolute;
+      left: 42px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: rgba(255, 100, 130, 0.3);
+    }
+
+    /* 信封角标装饰 */
+    .letter-form::after {
+      content: '';
+      position: absolute;
+      top: -30px;
+      right: -30px;
+      width: 80px;
+      height: 80px;
+      background: var(--primary);
+      transform: rotate(45deg);
+      opacity: 0.08;
+    }
+
+    .letter-form h3 {
+      font-size: 15px;
+      color: var(--primary);
+      margin-bottom: 18px;
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .letter-form h3::after {
+      content: '';
+      flex: 1;
+      height: 2px;
+      background: repeating-linear-gradient(90deg, var(--primary) 0, var(--primary) 4px, transparent 4px, transparent 8px);
+      opacity: 0.3;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-bottom: 5px;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 8px 12px;
+      font-family: 'Zpix', 'Press Start 2P', 'Courier New', monospace;
+      font-size: 12px;
+      border: none;
+      border-bottom: 2px dashed #DDD;
+      background: transparent;
+      color: var(--text);
+      outline: none;
+      line-height: 1.8;
+      transition: border-color 0.2s;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-bottom-color: var(--primary);
+    }
+
+    .form-group textarea {
+      height: 80px;
+      resize: vertical;
+    }
+
+    .mood-selector {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .mood-btn {
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      border: 3px solid var(--primary);
+      background: var(--bg-light);
+      cursor: pointer;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      font-family: 'Zpix', 'Press Start 2P', 'Courier New', monospace;
+    }
+
+    .mood-btn:hover,
+    .mood-btn:focus-visible {
+      background: #FFF0F5;
+      transform: translateY(-2px);
+      box-shadow: 3px 3px 0 var(--secondary);
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+    }
+
+    .mood-btn.active {
+      background: var(--primary);
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 3px 3px 0 var(--secondary);
+    }
+
+    .submit-btn {
+      background: var(--primary);
+      color: #fff;
+      border: 3px solid var(--secondary);
+      padding: 10px 28px;
+      font-family: 'Zpix', 'Press Start 2P', 'Courier New', monospace;
+      font-size: 13px;
+      cursor: pointer;
+      box-shadow: 4px 4px 0 var(--secondary);
+      transition: all 0.2s;
+      float: right;
+      margin-top: 4px;
+    }
+
+    .submit-btn:hover,
+    .submit-btn:focus-visible {
+      transform: translateY(-2px);
+      box-shadow: 6px 6px 0 var(--secondary);
+      outline: 2px solid #fff;
+      outline-offset: 2px;
+    }
+
+    .submit-btn:active {
+      transform: translateY(0);
+      box-shadow: 2px 2px 0 var(--secondary);
+    }
+
+    /* ===== 统计栏 ===== */
+    .mail-stats {
+      background: var(--bg-card);
+      border: 4px solid var(--primary);
+      box-shadow: 4px 4px 0 var(--secondary);
+      padding: 16px 22px;
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      position: relative;
+    }
+
+    /* 像素角标 */
+    .mail-stats::after {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      pointer-events: none;
+      z-index: 1;
+      background:
+        linear-gradient(to right, var(--ink) 8px, transparent 8px) 0 0 / 12px 3px no-repeat,
+        linear-gradient(to bottom, var(--ink) 8px, transparent 8px) 0 0 / 3px 12px no-repeat,
+        linear-gradient(to left, var(--ink) 8px, transparent 8px) 100% 0 / 12px 3px no-repeat,
+        linear-gradient(to bottom, var(--ink) 8px, transparent 8px) 100% 0 / 3px 12px no-repeat,
+        linear-gradient(to right, var(--ink) 8px, transparent 8px) 0 100% / 12px 3px no-repeat,
+        linear-gradient(to top, var(--ink) 8px, transparent 8px) 0 100% / 3px 12px no-repeat,
+        linear-gradient(to left, var(--ink) 8px, transparent 8px) 100% 100% / 12px 3px no-repeat,
+        linear-gradient(to top, var(--ink) 8px, transparent 8px) 100% 100% / 3px 12px no-repeat;
+    }
+
+    [data-theme="dark"] .mail-stats::after {
+      background:
+        linear-gradient(to right, var(--primary) 8px, transparent 8px) 0 0 / 12px 3px no-repeat,
+        linear-gradient(to bottom, var(--primary) 8px, transparent 8px) 0 0 / 3px 12px no-repeat,
+        linear-gradient(to left, var(--primary) 8px, transparent 8px) 100% 0 / 12px 3px no-repeat,
+        linear-gradient(to bottom, var(--primary) 8px, transparent 8px) 100% 0 / 3px 12px no-repeat,
+        linear-gradient(to right, var(--primary) 8px, transparent 8px) 0 100% / 12px 3px no-repeat,
+        linear-gradient(to top, var(--primary) 8px, transparent 8px) 0 100% / 3px 12px no-repeat,
+        linear-gradient(to left, var(--primary) 8px, transparent 8px) 100% 100% / 12px 3px no-repeat,
+        linear-gradient(to top, var(--primary) 8px, transparent 8px) 100% 100% / 3px 12px no-repeat;
+    }
+
+    .mail-stats .stat-total {
+      font-size: 15px;
+      color: var(--primary);
+      padding-right: 20px;
+      border-right: 3px dashed var(--bg-light);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .mail-stats .stat-num {
+      background: var(--primary);
+      color: #fff;
+      padding: 2px 10px;
+      font-size: 18px;
+    }
+
+    .mail-stats .stat-moods {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .mail-stats .stat-mood-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      color: var(--text-dim);
+      background: var(--bg-light);
+      padding: 4px 10px;
+      border: 2px solid var(--primary);
+    }
+
+    .mail-stats .stat-mood-item .mood-emoji {
+      font-size: 16px;
+    }
+
+    .mail-stats .stat-mood-item .mood-count {
+      color: var(--primary);
+    }
+
+    /* ===== 信封留言列表 ===== */
+    .letter-list {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .letter-card {
+      background: #FFFEF7;
+      border: 4px solid var(--primary);
+      box-shadow: 5px 5px 0 var(--secondary);
+      padding: 24px 22px 18px;
+      position: relative;
+      transition: all 0.3s;
+    }
+
+    /* 像素角标 — ::after 因为 ::before 已被信封折痕占用 */
+    .letter-card::after {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      pointer-events: none;
+      z-index: 1;
+      background:
+        linear-gradient(to right, var(--ink) 8px, transparent 8px) 0 0 / 12px 3px no-repeat,
+        linear-gradient(to bottom, var(--ink) 8px, transparent 8px) 0 0 / 3px 12px no-repeat,
+        linear-gradient(to left, var(--ink) 8px, transparent 8px) 100% 0 / 12px 3px no-repeat,
+        linear-gradient(to bottom, var(--ink) 8px, transparent 8px) 100% 0 / 3px 12px no-repeat,
+        linear-gradient(to right, var(--ink) 8px, transparent 8px) 0 100% / 12px 3px no-repeat,
+        linear-gradient(to top, var(--ink) 8px, transparent 8px) 0 100% / 3px 12px no-repeat,
+        linear-gradient(to left, var(--ink) 8px, transparent 8px) 100% 100% / 12px 3px no-repeat,
+        linear-gradient(to top, var(--ink) 8px, transparent 8px) 100% 100% / 3px 12px no-repeat;
+    }
+
+    [data-theme="dark"] .letter-card::after {
+      background:
+        linear-gradient(to right, var(--primary) 8px, transparent 8px) 0 0 / 12px 3px no-repeat,
+        linear-gradient(to bottom, var(--primary) 8px, transparent 8px) 0 0 / 3px 12px no-repeat,
+        linear-gradient(to left, var(--primary) 8px, transparent 8px) 100% 0 / 12px 3px no-repeat,
+        linear-gradient(to bottom, var(--primary) 8px, transparent 8px) 100% 0 / 3px 12px no-repeat,
+        linear-gradient(to right, var(--primary) 8px, transparent 8px) 0 100% / 12px 3px no-repeat,
+        linear-gradient(to top, var(--primary) 8px, transparent 8px) 0 100% / 3px 12px no-repeat,
+        linear-gradient(to left, var(--primary) 8px, transparent 8px) 100% 100% / 12px 3px no-repeat,
+        linear-gradient(to top, var(--primary) 8px, transparent 8px) 100% 100% / 3px 12px no-repeat;
+    }
+
+    .letter-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 8px 8px 0 var(--secondary);
+    }
+
+    /* 信封折痕 */
+    .letter-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 26px;
+      background:
+        linear-gradient(to bottom right, transparent 49%, rgba(0,0,0,0.06) 50%) top left,
+        linear-gradient(to bottom left, transparent 49%, rgba(0,0,0,0.06) 50%) top right;
+      background-size: 50.5% 100%;
+      background-repeat: no-repeat;
+      pointer-events: none;
+    }
+
+    /* 蜡封 = 心情 */
+    .letter-seal {
+      position: absolute;
+      top: -16px;
+      right: 18px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #FF8EAA, #D63864);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      box-shadow: 2px 3px 8px rgba(0,0,0,0.2);
+      z-index: 2;
+      border: 2px solid rgba(255,255,255,0.3);
+    }
+
+    .letter-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      padding-right: 30px;
+    }
+
+    .letter-name {
+      font-size: 14px;
+      color: var(--primary);
+    }
+
+    .letter-time {
+      font-size: 10px;
+      color: var(--text-dim);
+    }
+
+    /* 邮戳装饰 */
+    .letter-stamp {
+      position: absolute;
+      bottom: 12px;
+      right: 14px;
+      width: 50px;
+      height: 50px;
+      border: 3px dashed rgba(0,0,0,0.08);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 8px;
+      color: rgba(0,0,0,0.15);
+      transform: rotate(12deg);
+      pointer-events: none;
+      line-height: 1.4;
+      text-align: center;
+    }
+
+    .letter-content {
+      font-size: 13px;
+      color: #5D4E37;
+      line-height: 2;
+      padding-right: 40px;
+    }
+
+    .letter-reply {
+      margin-top: 14px;
+      padding: 10px 14px;
+      background: #FFF0F5;
+      border-left: 4px solid var(--primary);
+      font-size: 12px;
+      color: #999;
+    }
+
+    .letter-reply::before {
+      content: '🐰 回复：';
+      color: var(--primary);
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      top: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--primary);
+      color: #fff;
+      padding: 12px 24px;
+      border: 3px solid var(--secondary);
+      box-shadow: 4px 4px 0 var(--secondary);
+      font-family: 'Zpix', 'Press Start 2P', 'Courier New', monospace;
+      font-size: 12px;
+      z-index: 2000;
+      animation: toastIn 0.3s ease-out;
+    }
+
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+      to { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+
+    /* ===== 响应式 ===== */
+    @media (max-width: 768px) {
+      .letter-form { padding: 20px 16px 20px 36px; }
+      .letter-form::before { left: 28px; }
+      .letter-seal { width: 36px; height: 36px; font-size: 18px; top: -12px; right: 12px; }
+      .letter-stamp { width: 40px; height: 40px; font-size: 7px; }
+      .letter-content { padding-right: 0; }
+    }
+
+    @media (max-width: 480px) {
+      .letter-seal { width: 32px; height: 32px; font-size: 16px; top: -10px; right: 8px; }
+      .letter-stamp { display: none; }
+    }
+
+    /* ===== 暗黑模式 ===== */
+    [data-theme="dark"] .letter-form {
+      background-color: #2A2A3C;
+      background-image: repeating-linear-gradient(0deg, transparent, transparent 29px, rgba(255,255,255,0.03) 29px, rgba(255,255,255,0.03) 30px);
+    }
+
+    [data-theme="dark"] .letter-form::before {
+      background: rgba(255,100,130,0.2);
+    }
+
+    [data-theme="dark"] .form-group input,
+    [data-theme="dark"] .form-group textarea {
+      color: #DDD;
+      border-bottom-color: rgba(255,255,255,0.12);
+    }
+
+    [data-theme="dark"] .letter-card {
+      background: #2A2A38;
+    }
+
+    [data-theme="dark"] .letter-card::before {
+      background:
+        linear-gradient(to bottom right, transparent 49%, rgba(255,255,255,0.04) 50%) top left,
+        linear-gradient(to bottom left, transparent 49%, rgba(255,255,255,0.04) 50%) top right;
+      background-size: 50.5% 100%;
+      background-repeat: no-repeat;
+    }
+
+    [data-theme="dark"] .letter-content {
+      color: #D0C8B8;
+    }
+
+    [data-theme="dark"] .letter-reply {
+      background: rgba(255,64,129,0.1);
+      color: #BBB;
+    }
+
+    [data-theme="dark"] .letter-stamp {
+      border-color: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.12);
+    }
+
+    [data-theme="dark"] .mood-btn {
+      background: var(--bg-card);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg-deco bg-deco-1">✉️</div>
+  <div class="bg-deco bg-deco-2">📮</div>
+  <div class="bg-deco bg-deco-3">✉️</div>
+  <div class="bg-deco bg-deco-4">💌</div>
+  <div class="bg-deco bg-deco-5">✉️</div>
+  <div class="bg-deco bg-deco-6">📮</div>
+
+  <nav>
+    <div class="nav-logo">XSYonline</div>
+    <div class="nav-links">
+      <a href="index.html">首页</a>
+      <a href="hometown.html">家乡介绍</a>
+      <a href="travel.html">旅行日记</a>
+      <a href="baking.html">烘焙大赏</a>
+      <a href="music.html">音乐墙</a>
+      <a href="message.html" class="active">留言板</a>
+    </div>
+  </nav>
+
+  <div class="page-container">
+    <h1 class="page-title">💌 留言板</h1>
+    <p class="page-subtitle">展信佳，见字如面</p>
+
+    <!-- 信纸表单 -->
+    <div class="letter-form">
+      <h3>✍️ 写一封信</h3>
+      <div class="form-group">
+        <label>寄信人</label>
+        <input type="text" id="msg-name" placeholder="你的名字">
+      </div>
+      <div class="form-group">
+        <label>今日心情</label>
+        <div class="mood-selector">
+          <button class="mood-btn active" data-mood="😊">😊</button>
+          <button class="mood-btn" data-mood="🥰">🥰</button>
+          <button class="mood-btn" data-mood="😎">😎</button>
+          <button class="mood-btn" data-mood="🤔">🤔</button>
+          <button class="mood-btn" data-mood="😢">😢</button>
+          <button class="mood-btn" data-mood="🥳">🥳</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>信件内容</label>
+        <textarea id="msg-content" placeholder="在这里写下想说的话..."></textarea>
+      </div>
+      <button class="submit-btn" id="submit-msg">📨 投递信件</button>
+      <div style="clear:both"></div>
+    </div>
+
+    <!-- 统计栏 -->
+    <div class="mail-stats" id="msg-stats">
+      <div class="stat-total">📬 共 <span class="stat-num" id="stat-total">3</span> 封信</div>
+      <div class="stat-moods" id="stat-moods">
+        <div class="stat-mood-item"><span class="mood-emoji">🥰</span><span class="mood-count">1</span></div>
+        <div class="stat-mood-item"><span class="mood-emoji">😎</span><span class="mood-count">1</span></div>
+        <div class="stat-mood-item"><span class="mood-emoji">😊</span><span class="mood-count">1</span></div>
+      </div>
+    </div>
+
+    <!-- 信件列表 -->
+    <div class="letter-list" id="msg-list">
+      <div class="letter-card scroll-reveal">
+        <div class="letter-seal">🥰</div>
+        <div class="letter-header">
+          <div class="letter-name">小丸子</div>
+          <div class="letter-time">2025-03-15</div>
+        </div>
+        <div class="letter-content">诗怡的网页好可爱！粉色像素风太有感觉了～</div>
+        <div class="letter-reply">谢谢小丸子！你也好可爱呀～</div>
+        <div class="letter-stamp">MAR<br>15</div>
+      </div>
+      <div class="letter-card scroll-reveal">
+        <div class="letter-seal">😎</div>
+        <div class="letter-header">
+          <div class="letter-name">阿杰</div>
+          <div class="letter-time">2025-04-02</div>
+        </div>
+        <div class="letter-content">旅行日记那个地图太酷了吧！下次一起去玩！</div>
+        <div class="letter-reply">好呀好呀！下次一起出发！✈️</div>
+        <div class="letter-stamp">APR<br>2</div>
+      </div>
+      <div class="letter-card scroll-reveal">
+        <div class="letter-seal">😊</div>
+        <div class="letter-header">
+          <div class="letter-name">奶茶控</div>
+          <div class="letter-time">2025-05-10</div>
+        </div>
+        <div class="letter-content">烘焙大赏看得我都饿了，什么时候做给我吃！</div>
+        <div class="letter-reply">哈哈随时欢迎来蹭吃！🍰</div>
+        <div class="letter-stamp">MAY<br>10</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2026 许诗怡 | 中南财经政法大学</p>
+    <p style="margin-top: 10px; opacity: 0.8;">Made with 💖 in Quanzhou</p>
+  </footer>
+
+  <script src="../js/common.js"></script>
+  <script>
+    initScrollReveal('.letter-card', 100);
+
+    var monthAbbr = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+
+    function updateStats() {
+      var items = document.querySelectorAll('#msg-list .letter-card');
+      var total = items.length;
+      document.getElementById('stat-total').textContent = total;
+
+      var moodCounts = {};
+      items.forEach(function(item) {
+        var moodEl = item.querySelector('.letter-seal');
+        if (moodEl) {
+          var mood = moodEl.textContent.trim();
+          moodCounts[mood] = (moodCounts[mood] || 0) + 1;
+        }
+      });
+
+      var sorted = Object.entries(moodCounts).sort(function(a, b) { return b[1] - a[1]; });
+      var moodHtml = '';
+      sorted.forEach(function(entry) {
+        moodHtml += '<div class="stat-mood-item"><span class="mood-emoji">' + entry[0] + '</span><span class="mood-count">' + entry[1] + '</span></div>';
+      });
+      document.getElementById('stat-moods').innerHTML = moodHtml;
+    }
+
+    var selectedMood = '😊';
+    document.querySelectorAll('.mood-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.mood-btn').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        selectedMood = btn.dataset.mood;
+      });
+    });
+
+    document.getElementById('submit-msg').addEventListener('click', function() {
+      var name = document.getElementById('msg-name').value.trim();
+      var content = document.getElementById('msg-content').value.trim();
+      if (!name || !content) {
+        var toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.textContent = '请填写寄信人和信件内容';
+        document.body.appendChild(toast);
+        setTimeout(function() { toast.remove(); }, 2000);
+        return;
+      }
+      var now = new Date();
+      var dateStr = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
+      var stampStr = monthAbbr[now.getMonth()] + '<br>' + now.getDate();
+      var item = document.createElement('div');
+      item.className = 'letter-card scroll-reveal visible';
+      item.innerHTML = '<div class="letter-seal">' + selectedMood + '</div>' +
+        '<div class="letter-header"><div class="letter-name">' + name + '</div><div class="letter-time">' + dateStr + '</div></div>' +
+        '<div class="letter-content">' + content + '</div>' +
+        '<div class="letter-stamp">' + stampStr + '</div>';
+      var list = document.getElementById('msg-list');
+      list.insertBefore(item, list.firstChild);
+      updateStats();
+      document.getElementById('msg-name').value = '';
+      document.getElementById('msg-content').value = '';
+      var toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.textContent = '✅ 信件已投递';
+      document.body.appendChild(toast);
+      setTimeout(function() { toast.remove(); }, 2000);
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>烘焙大赏 - XSY</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/common.css">
+  <style>
+    .baking-intro {
+      background: linear-gradient(135deg, #3D2B1F, #5D4037);
+      color: #F5E6D3;
+      border: 4px solid #8D6E63;
+      box-shadow: 6px 6px 0 rgba(93, 64, 55, 0.4);
+      padding: 30px;
+      margin-bottom: 45px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .baking-intro::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.02) 2px, rgba(255,255,255,0.02) 4px);
+      pointer-events: none;
+    }
+
+    .baking-intro p {
+      font-size: 15px;
+      line-height: 2.4;
+      position: relative;
+      z-index: 1;
+    }
+
+    .baking-intro .chalk-title {
+      font-size: 22px;
+      color: #FFD54F;
+      margin-bottom: 12px;
+      letter-spacing: 2px;
+    }
+
+    .baking-intro .chalk-deco {
+      font-size: 28px;
+      margin: 0 8px;
+    }
+
+    /* === 今日甜点老虎机 === */
+    .slot-machine {
+      background: #FFFEF7;
+      border: 4px solid #D4C5B2;
+      box-shadow: 6px 6px 0 rgba(160, 140, 120, 0.3);
+      padding: 20px 25px;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+
+    .slot-title {
+      font-size: 14px;
+      color: #8D6E63;
+      margin-bottom: 15px;
+    }
+
+    .slot-window {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 15px;
+    }
+
+    .slot-reel {
+      width: 90px;
+      height: 90px;
+      background: #F5EFE6;
+      border: 3px solid #D4C5B2;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 50px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .slot-reel.spinning {
+      animation: slotSpin 0.15s linear infinite;
+    }
+
+    @keyframes slotSpin {
+      0% { transform: translateY(-10px); }
+      50% { transform: translateY(10px); }
+      100% { transform: translateY(-10px); }
+    }
+
+    .slot-btn {
+      background: #FF7043;
+      color: #fff;
+      border: 3px solid #E64A19;
+      padding: 10px 30px;
+      font-family: 'Zpix', 'Press Start 2P', 'Courier New', monospace;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 3px 3px 0 #BF360C;
+      transition: all 0.2s;
+    }
+
+    .slot-btn:hover,
+    .slot-btn:focus-visible {
+      transform: translateY(-2px);
+      box-shadow: 5px 5px 0 #BF360C;
+      outline: 3px solid #fff;
+      outline-offset: 2px;
+    }
+
+    .slot-result {
+      margin-top: 10px;
+      font-size: 16px;
+      color: #5D4037;
+      min-height: 24px;
+    }
+
+    /* === 配方卡片墙 === */
+    .recipe-wall {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 25px;
+      margin-bottom: 40px;
+      padding: 10px;
+    }
+
+    .recipe-index-card {
+      background: #FFFEF7;
+      border: 3px solid #D4C5B2;
+      border-radius: 0 0 6px 6px;
+      box-shadow: 4px 4px 0 rgba(160, 140, 120, 0.3);
+      position: relative;
+      padding: 16px 18px 20px;
+      transition: all 0.35s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .recipe-index-card::before {
+      content: '';
+      position: absolute;
+      top: -14px;
+      left: 16px;
+      width: 80px;
+      height: 16px;
+      border-radius: 4px 4px 0 0;
+      z-index: 2;
+    }
+
+    /* 像素角标 — 使用 ::after 因为 ::before 已被标签占用 */
+    .recipe-index-card::after {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      pointer-events: none;
+      z-index: 3;
+      background:
+        linear-gradient(to right, #8D6E63 7px, transparent 7px) 0 0 / 10px 2px no-repeat,
+        linear-gradient(to bottom, #8D6E63 7px, transparent 7px) 0 0 / 2px 10px no-repeat,
+        linear-gradient(to left, #8D6E63 7px, transparent 7px) 100% 0 / 10px 2px no-repeat,
+        linear-gradient(to bottom, #8D6E63 7px, transparent 7px) 100% 0 / 2px 10px no-repeat,
+        linear-gradient(to right, #8D6E63 7px, transparent 7px) 0 100% / 10px 2px no-repeat,
+        linear-gradient(to top, #8D6E63 7px, transparent 7px) 0 100% / 2px 10px no-repeat,
+        linear-gradient(to left, #8D6E63 7px, transparent 7px) 100% 100% / 10px 2px no-repeat,
+        linear-gradient(to top, #8D6E63 7px, transparent 7px) 100% 100% / 2px 10px no-repeat;
+    }
+
+    [data-theme="dark"] .recipe-index-card::after {
+      background:
+        linear-gradient(to right, var(--primary) 7px, transparent 7px) 0 0 / 10px 2px no-repeat,
+        linear-gradient(to bottom, var(--primary) 7px, transparent 7px) 0 0 / 2px 10px no-repeat,
+        linear-gradient(to left, var(--primary) 7px, transparent 7px) 100% 0 / 10px 2px no-repeat,
+        linear-gradient(to bottom, var(--primary) 7px, transparent 7px) 100% 0 / 2px 10px no-repeat,
+        linear-gradient(to right, var(--primary) 7px, transparent 7px) 0 100% / 10px 2px no-repeat,
+        linear-gradient(to top, var(--primary) 7px, transparent 7px) 0 100% / 2px 10px no-repeat,
+        linear-gradient(to left, var(--primary) 7px, transparent 7px) 100% 100% / 10px 2px no-repeat,
+        linear-gradient(to top, var(--primary) 7px, transparent 7px) 100% 100% / 2px 10px no-repeat;
+    }
+
+    /* 每张卡片不同颜色的标签 */
+    .recipe-index-card:nth-child(1)::before { background: #FFB74D; } /* 纽约芝士 - 橙 */
+    .recipe-index-card:nth-child(2)::before { background: #EF9A9A; } /* 抹茶草莓 - 粉 */
+    .recipe-index-card:nth-child(3)::before { background: #FFD54F; } /* 蛋挞 - 黄 */
+    .recipe-index-card:nth-child(4)::before { background: #A1887F; } /* 伯爵红茶司康 - 棕 */
+    .recipe-index-card:nth-child(5)::before { background: #81C784; } /* 抹茶司康 - 绿 */
+
+    .recipe-index-card:hover {
+      transform: translateY(-5px) rotate(-1deg);
+      box-shadow: 8px 8px 0 rgba(160, 140, 120, 0.4);
+      z-index: 5;
+    }
+
+    .recipe-index-card:nth-child(even) { transform: rotate(0.8deg); }
+    .recipe-index-card:nth-child(3) { transform: rotate(-0.5deg); }
+    .recipe-index-card:nth-child(even):hover { transform: translateY(-5px) rotate(0deg); }
+    .recipe-index-card:nth-child(3):hover { transform: translateY(-5px) rotate(0deg); }
+
+    /* 大卡片 — 左图 + 小贴士 | 右文 */
+    .recipe-index-card.featured {
+      grid-column: 1 / 3;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .recipe-index-card.featured .ric-left {
+      display: flex;
+      flex-direction: column;
+      border-right: 3px solid #E0D5C5;
+    }
+
+    .recipe-index-card.featured .ric-photo {
+      aspect-ratio: 3 / 4;
+      margin: 0;
+      border: none;
+      border-bottom: 2px dashed #E0D5C5;
+    }
+
+    .recipe-index-card.featured .ric-tip {
+      flex: 1;
+      font-size: 10px;
+      color: #A09080;
+      background: #FFFBF5;
+      padding: 12px 14px;
+      line-height: 1.8;
+      display: flex;
+      align-items: center;
+    }
+
+    .recipe-index-card.featured .ric-body {
+      padding: 20px;
+    }
+
+    /* 高卡片 */
+    .recipe-index-card.tall {
+      grid-column: 3;
+    }
+
+    .recipe-index-card.tall::before {
+      width: 100px;
+    }
+
+    .recipe-index-card.tall .ric-photo {
+      aspect-ratio: 4 / 3;
+    }
+
+    /* 照片区 */
+    .ric-photo {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      background: #F5EFE6;
+      border: 3px solid #E0D5C5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 55px;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+
+    .ric-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    /* 难度星星标签 */
+    .ric-diff {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      background: rgba(255,255,255,0.9);
+      padding: 3px 8px;
+      font-size: 13px;
+      border-radius: 3px;
+      border: 2px solid #D4C5B2;
+      z-index: 2;
+    }
+
+    .ric-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ric-category {
+      font-size: 10px;
+      color: #A09080;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+
+    .ric-name {
+      font-size: 16px;
+      color: #5D4037;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+
+    .recipe-index-card.featured .ric-name { font-size: 17px; }
+    .recipe-index-card.tall .ric-name { font-size: 18px; }
+
+    .ric-meta {
+      font-size: 11px;
+      color: #A09080;
+      margin-bottom: 8px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .ric-meta span {
+      background: #F5EFE6;
+      padding: 2px 8px;
+      border-radius: 10px;
+      border: 1px solid #E0D5C5;
+      white-space: nowrap;
+    }
+
+    .ric-desc {
+      font-size: 12px;
+      color: #8B7355;
+      line-height: 2.1;
+      margin-bottom: 12px;
+      flex: 1;
+    }
+
+    /* 食材标签 */
+    .ric-ingredients {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .ing-tag {
+      font-size: 10px;
+      background: #FFF8F0;
+      border: 2px solid #E0D0C0;
+      padding: 3px 8px;
+      border-radius: 10px;
+      color: #8B7355;
+    }
+
+    /* 小贴士 */
+    .ric-tip {
+      font-size: 11px;
+      color: #A09080;
+      background: #FFFBF5;
+      border-left: 3px solid #FFB74D;
+      padding: 8px 12px;
+      margin-top: 10px;
+      line-height: 1.8;
+    }
+
+    /* 步骤折叠 */
+    .ric-steps-btn {
+      font-size: 11px;
+      color: #8D6E63;
+      cursor: pointer;
+      background: #F5EFE6;
+      border: 2px solid #D4C5B2;
+      padding: 6px 14px;
+      font-family: 'Zpix', 'Press Start 2P', 'Courier New', monospace;
+      transition: all 0.2s;
+      width: fit-content;
+      border-radius: 14px;
+    }
+
+    .ric-steps-btn:hover,
+    .ric-steps-btn:focus-visible {
+      background: #8D6E63;
+      color: #fff;
+      border-color: #8D6E63;
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+    }
+
+    .ric-steps {
+      list-style: none;
+      counter-reset: step;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .ric-steps.open {
+      max-height: 400px;
+      margin-top: 12px;
+    }
+
+    .ric-steps li {
+      counter-increment: step;
+      font-size: 11px;
+      color: #8B7355;
+      padding: 5px 0;
+      border-bottom: 1px dotted #E0D5C5;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .ric-steps li::before {
+      content: counter(step);
+      background: #8D6E63;
+      color: #fff;
+      width: 18px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      flex-shrink: 0;
+      border-radius: 50%;
+    }
+
+    /* === 巴斯克双拼横幅 === */
+    .basque-banner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .basque-panel {
+      background: linear-gradient(150deg, #FFFEF7, #FFF8F0);
+      border: 4px solid #D4C5B2;
+      box-shadow: 6px 6px 0 rgba(160, 140, 120, 0.35);
+      overflow: hidden;
+      position: relative;
+      transition: all 0.3s;
+    }
+
+    /* 像素角标 */
+    .basque-panel::after {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      pointer-events: none;
+      z-index: 5;
+      background:
+        linear-gradient(to right, #8D6E63 8px, transparent 8px) 0 0 / 12px 3px no-repeat,
+        linear-gradient(to bottom, #8D6E63 8px, transparent 8px) 0 0 / 3px 12px no-repeat,
+        linear-gradient(to left, #8D6E63 8px, transparent 8px) 100% 0 / 12px 3px no-repeat,
+        linear-gradient(to bottom, #8D6E63 8px, transparent 8px) 100% 0 / 3px 12px no-repeat,
+        linear-gradient(to right, #8D6E63 8px, transparent 8px) 0 100% / 12px 3px no-repeat,
+        linear-gradient(to top, #8D6E63 8px, transparent 8px) 0 100% / 3px 12px no-repeat,
+        linear-gradient(to left, #8D6E63 8px, transparent 8px) 100% 100% / 12px 3px no-repeat,
+        linear-gradient(to top, #8D6E63 8px, transparent 8px) 100% 100% / 3px 12px no-repeat;
+    }
+
+    [data-theme="dark"] .basque-panel::after {
+      background:
+        linear-gradient(to right, var(--primary) 8px, transparent 8px) 0 0 / 12px 3px no-repeat,
+        linear-gradient(to bottom, var(--primary) 8px, transparent 8px) 0 0 / 3px 12px no-repeat,
+        linear-gradient(to left, var(--primary) 8px, transparent 8px) 100% 0 / 12px 3px no-repeat,
+        linear-gradient(to bottom, var(--primary) 8px, transparent 8px) 100% 0 / 3px 12px no-repeat,
+        linear-gradient(to right, var(--primary) 8px, transparent 8px) 0 100% / 12px 3px no-repeat,
+        linear-gradient(to top, var(--primary) 8px, transparent 8px) 0 100% / 3px 12px no-repeat,
+        linear-gradient(to left, var(--primary) 8px, transparent 8px) 100% 100% / 12px 3px no-repeat,
+        linear-gradient(to top, var(--primary) 8px, transparent 8px) 100% 100% / 3px 12px no-repeat;
+    }
+
+    .basque-panel:hover {
+      transform: translateY(-5px);
+      box-shadow: 10px 10px 0 rgba(160, 140, 120, 0.45);
+    }
+
+    .basque-panel .bp-img {
+      aspect-ratio: 3 / 4;
+      background: #F5EFE6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 90px;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 3px solid #D4C5B2;
+    }
+
+    .basque-panel .bp-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .basque-panel .bp-badge {
+      position: absolute;
+      top: 20px;
+      right: -28px;
+      color: #fff;
+      font-size: 11px;
+      padding: 5px 34px;
+      transform: rotate(45deg);
+      z-index: 3;
+    }
+
+    .basque-panel:nth-child(1) .bp-badge { background: #FF7043; }
+    .basque-panel:nth-child(2) .bp-badge { background: #66BB6A; }
+
+    .basque-panel .bp-body {
+      padding: 22px;
+    }
+
+    .basque-panel .bp-name {
+      font-size: 20px;
+      color: #5D4037;
+      margin-bottom: 6px;
+    }
+
+    .basque-panel .bp-tags {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .basque-panel .bp-tags span {
+      background: #F5EFE6;
+      padding: 3px 10px;
+      font-size: 11px;
+      color: #8D6E63;
+      border: 2px solid #D4C5B2;
+      border-radius: 12px;
+    }
+
+    .basque-panel .bp-desc {
+      font-size: 13px;
+      color: #8B7355;
+      line-height: 2.2;
+      margin-bottom: 14px;
+    }
+
+    .basque-panel .bp-steps {
+      list-style: none;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px;
+    }
+
+    .basque-panel .bp-steps li {
+      font-size: 11px;
+      color: #8B7355;
+      padding: 4px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .basque-panel .bp-steps li::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: #8D6E63;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* === 图片滑动指示器 === */
+    .slide-dots {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 6px;
+      z-index: 3;
+    }
+
+    .slide-dots .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.6);
+      border: 1px solid rgba(0,0,0,0.2);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .slide-dots .dot.active {
+      background: #fff;
+      border-color: #8D6E63;
+      transform: scale(1.3);
+    }
+
+    .slide-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 28px;
+      height: 28px;
+      background: rgba(255,255,255,0.85);
+      border: 2px solid #D4C5B2;
+      border-radius: 50%;
+      font-size: 12px;
+      cursor: pointer;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s;
+      color: #8D6E63;
+    }
+
+    .slide-arrow.prev { left: 8px; }
+    .slide-arrow.next { right: 8px; }
+
+    .slideshow:hover .slide-arrow,
+    .slide-arrow:focus-visible {
+      opacity: 1;
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+    }
+
+    @media (max-width: 800px) {
+      .basque-banner, .recipe-wall {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .recipe-index-card.featured {
+        grid-column: 1 / -1;
+        grid-template-columns: 1fr;
+      }
+
+      .recipe-index-card.featured .ric-left {
+        border-right: none;
+      }
+
+      .recipe-index-card.featured .ric-photo {
+        aspect-ratio: 16 / 9;
+        border-bottom: 2px dashed #E0D5C5;
+      }
+
+      .recipe-index-card.tall {
+        grid-column: auto;
+        grid-row: auto;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .basque-banner, .recipe-wall {
+        grid-template-columns: 1fr;
+      }
+
+      .recipe-index-card:nth-child(even),
+      .recipe-index-card:nth-child(3) {
+        transform: rotate(0deg);
+      }
+    }
+
+    /* === 暗色主题覆盖 === */
+    [data-theme="dark"] .slot-machine,
+    [data-theme="dark"] .recipe-index-card,
+    [data-theme="dark"] .ric-tip,
+    [data-theme="dark"] .ing-tag {
+      background: #252540;
+      border-color: #3a3050;
+      box-shadow: 4px 4px 0 rgba(255, 64, 129, 0.2);
+    }
+
+    [data-theme="dark"] .slot-reel,
+    [data-theme="dark"] .ric-photo,
+    [data-theme="dark"] .ric-meta span,
+    [data-theme="dark"] .ric-steps-btn,
+    [data-theme="dark"] .basque-panel .bp-tags span,
+    [data-theme="dark"] .basque-panel .bp-img {
+      background: #1e1e35;
+      border-color: #3a3050;
+    }
+
+    [data-theme="dark"] .slot-title,
+    [data-theme="dark"] .ric-category,
+    [data-theme="dark"] .ric-meta,
+    [data-theme="dark"] .ric-desc,
+    [data-theme="dark"] .ric-steps li,
+    [data-theme="dark"] .ric-tip,
+    [data-theme="dark"] .ing-tag,
+    [data-theme="dark"] .bp-desc,
+    [data-theme="dark"] .bp-steps li {
+      color: #C8C8D8;
+    }
+
+    [data-theme="dark"] .slot-result,
+    [data-theme="dark"] .ric-name,
+    [data-theme="dark"] .bp-name {
+      color: #FF80AB;
+    }
+
+    [data-theme="dark"] .basque-panel {
+      background: linear-gradient(150deg, #252540, #1e1e35);
+      border-color: #3a3050;
+      box-shadow: 4px 4px 0 rgba(255, 64, 129, 0.2);
+    }
+
+    [data-theme="dark"] .ric-steps li::before {
+      background: #FF4081;
+    }
+
+    [data-theme="dark"] .ric-steps li {
+      border-bottom-color: #3a3050;
+    }
+
+    [data-theme="dark"] .ing-tag {
+      border-color: #3a3050;
+    }
+
+    [data-theme="dark"] .ric-steps-btn {
+      color: #C8C8D8;
+      border-color: #3a3050;
+    }
+
+    [data-theme="dark"] .ric-steps-btn:hover {
+      background: #FF4081;
+      color: #fff;
+      border-color: #FF4081;
+    }
+
+    [data-theme="dark"] .recipe-index-card.featured .ric-left,
+    [data-theme="dark"] .recipe-index-card.featured .ric-photo {
+      border-color: #3a3050;
+    }
+
+    [data-theme="dark"] .slide-arrow {
+      background: rgba(30, 30, 53, 0.9);
+      border-color: #3a3050;
+      color: #C8C8D8;
+    }
+
+    [data-theme="dark"] .slide-dots .dot.active {
+      background: #FF4081;
+      border-color: #FF80AB;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg-deco bg-deco-1">🧁</div>
+  <div class="bg-deco bg-deco-2">🍰</div>
+  <div class="bg-deco bg-deco-3">🧁</div>
+  <div class="bg-deco bg-deco-4">🍪</div>
+  <div class="bg-deco bg-deco-5">🍩</div>
+  <div class="bg-deco bg-deco-6">🧁</div>
+
+  <nav>
+    <div class="nav-logo">XSYonline</div>
+    <div class="nav-links">
+      <a href="index.html">首页</a>
+      <a href="hometown.html">家乡介绍</a>
+      <a href="travel.html">旅行日记</a>
+      <a href="baking.html" class="active">烘焙大赏</a>
+      <a href="music.html">音乐墙</a>
+      <a href="message.html">留言板</a>
+    </div>
+  </nav>
+
+  <div class="page-container">
+    <h1 class="page-title">🧁 烘焙大赏</h1>
+    <p class="page-subtitle">用烤箱的温度，温暖每一个日子</p>
+
+    <!-- 黑板菜单 -->
+    <div class="baking-intro scroll-reveal">
+      <div class="chalk-title">
+        <span class="chalk-deco">✨</span>今日主厨推荐 · XSY's Bakery<span class="chalk-deco">✨</span>
+      </div>
+      <p>🧈 烘焙是一种治愈，从称量材料到烤箱飘香，每一步都充满期待。<br>这里记录了我的烘焙作品，每一款都倾注了满满的心意，希望它们也能甜到你～</p>
+    </div>
+
+    <!-- 今日甜点老虎机 -->
+    <div class="slot-machine scroll-reveal">
+      <div class="slot-title">🎰 今天做什么甜点？摇一摇就知道！</div>
+      <div class="slot-window">
+        <div class="slot-reel" id="reel1">🧀</div>
+        <div class="slot-reel" id="reel2">🍰</div>
+        <div class="slot-reel" id="reel3">🍪</div>
+      </div>
+      <button class="slot-btn" onclick="spinSlot()">🎲 摇一摇</button>
+      <div class="slot-result" id="slotResult"></div>
+    </div>
+
+    <!-- 巴斯克双拼 -->
+    <h2 class="section-title">🔥 招牌巴斯克 · 焦香双拼</h2>
+    <div class="basque-banner">
+      <div class="basque-panel scroll-reveal">
+        <div class="bp-img slideshow" data-images="yuanweibasike1.jpg,yuanweibasike2.jpg">
+          <img src="../image/yuanweibasike1.jpg" alt="原味巴斯克" onerror="this.style.display='none'">
+          <img src="../image/yuanweibasike2.jpg" alt="原味巴斯克" onerror="this.style.display='none'" style="display:none">
+          🧀
+          <div class="bp-badge">经典款</div>
+          <div class="slide-dots"><span class="dot active"></span><span class="dot"></span></div>
+        </div>
+        <div class="bp-body">
+          <div class="bp-name">原味巴斯克</div>
+          <div class="bp-tags"><span>⏱ 50分钟</span><span>🌡 220度</span><span>芝士</span></div>
+          <div class="ric-ingredients" style="margin-bottom:10px;">
+            <span class="ing-tag">🧀 奶油奶酪 350g</span><span class="ing-tag">🥛 淡奶油 200g</span><span class="ing-tag">🥚 鸡蛋 3个</span><span class="ing-tag">🍬 细砂糖 100g</span><span class="ing-tag">🌽 玉米淀粉 15g</span>
+          </div>
+          <div class="bp-desc">外层焦黑是巴斯克的灵魂标志，内里细腻绵密入口即化，焦香与奶香交织，最简单的原料带来最极致的满足。</div>
+          <ol class="bp-steps">
+            <li>奶油奶酪软化加糖搅匀</li>
+            <li>分次加入鸡蛋搅拌均匀</li>
+            <li>加入淡奶油和玉米淀粉</li>
+            <li>过筛入模，220度烤35分钟</li>
+            <li>冷藏4小时以上口感最佳</li>
+          </ol>
+        </div>
+      </div>
+      <div class="basque-panel scroll-reveal">
+        <div class="bp-img slideshow" data-images="mochabasike1.jpg,mochabasike2.jpg">
+          <img src="../image/mochabasike1.jpg" alt="抹茶巴斯克" onerror="this.style.display='none'">
+          <img src="../image/mochabasike2.jpg" alt="抹茶巴斯克" onerror="this.style.display='none'" style="display:none">
+          🍵
+          <div class="bp-badge">新品</div>
+          <div class="slide-dots"><span class="dot active"></span><span class="dot"></span></div>
+        </div>
+        <div class="bp-body">
+          <div class="bp-name">抹茶巴斯克</div>
+          <div class="bp-tags"><span>⏱ 55分钟</span><span>🌡 220度</span><span>抹茶</span></div>
+          <div class="ric-ingredients" style="margin-bottom:10px;">
+            <span class="ing-tag">🧀 奶油奶酪 350g</span><span class="ing-tag">🍵 抹茶粉 15g</span><span class="ing-tag">🥛 淡奶油 200g</span><span class="ing-tag">🥚 鸡蛋 3个</span><span class="ing-tag">🍬 细砂糖 100g</span><span class="ing-tag">🌽 玉米淀粉 15g</span>
+          </div>
+          <div class="bp-desc">原味巴斯克的升级版，抹茶的清香平衡了芝士的浓郁，切开是治愈的抹茶绿，茶香和焦香在舌尖完美跳舞。</div>
+          <ol class="bp-steps">
+            <li>抹茶粉用少量热水化开</li>
+            <li>奶油奶酪软化加糖拌匀</li>
+            <li>加入蛋液、抹茶液、淡奶油</li>
+            <li>过筛入模，220度烤35分钟</li>
+            <li>冷藏过夜，撒上抹茶粉装饰</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <!-- 配方卡片墙 -->
+    <h2 class="section-title">📇 烘焙配方卡</h2>
+    <div class="recipe-wall">
+      <!-- 1. 纽约芝士 — 横跨两列 -->
+      <div class="recipe-index-card featured scroll-reveal">
+        <div class="ric-left">
+          <div class="ric-photo slideshow" data-images="niuyuezhishidangao1.jpg,niuyuezhishidangao2.jpg">
+            <img src="../image/niuyuezhishidangao1.jpg" alt="纽约芝士蛋糕" onerror="this.style.display='none'">
+            <img src="../image/niuyuezhishidangao2.jpg" alt="纽约芝士蛋糕" onerror="this.style.display='none'" style="display:none">
+            🗽
+            <div class="ric-diff">⭐⭐⭐</div>
+            <div class="slide-dots"><span class="dot active"></span><span class="dot"></span></div>
+          </div>
+          <div class="ric-tip">💡 小贴士：所有材料必须室温，否则容易水油分离；水浴要用热水，烤盘水的高度要到模具的一半。</div>
+        </div>
+        <div class="ric-body">
+          <div class="ric-category">🧀 芝士蛋糕</div>
+          <div class="ric-name">纽约芝士蛋糕</div>
+          <div class="ric-meta"><span>⏱ 70分钟</span><span>🌡 160度</span></div>
+          <div class="ric-desc">经典美式重芝士蛋糕，是芝士蛋糕中最浓郁扎实的存在。酸奶油与奶油奶酪的双重奏让奶香层层叠进，水浴法慢烤赋予了它云朵般入口即化的绵密质地。消化饼干底用黄油压实，每一口都是酥脆与绵密的完美碰撞。出炉后表面微微膨胀又回缩是它最美的标志，冷藏后淋上酸奶油镜面，一刀切下是纯粹的纽约味道。</div>
+          <div class="ric-ingredients">
+            <span class="ing-tag">🧈 奶油奶酪 500g</span><span class="ing-tag">🥛 酸奶油 200g</span><span class="ing-tag">🥚 鸡蛋 3个</span><span class="ing-tag">🍪 消化饼干 150g</span><span class="ing-tag">🧈 黄油 60g</span><span class="ing-tag">🍬 细砂糖 120g</span>
+          </div>
+          <button class="ric-steps-btn" onclick="toggleSteps(this)">📋 查看步骤</button>
+          <ol class="ric-steps">
+            <li>消化饼干碾碎加融化黄油压入模底压实</li>
+            <li>奶油奶酪室温软化加糖打至顺滑无颗粒</li>
+            <li>分次加入鸡蛋，每次搅匀后再加下一个</li>
+            <li>加入酸奶油和香草精拌匀</li>
+            <li>模具外包锡纸，水浴法160度烤60分钟</li>
+            <li>烤好不要取出，在烤箱中焖1小时</li>
+            <li>冷藏6小时以上，淋上酸奶油顶脱模</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- 2. 抹茶草莓布蕾 — 占右列两行 -->
+      <div class="recipe-index-card tall scroll-reveal">
+        <div class="ric-photo slideshow" data-images="mochacaomeidangao1.jpg,mochacaomeidangao2.jpg">
+          <img src="../image/mochacaomeidangao1.jpg" alt="抹茶草莓布蕾蛋糕" onerror="this.style.display='none'">
+          <img src="../image/mochacaomeidangao2.jpg" alt="抹茶草莓布蕾蛋糕" onerror="this.style.display='none'" style="display:none">
+          🍓
+          <div class="ric-diff">⭐⭐⭐⭐</div>
+          <div class="slide-dots"><span class="dot active"></span><span class="dot"></span></div>
+        </div>
+        <div class="ric-body">
+          <div class="ric-category">🍓 水果蛋糕</div>
+          <div class="ric-name">抹茶草莓布蕾蛋糕</div>
+          <div class="ric-meta"><span>⏱ 90分钟</span><span>🌡 170度</span></div>
+          <div class="ric-desc">抹茶戚风做底，夹层是新鲜草莓和卡仕达酱，表面焦糖脆壳是点睛之笔。一勺下去，脆、软、甜、酸四种口感在口中爆开。</div>
+          <div class="ric-ingredients">
+            <span class="ing-tag">🍵 抹茶粉 10g</span><span class="ing-tag">🍓 草莓 200g</span><span class="ing-tag">🥛 淡奶油 300g</span><span class="ing-tag">🥚 鸡蛋 4个</span><span class="ing-tag">🍬 细砂糖 100g</span><span class="ing-tag">🌾 低筋面粉 80g</span>
+          </div>
+          <button class="ric-steps-btn" onclick="toggleSteps(this)">📋 查看步骤</button>
+          <ol class="ric-steps">
+            <li>制作抹茶戚风蛋糕胚</li>
+            <li>卡仕达酱加抹茶粉调味</li>
+            <li>草莓切片蛋糕分三层</li>
+            <li>层层叠加草莓和卡仕达酱</li>
+            <li>表面撒糖喷枪烧出焦糖壳</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- 3. 蛋挞 -->
+      <div class="recipe-index-card scroll-reveal">
+        <div class="ric-photo">
+          <img src="../image/danta.jpg" alt="蛋挞" onerror="this.style.display='none'">
+          🥚
+          <div class="ric-diff">⭐⭐</div>
+        </div>
+        <div class="ric-body">
+          <div class="ric-category">🥚 酥皮点心</div>
+          <div class="ric-name">蛋挞</div>
+          <div class="ric-meta"><span>⏱ 40分钟</span><span>🌡 200度</span></div>
+          <div class="ric-desc">酥脆的千层挞皮配上嫩滑的蛋奶馅，刚出炉蛋香四溢趁热最幸福。</div>
+          <div class="ric-ingredients">
+            <span class="ing-tag">🥚 鸡蛋 2个</span><span class="ing-tag">🥛 淡奶油 150g</span><span class="ing-tag">🍬 细砂糖 40g</span><span class="ing-tag">🧈 黄油 100g</span><span class="ing-tag">🌾 中筋面粉 150g</span>
+          </div>
+          <button class="ric-steps-btn" onclick="toggleSteps(this)">📋 查看步骤</button>
+          <ol class="ric-steps">
+            <li>黄油包裹面团反复折叠擀开</li>
+            <li>蛋液加淡奶油和糖调成挞水</li>
+            <li>挞皮压入模具</li>
+            <li>倒入挞水八分满</li>
+            <li>200度烤20分钟至微焦</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- 4. 伯爵红茶乳酪司康 -->
+      <div class="recipe-index-card scroll-reveal">
+        <div class="ric-photo">
+          <img src="../image/hongcharulaosikang.jpg" alt="伯爵红茶乳酪司康" onerror="this.style.display='none'">
+          🍪
+          <div class="ric-diff">⭐⭐</div>
+        </div>
+        <div class="ric-body">
+          <div class="ric-category">🍪 乳酪司康</div>
+          <div class="ric-name">伯爵红茶乳酪司康</div>
+          <div class="ric-meta"><span>⏱ 35分钟</span><span>🌡 180度</span></div>
+          <div class="ric-desc">伯爵红茶的佛手柑香气融入司康面团，夹着冰凉乳酪，外酥内软茶香四溢。</div>
+          <div class="ric-ingredients">
+            <span class="ing-tag">🌾 低筋面粉 200g</span><span class="ing-tag">🍵 伯爵茶碎 5g</span><span class="ing-tag">🧈 黄油 50g</span><span class="ing-tag">🧀 奶油奶酪 80g</span><span class="ing-tag">🥛 牛奶 60g</span><span class="ing-tag">🍬 细砂糖 30g</span>
+          </div>
+          <button class="ric-steps-btn" onclick="toggleSteps(this)">📋 查看步骤</button>
+          <ol class="ric-steps">
+            <li>低粉加泡打粉糖和伯爵茶碎混合</li>
+            <li>加入冷黄油切拌成粗粒状</li>
+            <li>加入牛奶和蛋液揉成面团</li>
+            <li>包入乳酪馅整形成团</li>
+            <li>180度烤18分钟至金黄</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- 5. 抹茶乳酪司康 -->
+      <div class="recipe-index-card scroll-reveal">
+        <div class="ric-photo slideshow" data-images="mocharulaosikang1.jpg,mocharulaosikang2.jpg">
+          <img src="../image/mocharulaosikang1.jpg" alt="抹茶乳酪司康" onerror="this.style.display='none'">
+          <img src="../image/mocharulaosikang2.jpg" alt="抹茶乳酪司康" onerror="this.style.display='none'" style="display:none">
+          🍵
+          <div class="ric-diff">⭐⭐</div>
+          <div class="slide-dots"><span class="dot active"></span><span class="dot"></span></div>
+        </div>
+        <div class="ric-body">
+          <div class="ric-category">🍪 乳酪司康</div>
+          <div class="ric-name">抹茶乳酪司康</div>
+          <div class="ric-meta"><span>⏱ 35分钟</span><span>🌡 180度</span></div>
+          <div class="ric-desc">抹茶与乳酪的经典搭配，微苦被乳酪的甜完美中和，绿白相间的切面颜值满分。</div>
+          <div class="ric-ingredients">
+            <span class="ing-tag">🌾 低筋面粉 200g</span><span class="ing-tag">🍵 抹茶粉 8g</span><span class="ing-tag">🧈 黄油 50g</span><span class="ing-tag">🧀 奶油奶酪 80g</span><span class="ing-tag">🥛 牛奶 60g</span><span class="ing-tag">🍬 细砂糖 30g</span>
+          </div>
+          <button class="ric-steps-btn" onclick="toggleSteps(this)">📋 查看步骤</button>
+          <ol class="ric-steps">
+            <li>低粉加泡打粉糖和抹茶粉混合</li>
+            <li>加入冷黄油切拌成粗粒状</li>
+            <li>加入牛奶和蛋液揉成面团</li>
+            <li>包入乳酪馅整形成团</li>
+            <li>180度烤18分钟微上色即可</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2026 许诗怡 | 中南财经政法大学</p>
+    <p style="margin-top: 10px; opacity: 0.8;">Made with 💖 in Quanzhou</p>
+  </footer>
+
+  <script src="../js/common.js"></script>
+  <script>
+    initScrollReveal('.basque-panel, .recipe-index-card, .baking-intro, .slot-machine', 80);
+
+    var desserts = [
+      { emoji: '🧀', name: '原味巴斯克' },
+      { emoji: '🍵', name: '抹茶巴斯克' },
+      { emoji: '🗽', name: '纽约芝士蛋糕' },
+      { emoji: '🍓', name: '抹茶草莓布蕾' },
+      { emoji: '🥚', name: '蛋挞' },
+      { emoji: '🍪', name: '伯爵红茶司康' },
+      { emoji: '🍵', name: '抹茶乳酪司康' }
+    ];
+
+    var spinning = false;
+    function spinSlot() {
+      if (spinning) return;
+      spinning = true;
+      document.getElementById('slotResult').textContent = '';
+      var reels = [document.getElementById('reel1'), document.getElementById('reel2'), document.getElementById('reel3')];
+      reels.forEach(function(r) { r.classList.add('spinning'); });
+
+      var stops = [];
+      var timers = [];
+      reels.forEach(function(reel, i) {
+        var count = 0;
+        var max = 10 + i * 6;
+        var timer = setInterval(function() {
+          var idx = Math.floor(Math.random() * desserts.length);
+          reel.textContent = desserts[idx].emoji;
+          count++;
+          if (count >= max) {
+            clearInterval(timer);
+            stops[i] = idx;
+            reel.classList.remove('spinning');
+            // 全部停止后
+            if (stops.filter(function(s) { return s !== undefined; }).length === 3) {
+              spinning = false;
+              var d = desserts[stops[2]];
+              document.getElementById('slotResult').textContent = '✨ 今日推荐：' + d.name + ' ✨';
+            }
+          }
+        }, 80 + i * 30);
+        timers.push(timer);
+      });
+    }
+
+    function toggleSteps(btn) {
+      var steps = btn.nextElementSibling;
+      var isOpen = steps.classList.contains('open');
+      document.querySelectorAll('.ric-steps.open').forEach(function(s) { s.classList.remove('open'); });
+      document.querySelectorAll('.ric-steps-btn').forEach(function(b) { b.textContent = '📋 查看步骤'; });
+      if (!isOpen) {
+        steps.classList.add('open');
+        btn.textContent = '🔼 收起步骤';
+      }
+    }
+
+    // 图片滑动
+    document.querySelectorAll('.slideshow').forEach(function(container) {
+      var imgs = container.querySelectorAll('img');
+      var dots = container.querySelectorAll('.dot');
+      if (imgs.length < 2) { if (dots.length) dots[0].parentElement.style.display = 'none'; return; }
+      var current = 0;
+
+      // 添加左右箭头
+      var prevBtn = document.createElement('span');
+      prevBtn.className = 'slide-arrow prev';
+      prevBtn.textContent = '◀';
+      var nextBtn = document.createElement('span');
+      nextBtn.className = 'slide-arrow next';
+      nextBtn.textContent = '▶';
+      container.appendChild(prevBtn);
+      container.appendChild(nextBtn);
+
+      function showSlide(idx) {
+        imgs.forEach(function(img, i) {
+          img.style.display = i === idx ? '' : 'none';
+        });
+        dots.forEach(function(d, i) {
+          d.classList.toggle('active', i === idx);
+        });
+        current = idx;
+      }
+
+      prevBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        showSlide((current - 1 + imgs.length) % imgs.length);
+      });
+      nextBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        showSlide((current + 1) % imgs.length);
+      });
+      dots.forEach(function(d, i) {
+        d.addEventListener('click', function(e) {
+          e.stopPropagation();
+          showSlide(i);
+        });
+      });
+
+      // 自动轮播
+      setInterval(function() {
+        if (!container.matches(':hover')) {
+          showSlide((current + 1) % imgs.length);
+        }
+      }, 4000);
+    });
+  </script>
+</body>
+
+</html>

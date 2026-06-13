@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>旅行日记 - XSY</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+  <link rel="stylesheet" href="../css/common.css">
+  <style>
+    .china-map-container {
+      background: var(--bg-card);
+      border: 4px solid var(--primary);
+      box-shadow: 6px 6px 0 var(--secondary);
+      margin-bottom: 50px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .china-map-container::after {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      pointer-events: none;
+      z-index: 5;
+      background:
+        linear-gradient(to right, var(--ink) 8px, transparent 8px) 0 0 / 12px 3px no-repeat,
+        linear-gradient(to bottom, var(--ink) 8px, transparent 8px) 0 0 / 3px 12px no-repeat,
+        linear-gradient(to left, var(--ink) 8px, transparent 8px) 100% 0 / 12px 3px no-repeat,
+        linear-gradient(to bottom, var(--ink) 8px, transparent 8px) 100% 0 / 3px 12px no-repeat,
+        linear-gradient(to right, var(--ink) 8px, transparent 8px) 0 100% / 12px 3px no-repeat,
+        linear-gradient(to top, var(--ink) 8px, transparent 8px) 0 100% / 3px 12px no-repeat,
+        linear-gradient(to left, var(--ink) 8px, transparent 8px) 100% 100% / 12px 3px no-repeat,
+        linear-gradient(to top, var(--ink) 8px, transparent 8px) 100% 100% / 3px 12px no-repeat;
+    }
+
+    [data-theme="dark"] .china-map-container::after {
+      background:
+        linear-gradient(to right, var(--primary) 8px, transparent 8px) 0 0 / 12px 3px no-repeat,
+        linear-gradient(to bottom, var(--primary) 8px, transparent 8px) 0 0 / 3px 12px no-repeat,
+        linear-gradient(to left, var(--primary) 8px, transparent 8px) 100% 0 / 12px 3px no-repeat,
+        linear-gradient(to bottom, var(--primary) 8px, transparent 8px) 100% 0 / 3px 12px no-repeat,
+        linear-gradient(to right, var(--primary) 8px, transparent 8px) 0 100% / 12px 3px no-repeat,
+        linear-gradient(to top, var(--primary) 8px, transparent 8px) 0 100% / 3px 12px no-repeat,
+        linear-gradient(to left, var(--primary) 8px, transparent 8px) 100% 100% / 12px 3px no-repeat,
+        linear-gradient(to top, var(--primary) 8px, transparent 8px) 100% 100% / 3px 12px no-repeat;
+    }
+
+    .china-map-title {
+      background: var(--primary);
+      color: #fff;
+      padding: 10px 20px;
+      font-size: 16px;
+      text-align: center;
+      border-bottom: 3px solid var(--secondary);
+    }
+
+    #china-map {
+      width: 100%;
+      height: 550px;
+    }
+
+    .map-banner {
+      background: var(--bg-card);
+      border: 4px solid var(--primary);
+      box-shadow: 6px 6px 0 var(--secondary);
+      padding: 30px;
+      margin-bottom: 50px;
+      text-align: center;
+      position: relative;
+    }
+
+    .map-banner::after {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      pointer-events: none;
+      z-index: 1;
+      background:
+        linear-gradient(to right, var(--ink) 8px, transparent 8px) 0 0 / 12px 3px no-repeat,
+        linear-gradient(to bottom, var(--ink) 8px, transparent 8px) 0 0 / 3px 12px no-repeat,
+        linear-gradient(to left, var(--ink) 8px, transparent 8px) 100% 0 / 12px 3px no-repeat,
+        linear-gradient(to bottom, var(--ink) 8px, transparent 8px) 100% 0 / 3px 12px no-repeat,
+        linear-gradient(to right, var(--ink) 8px, transparent 8px) 0 100% / 12px 3px no-repeat,
+        linear-gradient(to top, var(--ink) 8px, transparent 8px) 0 100% / 3px 12px no-repeat,
+        linear-gradient(to left, var(--ink) 8px, transparent 8px) 100% 100% / 12px 3px no-repeat,
+        linear-gradient(to top, var(--ink) 8px, transparent 8px) 100% 100% / 3px 12px no-repeat;
+    }
+
+    [data-theme="dark"] .map-banner::after {
+      background:
+        linear-gradient(to right, var(--primary) 8px, transparent 8px) 0 0 / 12px 3px no-repeat,
+        linear-gradient(to bottom, var(--primary) 8px, transparent 8px) 0 0 / 3px 12px no-repeat,
+        linear-gradient(to left, var(--primary) 8px, transparent 8px) 100% 0 / 12px 3px no-repeat,
+        linear-gradient(to bottom, var(--primary) 8px, transparent 8px) 100% 0 / 3px 12px no-repeat,
+        linear-gradient(to right, var(--primary) 8px, transparent 8px) 0 100% / 12px 3px no-repeat,
+        linear-gradient(to top, var(--primary) 8px, transparent 8px) 0 100% / 3px 12px no-repeat,
+        linear-gradient(to left, var(--primary) 8px, transparent 8px) 100% 100% / 12px 3px no-repeat,
+        linear-gradient(to top, var(--primary) 8px, transparent 8px) 100% 100% / 3px 12px no-repeat;
+    }
+
+    .map-banner h3 {
+      font-size: 20px;
+      color: var(--primary);
+      margin-bottom: 15px;
+    }
+
+    .map-places {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 15px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .map-pin {
+      background: var(--bg-card);
+      border: 4px dotted var(--primary);
+      padding: 14px 10px;
+      font-size: 14px;
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.25s;
+      text-align: center;
+      box-shadow: 3px 3px 0 var(--secondary);
+      border-radius: 6px;
+    }
+
+    .map-pin:nth-child(odd) { transform: rotate(-1deg); }
+    .map-pin:nth-child(even) { transform: rotate(1.5deg); }
+
+    /* 每个城市卡片不同底色 */
+    .map-pin:nth-child(1) { background: #E8F5E9; }
+    .map-pin:nth-child(2) { background: #E3F2FD; }
+    .map-pin:nth-child(3) { background: #FFF3E0; }
+    .map-pin:nth-child(4) { background: #FFEBEE; }
+    .map-pin:nth-child(5) { background: #FCE4EC; }
+    .map-pin:nth-child(6) { background: #E0F2F1; }
+    .map-pin:nth-child(7) { background: #F3E5F5; }
+    .map-pin:nth-child(8) { background: #E8EAF6; }
+    .map-pin:nth-child(9) { background: #FFF9C4; }
+    .map-pin:nth-child(10) { background: #F1F8E9; }
+
+    .map-pin:hover {
+      background: var(--primary) !important;
+      color: #fff;
+      border-color: #fff;
+      transform: translateY(-4px) rotate(0deg) !important;
+      box-shadow: 5px 5px 0 var(--secondary);
+      border-style: solid;
+    }
+
+    /* === 明信片墙 === */
+    .postcard-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 50px;
+    }
+
+    /* 单张明信片 */
+    .postcard {
+      background: #FFFEF7;
+      border: 3px solid #D4C5B2;
+      box-shadow: 4px 4px 0 rgba(160, 140, 120, 0.3);
+      position: relative;
+      transition: all 0.35s;
+      padding: 14px;
+      overflow: hidden;
+    }
+
+    /* 像素角标 — ::after 因为 ::before 已被胶带占用 */
+    .postcard::after {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      pointer-events: none;
+      z-index: 3;
+      background:
+        linear-gradient(to right, #8B7355 7px, transparent 7px) 0 0 / 10px 2px no-repeat,
+        linear-gradient(to bottom, #8B7355 7px, transparent 7px) 0 0 / 2px 10px no-repeat,
+        linear-gradient(to left, #8B7355 7px, transparent 7px) 100% 0 / 10px 2px no-repeat,
+        linear-gradient(to bottom, #8B7355 7px, transparent 7px) 100% 0 / 2px 10px no-repeat,
+        linear-gradient(to right, #8B7355 7px, transparent 7px) 0 100% / 10px 2px no-repeat,
+        linear-gradient(to top, #8B7355 7px, transparent 7px) 0 100% / 2px 10px no-repeat,
+        linear-gradient(to left, #8B7355 7px, transparent 7px) 100% 100% / 10px 2px no-repeat,
+        linear-gradient(to top, #8B7355 7px, transparent 7px) 100% 100% / 2px 10px no-repeat;
+    }
+
+    [data-theme="dark"] .postcard::after {
+      background:
+        linear-gradient(to right, #C8C8D8 7px, transparent 7px) 0 0 / 10px 2px no-repeat,
+        linear-gradient(to bottom, #C8C8D8 7px, transparent 7px) 0 0 / 2px 10px no-repeat,
+        linear-gradient(to left, #C8C8D8 7px, transparent 7px) 100% 0 / 10px 2px no-repeat,
+        linear-gradient(to bottom, #C8C8D8 7px, transparent 7px) 100% 0 / 2px 10px no-repeat,
+        linear-gradient(to right, #C8C8D8 7px, transparent 7px) 0 100% / 10px 2px no-repeat,
+        linear-gradient(to top, #C8C8D8 7px, transparent 7px) 0 100% / 2px 10px no-repeat,
+        linear-gradient(to left, #C8C8D8 7px, transparent 7px) 100% 100% / 10px 2px no-repeat,
+        linear-gradient(to top, #C8C8D8 7px, transparent 7px) 100% 100% / 2px 10px no-repeat;
+    }
+
+    /* 微微旋转，像随手摆在桌上 */
+    .postcard:nth-child(1) { transform: rotate(-1.5deg); }
+    .postcard:nth-child(2) { transform: rotate(1deg); }
+    .postcard:nth-child(3) { transform: rotate(-0.5deg); }
+    .postcard:nth-child(4) { transform: rotate(1.8deg); }
+    .postcard:nth-child(5) { transform: rotate(-2deg); }
+    .postcard:nth-child(6) { transform: rotate(0.5deg); }
+    .postcard:nth-child(7) { transform: rotate(-1deg); }
+    .postcard:nth-child(8) { transform: rotate(1.5deg); }
+    .postcard:nth-child(9) { transform: rotate(-0.8deg); }
+    .postcard:nth-child(10) { transform: rotate(2deg); }
+
+    .postcard:hover {
+      transform: translateY(-6px) rotate(0deg) !important;
+      box-shadow: 8px 8px 0 rgba(160, 140, 120, 0.5);
+      z-index: 5;
+    }
+
+    /* 胶带装饰 */
+    .postcard::before {
+      content: '';
+      position: absolute;
+      top: -8px;
+      left: 50%;
+      transform: translateX(-50%) rotate(-2deg);
+      width: 55px;
+      height: 14px;
+      z-index: 4;
+      opacity: 0.8;
+    }
+
+    .postcard:nth-child(1)::before { background: rgba(255, 180, 180, 0.8); }
+    .postcard:nth-child(2)::before { background: rgba(180, 210, 255, 0.8); width: 48px; }
+    .postcard:nth-child(3)::before { background: rgba(200, 255, 200, 0.8); width: 62px; }
+    .postcard:nth-child(4)::before { background: rgba(255, 255, 180, 0.8); width: 50px; }
+    .postcard:nth-child(5)::before { background: rgba(220, 200, 255, 0.8); width: 58px; }
+    .postcard:nth-child(6)::before { background: rgba(255, 200, 150, 0.8); }
+    .postcard:nth-child(7)::before { background: rgba(180, 240, 220, 0.8); width: 52px; }
+    .postcard:nth-child(8)::before { background: rgba(255, 180, 220, 0.8); width: 60px; }
+    .postcard:nth-child(9)::before { background: rgba(180, 220, 240, 0.8); }
+    .postcard:nth-child(10)::before { background: rgba(240, 220, 180, 0.8); width: 56px; }
+
+    /* 邮戳日期 */
+    .pc-postmark {
+      position: absolute;
+      top: 12px;
+      right: 14px;
+      z-index: 3;
+      border: 2px dashed #C2185B;
+      border-radius: 50%;
+      width: 54px;
+      height: 54px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      color: #C2185B;
+      background: rgba(255,255,255,0.75);
+      transform: rotate(12deg);
+      line-height: 1.3;
+      pointer-events: none;
+    }
+
+    .pc-postmark .pm-year {
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    /* 大卡片（跨两列） */
+    .postcard.featured {
+      grid-column: span 2;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding: 0;
+    }
+
+    .postcard.featured .pc-photo-wrap {
+      border-right: 3px dashed #E0D5C5;
+    }
+
+    .postcard.featured .slideshow-container {
+      aspect-ratio: 3 / 4;
+      border-bottom: none;
+    }
+
+    .postcard.featured .pc-body {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    /* 照片区 */
+    .pc-photo-wrap {
+      position: relative;
+    }
+
+    .slideshow-container {
+      position: relative;
+      aspect-ratio: 3 / 4;
+      background: var(--bg-light);
+      border-bottom: 4px solid var(--primary);
+      overflow: hidden;
+    }
+
+    .slideshow-container .slide-img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: translateX(100%);
+      opacity: 0;
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
+      z-index: 1;
+    }
+
+    .slideshow-container .slide-img.active {
+      transform: translateX(0);
+      opacity: 1;
+      z-index: 2;
+    }
+
+    .slideshow-container .slide-img.to-left {
+      transform: translateX(-100%);
+      opacity: 0;
+      z-index: 2;
+    }
+
+    .slide-placeholder {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 80px;
+      background: var(--bg-light);
+    }
+
+    .slide-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 36px;
+      height: 36px;
+      background: rgba(136, 14, 79, 0.7);
+      color: #fff;
+      border: 3px solid var(--primary);
+      font-family: 'Zpix', 'Press Start 2P', 'Courier New', monospace;
+      font-size: 14px;
+      cursor: pointer;
+      z-index: 10;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .slide-btn:hover {
+      background: var(--primary);
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .slide-btn.prev { left: 8px; }
+    .slide-btn.next { right: 8px; }
+
+    .slideshow-container:hover .slide-btn.show {
+      display: flex;
+    }
+
+    .slide-counter {
+      position: absolute;
+      bottom: 8px;
+      right: 10px;
+      background: rgba(136, 14, 79, 0.7);
+      color: #fff;
+      padding: 3px 8px;
+      font-size: 10px;
+      border: 2px solid var(--primary);
+      z-index: 10;
+      display: none;
+    }
+
+    .slideshow-container:hover .slide-counter.show {
+      display: block;
+    }
+
+    .travel-info {
+      padding: 20px;
+    }
+
+    .travel-location {
+      font-size: 16px;
+      color: var(--primary);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .travel-desc {
+      font-size: 14px;
+      color: var(--text-dim);
+      line-height: 2.2;
+    }
+
+    .travel-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .travel-tag {
+      background: var(--bg-light);
+      border: 2px solid var(--primary);
+      padding: 4px 10px;
+      font-size: 12px;
+      color: var(--primary);
+    }
+
+    .bg-pixel {
+      position: fixed;
+      pointer-events: none;
+      z-index: 0;
+      width: 8px;
+      height: 8px;
+      animation: pixelTwinkle 3s ease-in-out infinite;
+    }
+
+    @keyframes pixelTwinkle {
+      0%, 100% { opacity: 0.1; }
+      50% { opacity: 0.4; }
+    }
+
+    @media (max-width: 800px) {
+      .map-places { grid-template-columns: repeat(3, 1fr); }
+      .postcard-grid { grid-template-columns: 1fr 1fr; }
+      .postcard.featured { grid-column: 1 / -1; grid-template-columns: 1fr; }
+      .postcard.featured .pc-photo-wrap { border-right: none; border-bottom: 3px dashed #E0D5C5; }
+      .postcard.featured .slideshow-container { aspect-ratio: 16 / 9; }
+      .postcard { transform: rotate(0deg) !important; }
+    }
+
+    @media (max-width: 500px) {
+      .postcard-grid { grid-template-columns: 1fr; }
+    }
+
+    [data-theme="dark"] .postcard {
+      background: #252540;
+      border-color: #3a3050;
+      box-shadow: 4px 4px 0 rgba(255, 64, 129, 0.2);
+    }
+
+    [data-theme="dark"] .pc-postmark {
+      color: #FF80AB;
+      border-color: #FF80AB;
+      background: rgba(30, 30, 53, 0.85);
+    }
+
+    [data-theme="dark"] .map-pin {
+      color: #1a1a2e !important;
+      background: #FF80AB !important;
+      border-color: #FF4081;
+    }
+
+    [data-theme="dark"] .map-pin:hover {
+      background: #FF4081 !important;
+      color: #fff !important;
+      border-color: #FF80AB;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg-deco bg-deco-1">✈️</div>
+  <div class="bg-deco bg-deco-2">🗺️</div>
+  <div class="bg-deco bg-deco-3">📸</div>
+  <div class="bg-deco bg-deco-4">🌏</div>
+  <div class="bg-deco bg-deco-5">🎒</div>
+  <div class="bg-deco bg-deco-6">🗻</div>
+
+  <nav>
+    <div class="nav-logo">XSYonline</div>
+    <div class="nav-links">
+      <a href="index.html">首页</a>
+      <a href="hometown.html">家乡介绍</a>
+      <a href="travel.html" class="active">旅行日记</a>
+      <a href="baking.html">烘焙大赏</a>
+      <a href="music.html">音乐墙</a>
+      <a href="message.html">留言板</a>
+    </div>
+  </nav>
+
+  <div class="page-container">
+    <h1 class="page-title">✈️ 旅行日记</h1>
+    <p class="page-subtitle">用脚步丈量世界，用镜头记录美好</p>
+
+    <div class="china-map-container">
+      <div class="china-map-title">🌏 旅行足迹</div>
+      <div id="china-map"></div>
+    </div>
+
+    <div class="map-banner">
+      <h3>📍 到访城市</h3>
+      <div class="map-places">
+        <span class="map-pin" onclick="scrollToCity('fuzhou')">🌲 福州</span>
+        <span class="map-pin" onclick="scrollToCity('xiamen')">🏖️ 厦门</span>
+        <span class="map-pin" onclick="scrollToCity('zhengzhou')">🏯 郑州</span>
+        <span class="map-pin" onclick="scrollToCity('changsha')">🌶️ 长沙</span>
+        <span class="map-pin" onclick="scrollToCity('nanchang')">🌺 南昌</span>
+        <span class="map-pin" onclick="scrollToCity('shaoxing')">🚢 绍兴</span>
+        <span class="map-pin" onclick="scrollToCity('hangzhou')">🏞️ 杭州</span>
+        <span class="map-pin" onclick="scrollToCity('yueyang')">🌊 岳阳</span>
+        <span class="map-pin" onclick="scrollToCity('chongqing')">🌶 重庆</span>
+        <span class="map-pin" onclick="scrollToCity('xian')">🏯 西安</span>
+      </div>
+    </div>
+
+    <div class="postcard-grid">
+      <!-- 2022 福州 · 旅程第一站 -->
+      <div class="postcard" id="fuzhou" data-images="fuzhou1.jpg,fuzhou2.jpg" data-emoji="🌲">
+        <div class="pc-postmark"><span class="pm-year">2022</span>07月</div>
+        <div class="slideshow-container">
+          <div class="slide-placeholder">🌲</div>
+          <button class="slide-btn prev">◀</button>
+          <button class="slide-btn next">▶</button>
+          <div class="slide-counter">1/1</div>
+        </div>
+        <div class="travel-info">
+          <div class="travel-location">📍 福州 · 福建省会</div>
+          <div class="travel-desc">三坊七巷的古韵让人流连忘返，福州鱼丸Q弹鲜美，是每次回家必经的中转站。</div>
+          <div class="travel-tags"><span class="travel-tag">三坊七巷</span><span class="travel-tag">鱼丸</span></div>
+        </div>
+      </div>
+
+      <!-- 2023 厦门 -->
+      <div class="postcard" id="xiamen" data-images="xiamen1.jpg,xiamen2.jpg" data-emoji="🏖️">
+        <div class="pc-postmark"><span class="pm-year">2023</span>01月</div>
+        <div class="slideshow-container">
+          <div class="slide-placeholder">🏖️</div>
+          <button class="slide-btn prev">◀</button>
+          <button class="slide-btn next">▶</button>
+          <div class="slide-counter">1/1</div>
+        </div>
+        <div class="travel-info">
+          <div class="travel-location">📍 厦门 · 海上花园</div>
+          <div class="travel-desc">鼓浪屿的琴声与海风交织，沙茶面的浓郁香气弥漫街头，环岛路上骑行看日落超浪漫。</div>
+          <div class="travel-tags"><span class="travel-tag">鼓浪屿</span><span class="travel-tag">沙茶面</span></div>
+        </div>
+      </div>
+
+      <!-- 2024 郑州 -->
+      <div class="postcard" id="zhengzhou" data-images="zhengzhou1.jpg,zhengzhou2.jpg,zhengzhou3.jpg,zhengzhou4.jpg,zhengzhou5.jpg" data-emoji="🏯">
+        <div class="pc-postmark"><span class="pm-year">2024</span>10月</div>
+        <div class="slideshow-container">
+          <div class="slide-placeholder">🏯</div>
+          <button class="slide-btn prev">◀</button>
+          <button class="slide-btn next">▶</button>
+          <div class="slide-counter">1/1</div>
+        </div>
+        <div class="travel-info">
+          <div class="travel-location">📍 郑州 · 中原腹地</div>
+          <div class="travel-desc">中原大地历史厚重，少林寺的武术让人叹为观止，胡辣汤是清晨最暖的问候。</div>
+          <div class="travel-tags"><span class="travel-tag">少林寺</span><span class="travel-tag">胡辣汤</span></div>
+        </div>
+      </div>
+
+      <!-- 2024 长沙 -->
+      <div class="postcard" id="changsha" data-images="changsha1.jpg,changsha2.jpg" data-emoji="🌶️">
+        <div class="pc-postmark"><span class="pm-year">2024</span>11月</div>
+        <div class="slideshow-container">
+          <div class="slide-placeholder">🌶️</div>
+          <button class="slide-btn prev">◀</button>
+          <button class="slide-btn next">▶</button>
+          <div class="slide-counter">1/1</div>
+        </div>
+        <div class="travel-info">
+          <div class="travel-location">📍 长沙 · 星城</div>
+          <div class="travel-desc">岳麓山上看橘子洲头，臭豆腐和茶颜悦色是长沙的灵魂组合，太平街逛到停不下来。</div>
+          <div class="travel-tags"><span class="travel-tag">臭豆腐</span><span class="travel-tag">茶颜悦色</span></div>
+        </div>
+      </div>
+
+      <!-- 2025 南昌 -->
+      <div class="postcard" id="nanchang" data-images="nanchang1.jpg,nanchang2.jpg" data-emoji="🌺">
+        <div class="pc-postmark"><span class="pm-year">2025</span>01月</div>
+        <div class="slideshow-container">
+          <div class="slide-placeholder">🌺</div>
+          <button class="slide-btn prev">◀</button>
+          <button class="slide-btn next">▶</button>
+          <div class="slide-counter">1/1</div>
+        </div>
+        <div class="travel-info">
+          <div class="travel-location">📍 南昌 · 英雄城</div>
+          <div class="travel-desc">滕王阁上望赣江，落霞与孤鹜齐飞的意境终于懂了，瓦罐汤暖胃又暖心。</div>
+          <div class="travel-tags"><span class="travel-tag">滕王阁</span><span class="travel-tag">瓦罐汤</span></div>
+        </div>
+      </div>
+
+      <!-- 2025 绍兴 -->
+      <div class="postcard" id="shaoxing" data-images="shaoxing1.jpg,shaoxing2.jpg" data-emoji="🚢">
+        <div class="pc-postmark"><span class="pm-year">2025</span>03月</div>
+        <div class="slideshow-container">
+          <div class="slide-placeholder">🚢</div>
+          <button class="slide-btn prev">◀</button>
+          <button class="slide-btn next">▶</button>
+          <div class="slide-counter">1/1</div>
+        </div>
+        <div class="travel-info">
+          <div class="travel-location">📍 绍兴 · 水乡古城</div>
+          <div class="travel-desc">鲁迅故里的百草园到三味书屋，乌篷船摇橹穿行水巷，黄酒醇香醉人。</div>
+          <div class="travel-tags"><span class="travel-tag">黄酒</span><span class="travel-tag">乌篷船</span></div>
+        </div>
+      </div>
+
+      <!-- 2025 杭州 · 大卡片 -->
+      <div class="postcard featured" id="hangzhou" data-images="hangzhou1.jpg,hangzhou2.jpg,hangzhou3.jpg,hangzhou4.jpg,hangzhou5.jpg,hangzhou6.jpg,hangzhou7.jpg,hangzhou8.jpg" data-emoji="🏞️">
+        <div class="pc-postmark"><span class="pm-year">2025</span>03月</div>
+        <div class="pc-photo-wrap">
+          <div class="slideshow-container">
+            <div class="slide-placeholder">🏞️</div>
+            <button class="slide-btn prev">◀</button>
+            <button class="slide-btn next">▶</button>
+            <div class="slide-counter">1/1</div>
+          </div>
+        </div>
+        <div class="pc-body">
+          <div class="travel-info">
+            <div class="travel-location">📍 杭州 · 人间天堂</div>
+            <div class="travel-desc">西湖十景名不虚传，灵隐寺的禅意让人心静，龙井茶香飘满城，断桥残雪的传说浪漫至极。三月柳浪闻莺，苏堤春晓。</div>
+            <div class="travel-tags"><span class="travel-tag">西湖</span><span class="travel-tag">灵隐寺</span><span class="travel-tag">龙井茶</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2025 岳阳 -->
+      <div class="postcard" id="yueyang" data-images="yueyang1.jpg,yueyang2.jpg" data-emoji="🌊">
+        <div class="pc-postmark"><span class="pm-year">2025</span>05月</div>
+        <div class="slideshow-container">
+          <div class="slide-placeholder">🌊</div>
+          <button class="slide-btn prev">◀</button>
+          <button class="slide-btn next">▶</button>
+          <div class="slide-counter">1/1</div>
+        </div>
+        <div class="travel-info">
+          <div class="travel-location">📍 岳阳 · 洞庭天下水</div>
+          <div class="travel-desc">先天下之忧而忧，岳阳楼上眺洞庭，浩浩汤汤横无际涯。</div>
+          <div class="travel-tags"><span class="travel-tag">岳阳楼</span><span class="travel-tag">洞庭湖</span></div>
+        </div>
+      </div>
+
+      <!-- 2025 重庆 -->
+      <div class="postcard" id="chongqing" data-images="chongqing1.jpg,chongqing2.jpg" data-emoji="🌶">
+        <div class="pc-postmark"><span class="pm-year">2025</span>10月</div>
+        <div class="slideshow-container">
+          <div class="slide-placeholder">🌶</div>
+          <button class="slide-btn prev">◀</button>
+          <button class="slide-btn next">▶</button>
+          <div class="slide-counter">1/1</div>
+        </div>
+        <div class="travel-info">
+          <div class="travel-location">📍 重庆 · 山城</div>
+          <div class="travel-desc">8D魔幻城市名不虚传！洪崖洞的夜景如千与千寻，火锅的麻辣让人欲罢不能。</div>
+          <div class="travel-tags"><span class="travel-tag">火锅</span><span class="travel-tag">洪崖洞</span><span class="travel-tag">轻轨穿楼</span></div>
+        </div>
+      </div>
+
+      <!-- 2026 西安 · 大卡片 -->
+      <div class="postcard featured" id="xian" data-images="xian1.jpg,xian2.jpg,xian3.jpg" data-emoji="🏯">
+        <div class="pc-postmark"><span class="pm-year">2026</span>04月</div>
+        <div class="pc-photo-wrap">
+          <div class="slideshow-container">
+            <div class="slide-placeholder">🏯</div>
+            <button class="slide-btn prev">◀</button>
+            <button class="slide-btn next">▶</button>
+            <div class="slide-counter">1/1</div>
+          </div>
+        </div>
+        <div class="pc-body">
+          <div class="travel-info">
+            <div class="travel-location">📍 西安 · 千年古都</div>
+            <div class="travel-desc">兵马俑的壮观震撼心灵，回民街的羊肉泡馍、大雁塔的音乐喷泉、城墙上的骑行，每一刻都是穿越时空的体验。</div>
+            <div class="travel-tags"><span class="travel-tag">兵马俑</span><span class="travel-tag">回民街</span><span class="travel-tag">大雁塔</span><span class="travel-tag">城墙</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2026 许诗怡 | 中南财经政法大学</p>
+    <p style="margin-top: 10px; opacity: 0.8;">Made with 💖 in Quanzhou</p>
+  </footer>
+
+  <script src="../js/common.js"></script>
+  <script>
+    initScrollReveal('.postcard', 120);
+
+    function scrollToCity(id) {
+      var el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        var card = el;
+        card.style.boxShadow = '0 0 20px #E91E8C';
+        setTimeout(function() { card.style.boxShadow = ''; }, 1500);
+      }
+    }
+
+    fetch('https://geo.datav.aliyun.com/areas_v3/bound/100000_full.json')
+      .then(function(res) { return res.json(); })
+      .then(function(chinaJson) {
+        echarts.registerMap('china', chinaJson);
+        var mapChart = echarts.init(document.getElementById('china-map'));
+        var visitedProvinces = ['浙江', '河南', '江西', '陕西', '湖南', '福建', '重庆', '湖北'];
+        var cityData = [
+          { name: '福州', value: [119.3, 26.08] },
+          { name: '厦门', value: [118.1, 24.46] },
+          { name: '郑州', value: [113.65, 34.76] },
+          { name: '长沙', value: [112.98, 28.21] },
+          { name: '南昌', value: [115.89, 28.68] },
+          { name: '绍兴', value: [120.58, 30.01] },
+          { name: '杭州', value: [120.15, 30.28] },
+          { name: '岳阳', value: [113.13, 29.37] },
+          { name: '重庆', value: [106.55, 29.56] },
+          { name: '西安', value: [108.95, 34.27] }
+        ];
+        var specialCities = [
+          { name: '泉州 🏠', value: [118.68, 24.87] },
+          { name: '武汉 🎓', value: [114.3, 30.6] }
+        ];
+        mapChart.setOption({
+          tooltip: { trigger: 'item', backgroundColor: 'rgba(136,14,79,0.9)', borderColor: '#E91E8C', borderWidth: 2, textStyle: { color: '#fff', fontSize: 12 } },
+          geo: {
+            map: 'china', roam: true, zoom: 1.5, center: [108, 34],
+            label: { show: false },
+            itemStyle: { areaColor: '#FFE4EE', borderColor: '#E91E8C', borderWidth: 1 },
+            emphasis: { itemStyle: { areaColor: '#F06292', borderColor: '#880E4F', borderWidth: 2 }, label: { show: true, color: '#fff', fontSize: 12 } },
+            regions: visitedProvinces.map(function(name) { return { name: name, itemStyle: { areaColor: '#F48FB1', borderColor: '#880E4F', borderWidth: 2 } }; })
+          },
+          series: [
+            { type: 'scatter', coordinateSystem: 'geo', data: cityData.map(function(c) { return { name: c.name, value: c.value }; }), symbolSize: 14, symbol: 'pin', itemStyle: { color: '#E91E8C', borderColor: '#880E4F', borderWidth: 2 }, label: { show: true, formatter: '{b}', position: 'right', color: '#880E4F', fontSize: 11, textBorderColor: '#fff', textBorderWidth: 2 }, zlevel: 10 },
+            { type: 'effectScatter', coordinateSystem: 'geo', data: cityData.map(function(c) { return { name: c.name, value: [...c.value, 1] }; }), symbolSize: 8, rippleEffect: { brushType: 'stroke', scale: 4, period: 4 }, itemStyle: { color: '#E91E8C' }, zlevel: 11 },
+            { type: 'scatter', coordinateSystem: 'geo', data: specialCities.map(function(c) { return { name: c.name, value: c.value }; }), symbolSize: 20, symbol: 'pin', itemStyle: { color: '#880E4F', borderColor: '#FFD700', borderWidth: 3 }, label: { show: true, formatter: '{b}', position: 'right', color: '#880E4F', fontSize: 13, fontWeight: 'bold', textBorderColor: '#fff', textBorderWidth: 3 }, zlevel: 12 },
+            { type: 'effectScatter', coordinateSystem: 'geo', data: specialCities.map(function(c) { return { name: c.name, value: [...c.value, 2] }; }), symbolSize: 12, rippleEffect: { brushType: 'stroke', scale: 6, period: 3 }, itemStyle: { color: '#FFD700' }, zlevel: 13 }
+          ]
+        });
+        window.addEventListener('resize', function() { mapChart.resize(); });
+      });
+
+    (function() {
+      var pixelColors = ['#E91E8C', '#F06292', '#F48FB1', '#FFB6C1', '#C2185B', '#FFD1DC'];
+      for (var i = 0; i < 30; i++) {
+        var px = document.createElement('div'); px.className = 'bg-pixel';
+        px.style.left = Math.random() * 100 + '%'; px.style.top = Math.random() * 100 + '%';
+        px.style.background = pixelColors[Math.floor(Math.random() * pixelColors.length)];
+        px.style.animationDelay = (Math.random() * 3) + 's'; px.style.animationDuration = (2 + Math.random() * 3) + 's';
+        document.body.appendChild(px);
+      }
+    })();
+
+    document.querySelectorAll('.postcard').forEach(function(item) {
+      var imageList = item.dataset.images ? item.dataset.images.split(',') : [];
+      var container = item.querySelector('.slideshow-container');
+      var placeholder = container.querySelector('.slide-placeholder');
+      var prevBtn = container.querySelector('.slide-btn.prev');
+      var nextBtn = container.querySelector('.slide-btn.next');
+      var counter = container.querySelector('.slide-counter');
+      var currentIndex = 0, loadedImages = [], isAnimating = false;
+
+      imageList.forEach(function(imgName) {
+        var img = document.createElement('img');
+        img.src = '../image/' + imgName; img.alt = imgName; img.className = 'slide-img';
+        img.onerror = function() { this.remove(); };
+        img.onload = function() {
+          loadedImages.push(img);
+          if (loadedImages.length === 1) { placeholder.style.display = 'none'; img.classList.add('active'); }
+          updateSlideshow();
+        };
+        container.insertBefore(img, prevBtn);
+      });
+
+      function updateSlideshow() {
+        var total = loadedImages.length;
+        if (total <= 1) { prevBtn.classList.remove('show'); nextBtn.classList.remove('show'); counter.classList.remove('show'); }
+        else { prevBtn.classList.add('show'); nextBtn.classList.add('show'); counter.classList.add('show'); }
+        counter.textContent = (currentIndex + 1) + '/' + total;
+      }
+
+      function showImage(newIndex, direction) {
+        if (isAnimating || newIndex === currentIndex) return;
+        isAnimating = true;
+        var currentImg = loadedImages[currentIndex], nextImg = loadedImages[newIndex];
+        if (direction === 'next') { nextImg.classList.add('active'); currentImg.classList.remove('active'); currentImg.classList.add('to-left'); }
+        else { nextImg.style.transition = 'none'; nextImg.classList.add('to-left'); void nextImg.offsetHeight; nextImg.style.transition = ''; nextImg.classList.remove('to-left'); nextImg.classList.add('active'); currentImg.classList.remove('active'); }
+        setTimeout(function() { currentImg.classList.remove('to-left'); isAnimating = false; }, 500);
+        currentIndex = newIndex; updateSlideshow();
+      }
+
+      prevBtn.addEventListener('click', function(e) { e.stopPropagation(); var t = loadedImages.length; if (t > 1 && !isAnimating) showImage((currentIndex - 1 + t) % t, 'prev'); });
+      nextBtn.addEventListener('click', function(e) { e.stopPropagation(); var t = loadedImages.length; if (t > 1 && !isAnimating) showImage((currentIndex + 1) % t, 'next'); });
+      updateSlideshow();
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>家乡介绍 - XSY</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/common.css">
+  <style>
+    /* === 杂志式开头 === */
+    .hometown-hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin-bottom: 50px;
+      align-items: start;
+    }
+
+    .hometown-hero-visual {
+      aspect-ratio: 1;
+      background: var(--bg-card);
+      border: 4px solid var(--primary);
+      box-shadow: 6px 6px 0 var(--secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 120px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hometown-hero-visual::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 6px;
+      background: repeating-linear-gradient(90deg, var(--primary) 0px, var(--primary) 8px, transparent 8px, transparent 16px);
+    }
+
+    .hero-accent {
+      position: absolute;
+      font-size: 40px;
+      opacity: 0.15;
+      animation: heroFloat 6s ease-in-out infinite;
+    }
+
+    .hero-accent:nth-child(1) { top: 8%; left: 8%; animation-delay: 0s; }
+    .hero-accent:nth-child(2) { top: 8%; right: 12%; animation-delay: 1.5s; }
+    .hero-accent:nth-child(3) { bottom: 16%; left: 12%; animation-delay: 3s; }
+    .hero-accent:nth-child(4) { bottom: 16%; right: 8%; animation-delay: 4.5s; }
+
+    @keyframes heroFloat {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      33% { transform: translateY(-8px) rotate(5deg); }
+      66% { transform: translateY(4px) rotate(-3deg); }
+    }
+
+    .hometown-hero-text {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .hometown-hero-text .hero-kicker {
+      font-size: 16px;
+      color: #fff;
+      background: var(--primary);
+      border: 3px solid var(--secondary);
+      display: inline-block;
+      padding: 8px 20px;
+      width: fit-content;
+      box-shadow: 4px 4px 0 var(--secondary);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .hometown-hero-text .hero-kicker:hover {
+      transform: translateY(-2px);
+      box-shadow: 6px 6px 0 var(--secondary);
+    }
+
+    .hometown-hero-text .hero-heading {
+      font-size: 30px;
+      color: var(--secondary);
+      line-height: 1.4;
+    }
+
+    .hometown-hero-text .hero-body {
+      font-size: 14px;
+      color: var(--text-dim);
+      line-height: 2.3;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 20px;
+    }
+
+    .hero-stat {
+      text-align: center;
+      background: var(--bg-light);
+      border: 3px solid var(--primary);
+      padding: 10px 16px;
+    }
+
+    .hero-stat-num {
+      font-size: 24px;
+      color: var(--primary);
+      display: block;
+    }
+
+    .hero-stat-label {
+      font-size: 10px;
+      color: var(--text-dim);
+      margin-top: 2px;
+    }
+
+    /* === Bento 棋盘格 (文化遗产) === */
+    .heritage-bento {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 50px;
+      grid-auto-rows: auto;
+    }
+
+    .heritage-card {
+      background: var(--bg-card);
+      border: 4px solid var(--primary);
+      box-shadow: 4px 4px 0 var(--secondary);
+      overflow: hidden;
+      transition: all 0.3s;
+      cursor: default;
+      position: relative;
+    }
+
+    /* 像素角标 */
+    .heritage-card::after {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      pointer-events: none;
+      z-index: 5;
+      background:
+        linear-gradient(to right, var(--ink) 8px, transparent 8px) 0 0 / 12px 3px no-repeat,
+        linear-gradient(to bottom, var(--ink) 8px, transparent 8px) 0 0 / 3px 12px no-repeat,
+        linear-gradient(to left, var(--ink) 8px, transparent 8px) 100% 0 / 12px 3px no-repeat,
+        linear-gradient(to bottom, var(--ink) 8px, transparent 8px) 100% 0 / 3px 12px no-repeat,
+        linear-gradient(to right, var(--ink) 8px, transparent 8px) 0 100% / 12px 3px no-repeat,
+        linear-gradient(to top, var(--ink) 8px, transparent 8px) 0 100% / 3px 12px no-repeat,
+        linear-gradient(to left, var(--ink) 8px, transparent 8px) 100% 100% / 12px 3px no-repeat,
+        linear-gradient(to top, var(--ink) 8px, transparent 8px) 100% 100% / 3px 12px no-repeat;
+    }
+
+    [data-theme="dark"] .heritage-card::after {
+      background:
+        linear-gradient(to right, var(--primary) 8px, transparent 8px) 0 0 / 12px 3px no-repeat,
+        linear-gradient(to bottom, var(--primary) 8px, transparent 8px) 0 0 / 3px 12px no-repeat,
+        linear-gradient(to left, var(--primary) 8px, transparent 8px) 100% 0 / 12px 3px no-repeat,
+        linear-gradient(to bottom, var(--primary) 8px, transparent 8px) 100% 0 / 3px 12px no-repeat,
+        linear-gradient(to right, var(--primary) 8px, transparent 8px) 0 100% / 12px 3px no-repeat,
+        linear-gradient(to top, var(--primary) 8px, transparent 8px) 0 100% / 3px 12px no-repeat,
+        linear-gradient(to left, var(--primary) 8px, transparent 8px) 100% 100% / 12px 3px no-repeat,
+        linear-gradient(to top, var(--primary) 8px, transparent 8px) 100% 100% / 3px 12px no-repeat;
+    }
+
+    .heritage-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 6px 6px 0 var(--secondary);
+    }
+
+    /* 第一张卡片横跨两列，横向排版 */
+    .heritage-card.featured {
+      grid-column: 1 / 3;
+      display: grid;
+      grid-template-columns: 180px 1fr;
+    }
+
+    .heritage-card.featured .heritage-visual {
+      height: 100%;
+      min-height: 180px;
+    }
+
+    .heritage-visual {
+      background: var(--bg-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 70px;
+      border-bottom: 4px solid var(--primary);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .heritage-card.featured .heritage-visual {
+      border-bottom: none;
+      border-right: 4px solid var(--primary);
+    }
+
+    /* 第三张卡片占最后列，竖向 */
+    .heritage-card:nth-child(4) {
+      grid-column: 3;
+      grid-row: 1 / 3;
+    }
+
+    .heritage-card:nth-child(4) .heritage-visual {
+      height: 220px;
+      font-size: 80px;
+    }
+
+    .heritage-info {
+      padding: 18px;
+    }
+
+    .heritage-card.featured .heritage-info {
+      padding: 24px;
+    }
+
+    .heritage-name {
+      font-size: 15px;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+
+    .heritage-card.featured .heritage-name {
+      font-size: 18px;
+    }
+
+    .heritage-desc {
+      font-size: 12px;
+      color: var(--text-dim);
+      line-height: 2;
+    }
+
+    .heritage-card.featured .heritage-desc {
+      font-size: 13px;
+    }
+
+    /* === 横向滚动 (泉州美食) === */
+    .food-strip-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 50px;
+    }
+
+    .food-scroll-btn {
+      width: 40px;
+      height: 40px;
+      background: var(--secondary);
+      color: #fff;
+      border: 3px solid var(--primary);
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 3px 3px 0 var(--primary);
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+
+    .food-scroll-btn:hover,
+    .food-scroll-btn:focus-visible {
+      transform: translate(-2px, -2px);
+      box-shadow: 5px 5px 0 var(--primary);
+      outline: 3px solid var(--primary);
+      outline-offset: 2px;
+    }
+
+    .food-scroll-view {
+      flex: 1;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .food-scroll-view::-webkit-scrollbar { display: none; }
+
+    .food-scroll-track {
+      display: flex;
+      gap: 18px;
+      padding: 8px 4px;
+    }
+
+    .food-card {
+      flex-shrink: 0;
+      width: 200px;
+      background: var(--bg-card);
+      border: 4px solid var(--primary);
+      box-shadow: 4px 4px 0 var(--secondary);
+      overflow: hidden;
+      transition: all 0.3s;
+      cursor: default;
+    }
+
+    .food-card:hover {
+      transform: translateY(-4px) rotate(-1deg);
+      box-shadow: 6px 6px 0 var(--secondary);
+    }
+
+    .food-card-visual {
+      height: 110px;
+      background: var(--bg-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 55px;
+      border-bottom: 4px solid var(--primary);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .food-card-info {
+      padding: 14px;
+      text-align: center;
+    }
+
+    .food-name {
+      font-size: 14px;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+
+    .food-desc {
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+
+    /* === 泉州游玩日记 · 手账拼贴风 === */
+    .diary-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 50px;
+    }
+
+    .diary-card {
+      background: #FFFEF9;
+      border: 3px solid #D4A574;
+      box-shadow: 3px 3px 0 rgba(180, 140, 100, 0.3);
+      padding: 12px 12px 16px;
+      position: relative;
+      transition: all 0.3s;
+    }
+
+    .diary-card:hover {
+      transform: translateY(-4px) rotate(0deg) !important;
+      box-shadow: 6px 6px 0 rgba(180, 140, 100, 0.4);
+      z-index: 5;
+    }
+
+    .diary-card:nth-child(1) { transform: rotate(-2deg); }
+    .diary-card:nth-child(2) { transform: rotate(1.5deg); grid-column: 2 / 4; }
+    .diary-card:nth-child(3) { transform: rotate(-1deg); grid-column: 1 / 3; }
+    .diary-card:nth-child(4) { transform: rotate(2deg); }
+    .diary-card:nth-child(5) { transform: rotate(-1.5deg); }
+    .diary-card:nth-child(6) { transform: rotate(1deg); grid-column: 1 / 3; }
+    .diary-card:nth-child(7) { transform: rotate(-2.5deg); }
+
+    .diary-card .diary-photo {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      background: #F5F0E8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 50px;
+      margin-bottom: 8px;
+      border: 2px solid #E0D5C5;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .diary-card .diary-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .diary-card .diary-caption {
+      font-size: 12px;
+      color: #8B7355;
+      text-align: center;
+      padding: 0 5px;
+    }
+
+    .diary-card .diary-date {
+      font-size: 10px;
+      color: #B8A088;
+      text-align: center;
+      margin-bottom: 4px;
+    }
+
+    /* 纯文字日记卡片 */
+    .diary-card.text-card {
+      background: linear-gradient(135deg, #FFFEF9, #FFF8F0);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 20px 25px;
+      border-style: dashed;
+    }
+
+    .diary-card.text-card .diary-title {
+      font-size: 16px;
+      color: #8B7355;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .diary-card.text-card .diary-text {
+      font-size: 13px;
+      color: #A09080;
+      line-height: 2.2;
+    }
+
+    /* 胶带装饰 */
+    .diary-card::before {
+      content: '';
+      position: absolute;
+      top: -8px;
+      left: 50%;
+      transform: translateX(-50%) rotate(-2deg);
+      width: 60px;
+      height: 16px;
+      background: rgba(255, 200, 180, 0.7);
+      z-index: 2;
+    }
+
+    .diary-card:nth-child(2)::before { background: rgba(180, 220, 255, 0.7); width: 50px; }
+    .diary-card:nth-child(3)::before { background: rgba(200, 255, 200, 0.7); width: 70px; }
+    .diary-card:nth-child(4)::before { background: rgba(255, 255, 180, 0.7); width: 45px; }
+    .diary-card:nth-child(5)::before { background: rgba(220, 200, 255, 0.7); width: 55px; }
+    .diary-card:nth-child(6)::before { background: rgba(255, 180, 200, 0.7); width: 65px; }
+    .diary-card:nth-child(7)::before { background: rgba(180, 240, 220, 0.7); width: 50px; }
+
+    @media (max-width: 800px) {
+      .diary-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .diary-card:nth-child(2),
+      .diary-card:nth-child(3),
+      .diary-card:nth-child(6) {
+        grid-column: auto;
+      }
+      .diary-card { transform: rotate(0deg) !important; }
+    }
+
+    /* === 左右交替时间线 === */
+    .timeline-alt {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 40px;
+      margin-bottom: 50px;
+      position: relative;
+    }
+
+    .timeline-alt::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: var(--primary);
+      transform: translateX(-50%);
+    }
+
+    .culture-card {
+      background: var(--bg-card);
+      border: 4px solid var(--primary);
+      box-shadow: 4px 4px 0 var(--secondary);
+      padding: 18px;
+      position: relative;
+      transition: all 0.3s;
+      margin-bottom: 30px;
+    }
+
+    /* 像素角标 */
+    .culture-card::after {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      pointer-events: none;
+      z-index: 5;
+      background:
+        linear-gradient(to right, var(--ink) 8px, transparent 8px) 0 0 / 12px 3px no-repeat,
+        linear-gradient(to bottom, var(--ink) 8px, transparent 8px) 0 0 / 3px 12px no-repeat,
+        linear-gradient(to left, var(--ink) 8px, transparent 8px) 100% 0 / 12px 3px no-repeat,
+        linear-gradient(to bottom, var(--ink) 8px, transparent 8px) 100% 0 / 3px 12px no-repeat,
+        linear-gradient(to right, var(--ink) 8px, transparent 8px) 0 100% / 12px 3px no-repeat,
+        linear-gradient(to top, var(--ink) 8px, transparent 8px) 0 100% / 3px 12px no-repeat,
+        linear-gradient(to left, var(--ink) 8px, transparent 8px) 100% 100% / 12px 3px no-repeat,
+        linear-gradient(to top, var(--ink) 8px, transparent 8px) 100% 100% / 3px 12px no-repeat;
+    }
+
+    [data-theme="dark"] .culture-card::after {
+      background:
+        linear-gradient(to right, var(--primary) 8px, transparent 8px) 0 0 / 12px 3px no-repeat,
+        linear-gradient(to bottom, var(--primary) 8px, transparent 8px) 0 0 / 3px 12px no-repeat,
+        linear-gradient(to left, var(--primary) 8px, transparent 8px) 100% 0 / 12px 3px no-repeat,
+        linear-gradient(to bottom, var(--primary) 8px, transparent 8px) 100% 0 / 3px 12px no-repeat,
+        linear-gradient(to right, var(--primary) 8px, transparent 8px) 0 100% / 12px 3px no-repeat,
+        linear-gradient(to top, var(--primary) 8px, transparent 8px) 0 100% / 3px 12px no-repeat,
+        linear-gradient(to left, var(--primary) 8px, transparent 8px) 100% 100% / 12px 3px no-repeat,
+        linear-gradient(to top, var(--primary) 8px, transparent 8px) 100% 100% / 3px 12px no-repeat;
+    }
+
+    .culture-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 6px 6px 0 var(--secondary);
+    }
+
+    /* 左侧卡片 */
+    .culture-card.left {
+      grid-column: 1;
+      margin-right: 0;
+    }
+
+    .culture-card.left::after {
+      content: '';
+      position: absolute;
+      right: -24px;
+      top: 20px;
+      width: 14px;
+      height: 14px;
+      background: var(--bg-card);
+      border: 4px solid var(--primary);
+    }
+
+    /* 右侧卡片 */
+    .culture-card.right {
+      grid-column: 2;
+      margin-top: 50px;
+    }
+
+    .culture-card.right::before {
+      content: '';
+      position: absolute;
+      left: -24px;
+      top: 20px;
+      width: 14px;
+      height: 14px;
+      background: var(--bg-card);
+      border: 4px solid var(--primary);
+    }
+
+    .culture-card .culture-icon {
+      font-size: 30px;
+      margin-bottom: 8px;
+    }
+
+    .culture-card .culture-name {
+      font-size: 15px;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+
+    .culture-card .culture-desc {
+      font-size: 12px;
+      color: var(--text-dim);
+      line-height: 2;
+    }
+
+    /* 结语 */
+    .quote-card {
+      background: var(--bg-card);
+      border: 4px solid var(--primary);
+      box-shadow: 6px 6px 0 var(--secondary);
+      padding: 30px;
+      margin-bottom: 40px;
+      text-align: center;
+      position: relative;
+    }
+
+    .quote-card::before {
+      content: '"';
+      position: absolute;
+      top: -15px;
+      left: 30px;
+      font-size: 60px;
+      color: var(--primary);
+      background: var(--bg-card);
+      padding: 0 10px;
+      line-height: 1;
+      z-index: 2;
+    }
+
+    /* 像素角标 */
+    .quote-card::after {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      pointer-events: none;
+      z-index: 1;
+      background:
+        linear-gradient(to right, var(--ink) 8px, transparent 8px) 0 0 / 12px 3px no-repeat,
+        linear-gradient(to bottom, var(--ink) 8px, transparent 8px) 0 0 / 3px 12px no-repeat,
+        linear-gradient(to left, var(--ink) 8px, transparent 8px) 100% 0 / 12px 3px no-repeat,
+        linear-gradient(to bottom, var(--ink) 8px, transparent 8px) 100% 0 / 3px 12px no-repeat,
+        linear-gradient(to right, var(--ink) 8px, transparent 8px) 0 100% / 12px 3px no-repeat,
+        linear-gradient(to top, var(--ink) 8px, transparent 8px) 0 100% / 3px 12px no-repeat,
+        linear-gradient(to left, var(--ink) 8px, transparent 8px) 100% 100% / 12px 3px no-repeat,
+        linear-gradient(to top, var(--ink) 8px, transparent 8px) 100% 100% / 3px 12px no-repeat;
+    }
+
+    [data-theme="dark"] .quote-card::after {
+      background:
+        linear-gradient(to right, var(--primary) 8px, transparent 8px) 0 0 / 12px 3px no-repeat,
+        linear-gradient(to bottom, var(--primary) 8px, transparent 8px) 0 0 / 3px 12px no-repeat,
+        linear-gradient(to left, var(--primary) 8px, transparent 8px) 100% 0 / 12px 3px no-repeat,
+        linear-gradient(to bottom, var(--primary) 8px, transparent 8px) 100% 0 / 3px 12px no-repeat,
+        linear-gradient(to right, var(--primary) 8px, transparent 8px) 0 100% / 12px 3px no-repeat,
+        linear-gradient(to top, var(--primary) 8px, transparent 8px) 0 100% / 3px 12px no-repeat,
+        linear-gradient(to left, var(--primary) 8px, transparent 8px) 100% 100% / 12px 3px no-repeat,
+        linear-gradient(to top, var(--primary) 8px, transparent 8px) 100% 100% / 3px 12px no-repeat;
+    }
+
+    .quote-card p {
+      font-size: 14px;
+      color: var(--primary);
+      line-height: 2.2;
+      font-style: italic;
+    }
+
+    @media (max-width: 800px) {
+      .hometown-hero {
+        grid-template-columns: 1fr;
+      }
+
+      .hometown-hero-visual {
+        aspect-ratio: 2 / 1;
+        font-size: 80px;
+      }
+
+      .heritage-bento {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .heritage-card.featured {
+        grid-column: 1 / -1;
+        grid-template-columns: 120px 1fr;
+      }
+
+      .heritage-card:nth-child(4) {
+        grid-column: auto;
+        grid-row: auto;
+      }
+
+      .heritage-card:nth-child(4) .heritage-visual {
+        height: 120px;
+      }
+
+      .timeline-alt {
+        grid-template-columns: 1fr;
+      }
+
+      .timeline-alt::before {
+        left: 10px;
+      }
+
+      .culture-card.left,
+      .culture-card.right {
+        grid-column: 1;
+        margin-top: 0;
+        margin-left: 30px;
+      }
+
+      .culture-card.left::after,
+      .culture-card.right::before {
+        left: -24px;
+        right: auto;
+        top: 16px;
+      }
+    }
+
+    /* === 暗色主题覆盖 === */
+    [data-theme="dark"] .hero-heading {
+      color: #FF80AB;
+    }
+
+    [data-theme="dark"] .diary-card {
+      background: #252540;
+      border-color: #3a3050;
+      box-shadow: 3px 3px 0 rgba(255, 64, 129, 0.2);
+    }
+
+    [data-theme="dark"] .diary-card.text-card {
+      background: linear-gradient(135deg, #252540, #1e1e35);
+    }
+
+    [data-theme="dark"] .diary-photo {
+      background: #1e1e35;
+      border-color: #3a3050;
+    }
+
+    [data-theme="dark"] .diary-card .diary-caption,
+    [data-theme="dark"] .diary-card .diary-date,
+    [data-theme="dark"] .diary-card.text-card .diary-title,
+    [data-theme="dark"] .diary-card.text-card .diary-text {
+      color: #C8C8D8;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg-deco bg-deco-1">🏯</div>
+  <div class="bg-deco bg-deco-2">🌸</div>
+  <div class="bg-deco bg-deco-3">🏠</div>
+  <div class="bg-deco bg-deco-4">🍜</div>
+  <div class="bg-deco bg-deco-5">🏮</div>
+  <div class="bg-deco bg-deco-6">✨</div>
+
+  <nav>
+    <div class="nav-logo">XSYonline</div>
+    <div class="nav-links">
+      <a href="index.html">首页</a>
+      <a href="hometown.html" class="active">家乡介绍</a>
+      <a href="travel.html">旅行日记</a>
+      <a href="baking.html">烘焙大赏</a>
+      <a href="music.html">音乐墙</a>
+      <a href="message.html">留言板</a>
+    </div>
+  </nav>
+
+  <div class="page-container">
+    <h1 class="page-title">🏠 家乡介绍</h1>
+
+    <!-- 杂志式开头 -->
+    <div class="hometown-hero scroll-reveal">
+      <div class="hometown-hero-visual">
+        <img src="../image/quanzhou.jpg" alt="泉州" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;" onerror="this.style.display='none'">
+        🏮
+        <span class="hero-accent">⛩️</span>
+        <span class="hero-accent">🌸</span>
+        <span class="hero-accent">🏯</span>
+        <span class="hero-accent">✨</span>
+      </div>
+      <div class="hometown-hero-text">
+        <span class="hero-kicker" tabindex="0" role="link" onclick="window.open('https://baike.baidu.com/item/%E6%B3%89%E5%B7%9E%E5%B8%82/607673','_blank')" onkeydown="if(event.key==='Enter'){event.preventDefault();window.open('https://baike.baidu.com/item/%E6%B3%89%E5%B7%9E%E5%B8%82/607673','_blank')}" style="cursor:pointer" title="点击查看泉州百科" aria-label="查看泉州百科">📍 福建 · 泉州</span>
+        <div class="hero-heading">半城烟火半城仙</div>
+        <p class="hero-body">泉州，古称刺桐城，海上丝绸之路的起点，联合国教科文组织认定的世界遗产城市。千年海交史让东西方文化在此交汇，留下了无数珍贵的文化遗产。</p>
+        <div class="hero-stats">
+          <div class="hero-stat"><span class="hero-stat-num">22</span><span class="hero-stat-label">世遗点</span></div>
+          <div class="hero-stat"><span class="hero-stat-num">1300+</span><span class="hero-stat-label">年历史</span></div>
+          <div class="hero-stat"><span class="hero-stat-num">6</span><span class="hero-stat-label">项非遗</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 文化遗产 · Bento 棋盘格 -->
+    <h2 class="section-title">🏛️ 文化遗产</h2>
+    <div class="heritage-bento">
+      <div class="heritage-card featured scroll-reveal">
+        <div class="heritage-visual">⛩️</div>
+        <div class="heritage-info">
+          <div class="heritage-name">开元寺 · 千年古刹</div>
+          <div class="heritage-desc">福建省内规模最大的佛教寺院，东西双塔是泉州的城市标志。双塔高耸入云，历经千年风雨仍巍然屹立，见证了海上丝绸之路的辉煌与沧桑。每月农历廿六，勤佛日人山人海，香火鼎盛。</div>
+        </div>
+      </div>
+
+      <div class="heritage-card scroll-reveal">
+        <div class="heritage-visual">🕌</div>
+        <div class="heritage-info">
+          <div class="heritage-name">清净寺</div>
+          <div class="heritage-desc">中国现存最古老的伊斯兰教寺，阿拉伯建筑风格，是宋元泉州海外交通的重要史迹。</div>
+        </div>
+      </div>
+
+      <div class="heritage-card scroll-reveal">
+        <div class="heritage-visual">🏯</div>
+        <div class="heritage-info">
+          <div class="heritage-name">关帝庙</div>
+          <div class="heritage-desc">泉州香火最旺的庙宇之一，闽南关帝信仰中心，每逢节日人山人海，夜晚灯火辉煌。</div>
+        </div>
+      </div>
+
+      <div class="heritage-card scroll-reveal">
+        <div class="heritage-visual">🌉</div>
+        <div class="heritage-info">
+          <div class="heritage-name">洛阳桥</div>
+          <div class="heritage-desc">中国四大古桥之一，蔡襄主持建造。首创"筏形基础"造桥法，月光下的洛阳桥美如画，是古代桥梁建筑的杰作。</div>
+        </div>
+      </div>
+
+      <div class="heritage-card scroll-reveal">
+        <div class="heritage-visual">👩</div>
+        <div class="heritage-info">
+          <div class="heritage-name">蟳埔女 · 簪花围</div>
+          <div class="heritage-desc">国家级非遗。蟳埔女头戴簪花围被称为"头上花园"，蚵壳厝是独特的建筑奇观。</div>
+        </div>
+      </div>
+
+      <div class="heritage-card scroll-reveal">
+        <div class="heritage-visual">⛰️</div>
+        <div class="heritage-info">
+          <div class="heritage-name">清源山 · 道教圣地</div>
+          <div class="heritage-desc">泉州母亲山，老君岩是道教石刻瑰宝。山中茶香四溢，清源洞、弥陀岩等名胜错落有致。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 泉州美食 · 横向滚动 -->
+    <h2 class="section-title" style="display:flex;align-items:center;gap:10px;">
+      🍜 泉州美食
+      <span style="font-size:11px;color:var(--text-dim);margin-left:auto;">← 左右滑动 →</span>
+    </h2>
+    <div class="food-strip-wrap scroll-reveal">
+      <button class="food-scroll-btn" onclick="scrollFood(-1)" title="向左">◀</button>
+      <div class="food-scroll-view" id="foodScroll">
+        <div class="food-scroll-track">
+          <div class="food-card">
+            <div class="food-card-visual">
+              <img src="../image/mianxianhu.jpg" alt="面线糊" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;" onerror="this.style.display='none'">
+              🍜
+            </div>
+            <div class="food-card-info">
+              <div class="food-name">面线糊</div>
+              <div class="food-desc">泉州人的早餐之魂，细如发丝入口即化</div>
+            </div>
+          </div>
+          <div class="food-card">
+            <div class="food-card-visual">
+              <img src="../image/tusundong.jpg" alt="土笋冻" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;" onerror="this.style.display='none'">
+              🪱
+            </div>
+            <div class="food-card-info">
+              <div class="food-name">土笋冻</div>
+              <div class="food-desc">Q弹爽口的闽南特色，蘸酱更美味</div>
+            </div>
+          </div>
+          <div class="food-card">
+            <div class="food-card-visual">
+              <img src="../image/hailijian.jpg" alt="海蛎煎" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;" onerror="this.style.display='none'">
+              🦪
+            </div>
+            <div class="food-card-info">
+              <div class="food-name">海蛎煎</div>
+              <div class="food-desc">鲜香酥脆海味十足，配甜辣酱一绝</div>
+            </div>
+          </div>
+          <div class="food-card">
+            <div class="food-card-visual">
+              <img src="../image/curou.jpg" alt="醋肉" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;" onerror="this.style.display='none'">
+              🥩
+            </div>
+            <div class="food-card-info">
+              <div class="food-name">醋肉</div>
+              <div class="food-desc">永春老醋腌制酥炸外脆里嫩，泉州人最爱的炸物</div>
+            </div>
+          </div>
+          <div class="food-card">
+            <div class="food-card-visual">
+              <img src="../image/rouzong.jpg" alt="肉粽" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;" onerror="this.style.display='none'">
+              🍚
+            </div>
+            <div class="food-card-info">
+              <div class="food-name">肉粽</div>
+              <div class="food-desc">料足味美甜咸皆宜，端午必备美味</div>
+            </div>
+          </div>
+          <div class="food-card">
+            <div class="food-card-visual">
+              <img src="../image/runbincai.jpg" alt="润饼菜" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;" onerror="this.style.display='none'">
+              🥬
+            </div>
+            <div class="food-card-info">
+              <div class="food-name">润饼菜</div>
+              <div class="food-desc">清明时节的味觉记忆，薄饼卷万物</div>
+            </div>
+          </div>
+          <div class="food-card">
+            <div class="food-card-visual">
+              <img src="../image/siguotang.jpg" alt="四果汤" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;" onerror="this.style.display='none'">
+              🧊
+            </div>
+            <div class="food-card-info">
+              <div class="food-name">四果汤</div>
+              <div class="food-desc">夏日消暑甜蜜良方，十几种配料任选</div>
+            </div>
+          </div>
+          <div class="food-card">
+            <div class="food-card-visual">
+              <img src="../image/manjiangao.jpg" alt="满煎糕" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;" onerror="this.style.display='none'">
+              🥞
+            </div>
+            <div class="food-card-info">
+              <div class="food-name">满煎糕</div>
+              <div class="food-desc">松软香甜的古早味早点，泉州人的童年记忆</div>
+            </div>
+          </div>
+          <div class="food-card">
+            <div class="food-card-visual">
+              <img src="../image/niurougeng.jpg" alt="牛肉羹" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;" onerror="this.style.display='none'">
+              🐄
+            </div>
+            <div class="food-card-info">
+              <div class="food-name">牛肉羹</div>
+              <div class="food-desc">手工捶打牛肉嫩滑Q弹，闽南经典汤羹</div>
+            </div>
+          </div>
+          <div class="food-card">
+            <div class="food-card-visual">
+              <img src="../image/jiangmuya.jpg" alt="姜母鸭" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;" onerror="this.style.display='none'">
+              🦆
+            </div>
+            <div class="food-card-info">
+              <div class="food-name">姜母鸭</div>
+              <div class="food-desc">砂锅慢炖姜香四溢，滋补暖身泉州名菜</div>
+            </div>
+          </div>
+          <div class="food-card">
+            <div class="food-card-visual">
+              <img src="../image/quanzhoulumian.jpg" alt="泉州卤面" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;" onerror="this.style.display='none'">
+              🥘
+            </div>
+            <div class="food-card-info">
+              <div class="food-name">泉州卤面</div>
+              <div class="food-desc">浓稠卤汁裹满面条，料多味足一碗满足</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="food-scroll-btn" onclick="scrollFood(1)" title="向右">▶</button>
+    </div>
+
+    <!-- 泉州游玩日记 · 手账拼贴风 -->
+    <h2 class="section-title">📸 泉州游玩日记</h2>
+    <div class="diary-grid">
+      <div class="diary-card scroll-reveal">
+        <div class="diary-photo">
+          <img src="../image/diary_xijie.jpg" alt="西街" onerror="this.style.display='none'">
+          🌇
+        </div>
+        <div class="diary-date">2024.07.15</div>
+        <div class="diary-caption">西街漫步 · 钟楼下的烟火气</div>
+      </div>
+
+      <div class="diary-card text-card scroll-reveal">
+        <div class="diary-title">📝 泉州日记 · 第一天</div>
+        <div class="diary-text">踏上泉州的石板路，空气中弥漫着面线糊的香气。西街不长，但每走一步都有惊喜——润饼菜摊、蒜蓉枝、满煎糕……嘴巴根本停不下来。钟楼是西街的灵魂，站在那里仿佛穿越了百年。</div>
+      </div>
+
+      <div class="diary-card scroll-reveal">
+        <div class="diary-photo">
+          <img src="../image/diary_kaiyuan.jpg" alt="开元寺" onerror="this.style.display='none'">
+          ⛩️
+        </div>
+        <div class="diary-date">2024.07.16</div>
+        <div class="diary-caption">开元寺 · 东西塔下的千年时光</div>
+      </div>
+
+      <div class="diary-card text-card scroll-reveal">
+        <div class="diary-title">☕ 转角咖啡馆</div>
+        <div class="diary-text">在西街拐角的复古咖啡馆坐下，窗外是红砖古厝的燕尾脊。点了一杯铁观音拿铁，看着来来往往的行人，时间都慢了下来。</div>
+      </div>
+
+      <div class="diary-card scroll-reveal">
+        <div class="diary-photo">
+          <img src="../image/diary_xunpu.jpg" alt="蟳埔村" onerror="this.style.display='none'">
+          👩
+        </div>
+        <div class="diary-date">2024.07.17</div>
+        <div class="diary-caption">蟳埔村 · 簪花围的"头上花园"</div>
+      </div>
+
+      <div class="diary-card scroll-reveal">
+        <div class="diary-photo">
+          <img src="../image/diary_luoyang.jpg" alt="洛阳桥" onerror="this.style.display='none'">
+          🌉
+        </div>
+        <div class="diary-date">2024.07.17</div>
+        <div class="diary-caption">洛阳桥 · 月光下的千年古桥</div>
+      </div>
+
+      <div class="diary-card text-card scroll-reveal">
+        <div class="diary-title">🌙 夜色泉州</div>
+        <div class="diary-text">夜里的泉州别有韵味。关帝庙灯火辉煌，香火缭绕；中山路的骑楼在路灯下投下长长的影子。这座城市的夜晚既有古韵又有烟火气，让人来了就不想走。</div>
+      </div>
+    </div>
+
+    <!-- 闽南文化 · 左右交替时间线 -->
+    <h2 class="section-title">🎭 闽南文化</h2>
+    <div class="timeline-alt">
+      <div class="culture-card left scroll-reveal">
+        <div class="culture-icon">🎵</div>
+        <div class="culture-name">南音</div>
+        <div class="culture-desc">中国现存最古老的乐种之一，被誉为"中国音乐史上的活化石"。琵琶、洞箫、二弦、三弦，悠扬婉转的曲调穿越千年时光，让人沉醉在唐宋雅韵之中。</div>
+      </div>
+      <div class="culture-card right scroll-reveal">
+        <div class="culture-icon">🎭</div>
+        <div class="culture-name">梨园戏</div>
+        <div class="culture-desc">福建最古老的剧种之一，"宋元南戏的活化石"。科步细腻、唱腔婉转，一颦一笑间演绎悲欢离合，是中国戏曲艺术的珍贵遗产。</div>
+      </div>
+      <div class="culture-card left scroll-reveal">
+        <div class="culture-icon">🪆</div>
+        <div class="culture-name">提线木偶</div>
+        <div class="culture-desc">泉州提线木偶戏历史悠久，线功精妙绝伦。一根根丝线在艺人手中如同有了生命，一提一放间尽显千年传承的智慧与匠心。</div>
+      </div>
+      <div class="culture-card right scroll-reveal">
+        <div class="culture-icon">🏠</div>
+        <div class="culture-name">红砖古厝</div>
+        <div class="culture-desc">闽南传统建筑的灵魂，燕尾脊高高翘起指向天空，红砖墙在夕阳下泛着温暖的光。出砖入石、雕梁画栋，是泉州人心中最美的家的模样。</div>
+      </div>
+    </div>
+
+    <!-- 结语 -->
+    <div class="quote-card scroll-reveal">
+      <p>泉州是一座你来了就不想走的城市。这里有最暖的阳光、最鲜的海味、最古的韵味。无论走多远，泉州永远是心底最柔软的归处。</p>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2026 许诗怡 | 中南财经政法大学</p>
+    <p style="margin-top: 10px; opacity: 0.8;">Made with 💖 in Quanzhou</p>
+  </footer>
+
+  <script src="../js/common.js"></script>
+  <script>
+    initScrollReveal('.heritage-card, .culture-card, .quote-card, .food-strip-wrap, .hometown-hero, .diary-card', 80);
+
+    function scrollFood(direction) {
+      var view = document.getElementById('foodScroll');
+      var amount = 220 * direction;
+      view.scrollBy({ left: amount, behavior: 'smooth' });
+    }
+  </script>
+</body>
+
+</html>
