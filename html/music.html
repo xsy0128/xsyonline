@@ -891,6 +891,24 @@
     <!-- 板块三：我看过的音乐现场 -->
     <h2 class="section-title">🎤 我看过的音乐现场</h2>
     <div class="live-grid">
+      <div class="live-card featured scroll-reveal" id="liveLyl" data-images="linyilian1.jpg,linyilian2.jpg,linyilian3.jpg,linyilian4.jpg,linyilian5.jpg,linyilian6.jpg" data-emoji="🎙️">
+        <div class="live-img">
+          <div class="live-slideshow">
+            <div class="live-slide-placeholder">🎙️</div>
+            <button class="live-slide-btn prev">◀</button>
+            <button class="live-slide-btn next">▶</button>
+            <div class="live-slide-counter">1/6</div>
+          </div>
+        </div>
+        <div class="live-info">
+          <span class="live-badge">🎵 第一场演唱会</span>
+          <div class="live-title">林忆莲《回响》巡回演唱会 · 武汉站</div>
+          <div class="live-detail">📅 2024年 | 📍 武汉</div>
+          <div class="live-detail">人生第一场演唱会就给了Sandy！她的声音在现场比CD更震撼，《至少还有你》全场大合唱的那一刻，眼泪忍不住掉下来。</div>
+          <span class="live-tag">演唱会</span>
+        </div>
+      </div>
+
       <div class="live-card featured scroll-reveal" id="liveXrz" data-images="xianrenzhang1.jpg,xianrenzhang2.jpg,xianrenzhang3.jpg,xianrenzhang4.jpg,xianrenzhang5.jpg,xianrenzhang6.jpg,xianrenzhang7.jpg,xianrenzhang8.jpg,xianrenzhang9.jpg,xianrenzhang10.jpg,xianrenzhang11.jpg,xianrenzhang12.jpg" data-emoji="🌵">
         <div class="live-img">
           <div class="live-slideshow">
@@ -1067,9 +1085,9 @@
     // 直接渲染内嵌歌单，封面来自网易云CDN
     renderSongList(playlistSongs);
 
-    // --- 音乐节现场轮播 ---
-    (function() {
-      var el = document.getElementById('liveXrz');
+    // --- 音乐节现场轮播（通用） ---
+    function initLiveSlideshow(elId) {
+      var el = document.getElementById(elId);
       if (!el) return;
       var imageList = el.dataset.images ? el.dataset.images.split(',') : [];
       var container = el.querySelector('.live-slideshow');
@@ -1087,12 +1105,12 @@
         img.onload = function() {
           loadedImages.push(img);
           if (loadedImages.length === 1) { placeholder.style.display = 'none'; img.classList.add('active'); }
-          updateSlideshow();
+          update();
         };
         container.insertBefore(img, prevBtn);
       });
 
-      function updateSlideshow() {
+      function update() {
         var total = loadedImages.length;
         if (total <= 1) { prevBtn.style.display = 'none'; nextBtn.style.display = 'none'; counter.style.display = 'none'; }
         else { prevBtn.style.display = 'flex'; nextBtn.style.display = 'flex'; counter.style.display = 'block'; }
@@ -1106,18 +1124,20 @@
         if (direction === 'next') { n.classList.add('active'); c.classList.remove('active'); c.classList.add('to-left'); }
         else { n.style.transition = 'none'; n.classList.add('to-left'); void n.offsetHeight; n.style.transition = ''; n.classList.remove('to-left'); n.classList.add('active'); c.classList.remove('active'); }
         setTimeout(function() { c.classList.remove('to-left'); isAnimating = false; }, 500);
-        currentIndex = newIndex; updateSlideshow();
+        currentIndex = newIndex; update();
       }
 
       prevBtn.addEventListener('click', function(e) { e.stopPropagation(); var t = loadedImages.length; if (t > 1 && !isAnimating) showImage((currentIndex - 1 + t) % t, 'prev'); });
       nextBtn.addEventListener('click', function(e) { e.stopPropagation(); var t = loadedImages.length; if (t > 1 && !isAnimating) showImage((currentIndex + 1) % t, 'next'); });
 
-      // 触摸滑动
       var touchX = 0, touchY = 0;
       container.addEventListener('touchstart', function(e) { if (loadedImages.length <= 1) return; touchX = e.touches[0].clientX; touchY = e.touches[0].clientY; }, { passive: true });
       container.addEventListener('touchend', function(e) { if (loadedImages.length <= 1 || isAnimating) return; var dx = e.changedTouches[0].clientX - touchX; var dy = e.changedTouches[0].clientY - touchY; if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 30) { e.preventDefault(); if (dx < 0) showImage((currentIndex + 1) % loadedImages.length, 'next'); else showImage((currentIndex - 1 + loadedImages.length) % loadedImages.length, 'prev'); } });
-      updateSlideshow();
-    })();
+      update();
+    }
+
+    initLiveSlideshow('liveLyl');
+    initLiveSlideshow('liveXrz');
   </script>
 </body>
 
