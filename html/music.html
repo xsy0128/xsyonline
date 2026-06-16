@@ -566,6 +566,81 @@
       margin-bottom: 10px;
     }
 
+    /* === 音乐节现场轮播 === */
+    .live-slideshow {
+      position: relative;
+      width: 100%; height: 100%;
+      overflow: hidden;
+      background: var(--bg-light);
+    }
+
+    .live-slideshow .live-slide-img {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transform: translateX(100%);
+      opacity: 0;
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
+      z-index: 1;
+    }
+
+    .live-slideshow .live-slide-img.active {
+      transform: translateX(0); opacity: 1; z-index: 2;
+    }
+
+    .live-slideshow .live-slide-img.to-left {
+      transform: translateX(-100%); opacity: 0; z-index: 2;
+    }
+
+    .live-slide-placeholder {
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 60px;
+      background: var(--bg-light);
+    }
+
+    .live-slide-btn {
+      position: absolute; top: 50%;
+      transform: translateY(-50%);
+      width: 36px; height: 36px;
+      background: rgba(136, 14, 79, 0.7);
+      color: #fff;
+      border: 3px solid var(--primary);
+      font-family: 'Zpix', 'Press Start 2P', 'Courier New', monospace;
+      font-size: 14px;
+      cursor: pointer;
+      z-index: 10;
+      display: none;
+      align-items: center; justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .live-slide-btn:hover {
+      background: var(--primary);
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .live-slide-btn.prev { left: 8px; }
+    .live-slide-btn.next { right: 8px; }
+
+    .live-slideshow:hover .live-slide-btn { display: flex; }
+
+    .live-slide-counter {
+      position: absolute;
+      bottom: 8px; right: 10px;
+      background: rgba(136, 14, 79, 0.7);
+      color: #fff;
+      padding: 3px 8px;
+      font-size: 10px;
+      border: 2px solid var(--primary);
+      z-index: 10;
+      display: none;
+    }
+
+    .live-slideshow:hover .live-slide-counter { display: block; }
+
     .live-img {
       aspect-ratio: 16 / 10;
       background: var(--bg-light);
@@ -642,6 +717,8 @@
       .live-grid { grid-template-columns: 1fr; }
       .live-card.featured { grid-template-columns: 1fr; }
       .live-card.featured .live-img { border-right: none; border-bottom: 4px solid var(--primary); height: 140px; }
+      .live-slide-btn { display: flex !important; width: 32px; height: 32px; font-size: 12px; }
+      .live-slide-counter { display: block !important; }
       .player-section { flex-direction: column; }
       .now-playing { flex-direction: row; gap: 12px; }
       .np-cover { width: 70px; height: 70px; }
@@ -665,6 +742,8 @@
       .vinyl-item { padding: 8px; gap: 8px; }
       .vinyl-item .vinyl-disc { width: 42px; height: 42px; border-width: 2px; }
       .live-card.featured .live-img { height: 110px; }
+      .live-slide-btn { width: 40px !important; height: 40px !important; font-size: 16px !important; }
+      .live-slide-placeholder { font-size: 40px; }
       .np-cover { width: 56px; height: 56px; }
       .pl-song { padding: 8px; }
       .pl-song-cover { width: 36px; height: 36px; }
@@ -812,14 +891,21 @@
     <!-- 板块三：我看过的音乐现场 -->
     <h2 class="section-title">🎤 我看过的音乐现场</h2>
     <div class="live-grid">
-      <div class="live-card featured scroll-reveal">
-        <div class="live-img">🎤</div>
+      <div class="live-card featured scroll-reveal" id="liveXrz" data-images="xianrenzhang1.jpg,xianrenzhang2.jpg,xianrenzhang3.jpg,xianrenzhang4.jpg,xianrenzhang5.jpg,xianrenzhang6.jpg,xianrenzhang7.jpg,xianrenzhang8.jpg,xianrenzhang9.jpg,xianrenzhang10.jpg,xianrenzhang11.jpg,xianrenzhang12.jpg" data-emoji="🌵">
+        <div class="live-img">
+          <div class="live-slideshow">
+            <div class="live-slide-placeholder">🌵</div>
+            <button class="live-slide-btn prev">◀</button>
+            <button class="live-slide-btn next">▶</button>
+            <div class="live-slide-counter">1/12</div>
+          </div>
+        </div>
         <div class="live-info">
           <span class="live-badge">⭐ 最难忘的现场</span>
-          <div class="live-title">周杰伦嘉年华巡回演唱会</div>
-          <div class="live-detail">📅 2024年 | 📍 武汉</div>
-          <div class="live-detail">青春的回忆，全场大合唱《晴天》！灯光、舞台、万人合唱，每一秒都让人热泪盈眶。</div>
-          <span class="live-tag">演唱会</span>
+          <div class="live-title">武汉仙人掌音乐节</div>
+          <div class="live-detail">📅 2025年5月1日 | 📍 武汉</div>
+          <div class="live-detail">第一次参加音乐节！从下午嗨到深夜，每一个乐队都让人热血沸腾。人群、灯光、鼓点，那是青春最滚烫的记忆。</div>
+          <span class="live-tag">音乐节</span>
         </div>
       </div>
       <div class="live-card scroll-reveal">
@@ -980,6 +1066,58 @@
 
     // 直接渲染内嵌歌单，封面来自网易云CDN
     renderSongList(playlistSongs);
+
+    // --- 音乐节现场轮播 ---
+    (function() {
+      var el = document.getElementById('liveXrz');
+      if (!el) return;
+      var imageList = el.dataset.images ? el.dataset.images.split(',') : [];
+      var container = el.querySelector('.live-slideshow');
+      if (!container) return;
+      var placeholder = container.querySelector('.live-slide-placeholder');
+      var prevBtn = container.querySelector('.live-slide-btn.prev');
+      var nextBtn = container.querySelector('.live-slide-btn.next');
+      var counter = container.querySelector('.live-slide-counter');
+      var currentIndex = 0, loadedImages = [], isAnimating = false;
+
+      imageList.forEach(function(imgName) {
+        var img = document.createElement('img');
+        img.src = '../image/' + imgName.trim(); img.alt = imgName; img.className = 'live-slide-img';
+        img.onerror = function() { this.remove(); };
+        img.onload = function() {
+          loadedImages.push(img);
+          if (loadedImages.length === 1) { placeholder.style.display = 'none'; img.classList.add('active'); }
+          updateSlideshow();
+        };
+        container.insertBefore(img, prevBtn);
+      });
+
+      function updateSlideshow() {
+        var total = loadedImages.length;
+        if (total <= 1) { prevBtn.style.display = 'none'; nextBtn.style.display = 'none'; counter.style.display = 'none'; }
+        else { prevBtn.style.display = 'flex'; nextBtn.style.display = 'flex'; counter.style.display = 'block'; }
+        counter.textContent = (currentIndex + 1) + '/' + total;
+      }
+
+      function showImage(newIndex, direction) {
+        if (isAnimating || newIndex === currentIndex) return;
+        isAnimating = true;
+        var c = loadedImages[currentIndex], n = loadedImages[newIndex];
+        if (direction === 'next') { n.classList.add('active'); c.classList.remove('active'); c.classList.add('to-left'); }
+        else { n.style.transition = 'none'; n.classList.add('to-left'); void n.offsetHeight; n.style.transition = ''; n.classList.remove('to-left'); n.classList.add('active'); c.classList.remove('active'); }
+        setTimeout(function() { c.classList.remove('to-left'); isAnimating = false; }, 500);
+        currentIndex = newIndex; updateSlideshow();
+      }
+
+      prevBtn.addEventListener('click', function(e) { e.stopPropagation(); var t = loadedImages.length; if (t > 1 && !isAnimating) showImage((currentIndex - 1 + t) % t, 'prev'); });
+      nextBtn.addEventListener('click', function(e) { e.stopPropagation(); var t = loadedImages.length; if (t > 1 && !isAnimating) showImage((currentIndex + 1) % t, 'next'); });
+
+      // 触摸滑动
+      var touchX = 0, touchY = 0;
+      container.addEventListener('touchstart', function(e) { if (loadedImages.length <= 1) return; touchX = e.touches[0].clientX; touchY = e.touches[0].clientY; }, { passive: true });
+      container.addEventListener('touchend', function(e) { if (loadedImages.length <= 1 || isAnimating) return; var dx = e.changedTouches[0].clientX - touchX; var dy = e.changedTouches[0].clientY - touchY; if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 30) { e.preventDefault(); if (dx < 0) showImage((currentIndex + 1) % loadedImages.length, 'next'); else showImage((currentIndex - 1 + loadedImages.length) % loadedImages.length, 'prev'); } });
+      updateSlideshow();
+    })();
   </script>
 </body>
 
