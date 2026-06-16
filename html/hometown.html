@@ -200,6 +200,19 @@
       border-right: 4px solid var(--primary);
     }
 
+    /* 最后一张卡片横跨整行 */
+    .heritage-card:last-child {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: 140px 1fr;
+    }
+
+    .heritage-card:last-child .heritage-visual {
+      border-bottom: none;
+      border-right: 4px solid var(--primary);
+      font-size: 55px;
+    }
+
     .heritage-info {
       padding: 18px;
     }
@@ -641,6 +654,8 @@
       .heritage-bento { grid-template-columns: 1fr 1fr; }
       .heritage-card.featured { grid-column: 1 / -1; grid-template-columns: 140px 1fr; }
       .heritage-card .heritage-visual { font-size: 50px; }
+      .heritage-card:last-child { grid-template-columns: 120px 1fr; }
+      .heritage-card:last-child .heritage-visual { font-size: 40px; }
       .food-strip-wrap { gap: 8px; }
       .food-scroll-btn { width: 36px; height: 36px; font-size: 14px; }
     }
@@ -654,6 +669,8 @@
       .heritage-bento { grid-template-columns: 1fr 1fr; gap: 12px; }
       .heritage-card.featured { grid-template-columns: 1fr; }
       .heritage-card.featured .heritage-visual { height: 140px; border-right: none; border-bottom: 4px solid var(--primary); }
+      .heritage-card:last-child { grid-template-columns: 1fr; }
+      .heritage-card:last-child .heritage-visual { border-right: none; border-bottom: 4px solid var(--primary); height: 100px; }
       .heritage-info { padding: 12px; }
       .heritage-name { font-size: 13px; }
       .heritage-desc { font-size: 11px; line-height: 1.8; }
@@ -682,6 +699,7 @@
       .hometown-hero-text .hero-heading { font-size: 20px; }
       .heritage-bento { grid-template-columns: 1fr; }
       .heritage-card.featured .heritage-visual { height: 120px; }
+      .heritage-card:last-child .heritage-visual { height: 90px; }
       .food-strip-wrap { gap: 6px; }
       .food-scroll-btn { width: 32px; height: 32px; }
       .food-card { width: 140px; }
