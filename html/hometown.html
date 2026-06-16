@@ -445,16 +445,29 @@
     .diary-card:nth-child(6)::before { background: rgba(255, 180, 200, 0.7); width: 65px; }
     .diary-card:nth-child(7)::before { background: rgba(180, 240, 220, 0.7); width: 50px; }
 
-    @media (max-width: 800px) {
-      .diary-grid {
-        grid-template-columns: 1fr 1fr;
-      }
+    /* ===== 平板竖屏 (≤700px) ===== */
+    @media (max-width: 700px) {
+      .diary-grid { grid-template-columns: 1fr; }
       .diary-card:nth-child(2),
       .diary-card:nth-child(3),
-      .diary-card:nth-child(6) {
-        grid-column: auto;
-      }
+      .diary-card:nth-child(6) { grid-column: auto; }
       .diary-card { transform: rotate(0deg) !important; }
+      .diary-card.text-card { padding: 16px 18px; }
+      .diary-card .diary-photo { aspect-ratio: 3 / 2; font-size: 40px; }
+      .hero-stats { gap: 10px; }
+      .hero-stat { padding: 8px 12px; }
+      .hero-stat-num { font-size: 20px; }
+    }
+
+    /* ===== 手机 (≤480px) ===== */
+    @media (max-width: 480px) {
+      .diary-grid { gap: 14px; }
+      .diary-card { padding: 10px 10px 14px; }
+      .diary-card .diary-caption { font-size: 11px; }
+      .diary-card .diary-date { font-size: 9px; }
+      .diary-card.text-card .diary-title { font-size: 14px; }
+      .diary-card.text-card .diary-text { font-size: 11px; line-height: 2; }
+      .diary-card::before { width: 40px; height: 12px; }
     }
 
     /* === 左右交替时间线 === */
@@ -634,36 +647,64 @@
       font-style: italic;
     }
 
-    @media (max-width: 800px) {
-      .hometown-hero {
-        grid-template-columns: 1fr;
-      }
+    /* ===== 平板 (≤900px) ===== */
+    @media (max-width: 900px) {
+      .heritage-bento { grid-template-columns: 1fr 1fr; }
+      .heritage-card.featured { grid-column: 1 / -1; grid-template-columns: 140px 1fr; }
+      .heritage-card:nth-child(4) { grid-column: auto; grid-row: auto; }
+      .heritage-card:nth-child(4) .heritage-visual { height: 120px; font-size: 60px; }
+      .food-strip-wrap { gap: 8px; }
+      .food-scroll-btn { width: 36px; height: 36px; font-size: 14px; }
+    }
 
-      .hometown-hero-visual {
-        aspect-ratio: 2 / 1;
-        font-size: 80px;
-      }
+    /* ===== 平板竖屏 (≤700px) ===== */
+    @media (max-width: 700px) {
+      .hometown-hero { grid-template-columns: 1fr; }
+      .hometown-hero-visual { aspect-ratio: 2 / 1; font-size: 70px; }
+      .hometown-hero-text .hero-heading { font-size: 24px; }
+      .hometown-hero-text .hero-body { font-size: 12px; line-height: 2; }
+      .heritage-bento { grid-template-columns: 1fr 1fr; gap: 12px; }
+      .heritage-card.featured { grid-template-columns: 1fr; }
+      .heritage-card.featured .heritage-visual { height: 140px; border-right: none; border-bottom: 4px solid var(--primary); }
+      .heritage-info { padding: 12px; }
+      .heritage-name { font-size: 13px; }
+      .heritage-desc { font-size: 11px; line-height: 1.8; }
+      .heritage-visual { font-size: 50px; }
+      .heritage-card:nth-child(4) { grid-column: auto; grid-row: auto; }
+      .heritage-card:nth-child(4) .heritage-visual { height: 100px; }
+      .timeline-alt { grid-template-columns: 1fr; }
+      .timeline-alt::before { left: 10px; }
+      .culture-card.left, .culture-card.right { grid-column: 1; margin-top: 0; margin-left: 30px; }
+      .culture-card.left::after, .culture-card.right::before { left: -24px; right: auto; top: 16px; }
+      .culture-card { padding: 14px; margin-bottom: 20px; }
+      .culture-card .culture-name { font-size: 14px; }
+      .culture-card .culture-desc { font-size: 11px; line-height: 1.8; }
+      .quote-card { padding: 20px; }
+      .quote-card p { font-size: 12px; }
+      .food-card { width: 160px; }
+      .food-card-visual { height: 90px; font-size: 45px; }
+      .food-card-info { padding: 10px; }
+      .food-name { font-size: 12px; }
+      .food-desc { font-size: 10px; }
+      .hero-kicker { font-size: 14px; padding: 6px 16px; }
+    }
 
-      .heritage-bento {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .heritage-card.featured {
-        grid-column: 1 / -1;
-        grid-template-columns: 120px 1fr;
-      }
-
-      .heritage-card:nth-child(4) {
-        grid-column: auto;
-        grid-row: auto;
-      }
-
-      .heritage-card:nth-child(4) .heritage-visual {
-        height: 120px;
-      }
-
-      .timeline-alt {
-        grid-template-columns: 1fr;
+    /* ===== 手机 (≤480px) ===== */
+    @media (max-width: 480px) {
+      .hometown-hero-visual { aspect-ratio: 16 / 9; font-size: 50px; }
+      .hometown-hero-text .hero-heading { font-size: 20px; }
+      .heritage-bento { grid-template-columns: 1fr; }
+      .heritage-card.featured .heritage-visual { height: 120px; }
+      .food-strip-wrap { gap: 6px; }
+      .food-scroll-btn { width: 32px; height: 32px; }
+      .food-card { width: 140px; }
+      .food-card-visual { height: 80px; font-size: 38px; }
+      .timeline-alt::before { left: 8px; }
+      .culture-card.left, .culture-card.right { margin-left: 24px; }
+      .culture-card.left::after, .culture-card.right::before { left: -20px; top: 12px; width: 10px; height: 10px; }
+      .hero-stats { flex-wrap: wrap; }
+      .quote-card { padding: 16px; }
+      .quote-card::before { font-size: 40px; top: -10px; left: 16px; }
       }
 
       .timeline-alt::before {
@@ -676,14 +717,6 @@
         margin-top: 0;
         margin-left: 30px;
       }
-
-      .culture-card.left::after,
-      .culture-card.right::before {
-        left: -24px;
-        right: auto;
-        top: 16px;
-      }
-    }
 
     /* === 暗色主题覆盖 === */
     [data-theme="dark"] .hero-heading {

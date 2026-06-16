@@ -628,40 +628,56 @@
       outline-offset: 2px;
     }
 
-    @media (max-width: 800px) {
-      .basque-banner, .recipe-wall {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .recipe-index-card.featured {
-        grid-column: 1 / -1;
-        grid-template-columns: 1fr;
-      }
-
-      .recipe-index-card.featured .ric-left {
-        border-right: none;
-      }
-
-      .recipe-index-card.featured .ric-photo {
-        aspect-ratio: 16 / 9;
-        border-bottom: 2px dashed #E0D5C5;
-      }
-
-      .recipe-index-card.tall {
-        grid-column: auto;
-        grid-row: auto;
-      }
+    /* ===== 平板 (≤900px) ===== */
+    @media (max-width: 900px) {
+      .baking-header { grid-template-columns: 1fr; text-align: center; }
+      .baking-header .hero-visual { max-width: 300px; margin: 0 auto; }
+      .basque-banner { grid-template-columns: 1fr 1fr; }
+      .recipe-wall { grid-template-columns: 1fr 1fr; }
+      .recipe-index-card.featured { grid-column: 1 / -1; grid-template-columns: 1fr; }
+      .recipe-index-card.featured .ric-left { border-right: none; }
+      .recipe-index-card.featured .ric-photo { aspect-ratio: 16 / 9; border-bottom: 2px dashed #E0D5C5; }
+      .recipe-index-card.tall { grid-column: auto; grid-row: auto; }
+      .recipe-index-card:nth-child(even),
+      .recipe-index-card:nth-child(3) { transform: none; }
+      .slideshow:hover .slide-arrow,
+      .slide-arrow { opacity: 1 !important; }  /* 平板端始终可见 */
     }
 
-    @media (max-width: 500px) {
-      .basque-banner, .recipe-wall {
-        grid-template-columns: 1fr;
-      }
+    /* ===== 平板竖屏 (≤700px) ===== */
+    @media (max-width: 700px) {
+      .slot-machine { padding: 16px 10px; }
+      .slot-top { flex-direction: column; gap: 10px; }
+      .slot-btn { padding: 6px 12px; font-size: 10px; }
+      .slot-name { font-size: 14px; }
+      .timer-display { font-size: 10px; }
+      .basque-banner { grid-template-columns: 1fr; }
+      .recipe-wall { grid-template-columns: 1fr; }
+      .recipe-index-card { transform: rotate(0deg) !important; }
+      .ric-steps-btn { padding: 8px 14px; font-size: 10px; }
+      .recipe-index-card.featured .ric-photo { aspect-ratio: 4 / 3; }
+      .slide-arrow { width: 36px; height: 36px; }
+      .baking-tip { font-size: 11px; }
+    }
 
-      .recipe-index-card:nth-child(even),
-      .recipe-index-card:nth-child(3) {
-        transform: rotate(0deg);
-      }
+    /* ===== 手机 (≤480px) ===== */
+    @media (max-width: 480px) {
+      .slot-machine { padding: 12px 8px; }
+      .slot-display { font-size: 22px; padding: 10px; }
+      .slot-char { padding: 6px 10px; font-size: 20px; }
+      .slot-btn { padding: 5px 10px; font-size: 9px; }
+      .slot-name { font-size: 12px; }
+      .recipe-index-card { padding: 12px 14px 16px; }
+      .recipe-index-card::before { width: 60px; height: 12px; top: -10px; left: 12px; }
+      .ric-photo { height: 100px; }
+      .recipe-index-card.featured .ric-photo { aspect-ratio: 3 / 4; }
+      .ric-name { font-size: 14px; }
+      .ing-tag { font-size: 10px; padding: 3px 8px; }
+      .ric-desc { font-size: 11px; line-height: 1.7; }
+      .basque-title { font-size: 18px; }
+      .basque-number { font-size: 40px; }
+      .slide-arrow { width: 40px; height: 40px; }  /* 触摸友好 */
+      .baking-tip { font-size: 10px; line-height: 1.7; }
     }
 
     /* === 暗色主题覆盖 === */

@@ -419,17 +419,48 @@
     }
 
     /* ===== 响应式 ===== */
-    @media (max-width: 768px) {
-      .letter-form { padding: 20px 16px 20px 36px; }
-      .letter-form::before { left: 28px; }
-      .letter-seal { width: 36px; height: 36px; font-size: 18px; top: -12px; right: 12px; }
-      .letter-stamp { width: 40px; height: 40px; font-size: 7px; }
-      .letter-content { padding-right: 0; }
+    /* ===== 平板 (≤900px) ===== */
+    @media (max-width: 900px) {
+      .mail-stats { gap: 12px; padding: 12px 16px; }
+      .letter-list { gap: 16px; }
     }
 
+    /* ===== 平板竖屏 (≤700px) ===== */
+    @media (max-width: 700px) {
+      .letter-form { padding: 18px 14px 18px 34px; }
+      .letter-form::before { left: 26px; }
+      .letter-form h3 { font-size: 14px; }
+      .letter-seal { width: 34px; height: 34px; font-size: 17px; top: -12px; right: 10px; }
+      .letter-stamp { width: 38px; height: 38px; font-size: 7px; }
+      .letter-card { padding: 18px 16px 14px; }
+      .letter-card::before { height: 20px; }
+      .letter-content { padding-right: 0; font-size: 12px; line-height: 1.8; }
+      .letter-name { font-size: 12px; }
+      .letter-reply { font-size: 11px; padding: 8px 10px; }
+      .submit-btn { padding: 8px 20px; font-size: 11px; }
+      .mail-stats { flex-direction: column; align-items: flex-start; gap: 8px; padding: 12px 16px; }
+      .mail-stats .stat-total { border-right: none; padding-right: 0; font-size: 13px; }
+      .form-group input, .form-group textarea { font-size: 11px; }
+      .form-group label { font-size: 10px; }
+      .mood-btn { width: 36px; height: 36px; }
+    }
+
+    /* ===== 手机 (≤480px) ===== */
     @media (max-width: 480px) {
-      .letter-seal { width: 32px; height: 32px; font-size: 16px; top: -10px; right: 8px; }
+      .letter-form { padding: 14px 10px 14px 28px; }
+      .letter-form::before { left: 20px; }
+      .letter-seal { width: 28px; height: 28px; font-size: 14px; top: -10px; right: 6px; }
       .letter-stamp { display: none; }
+      .letter-card { padding: 14px 12px 10px; }
+      .letter-card::before { height: 16px; }
+      .letter-header { padding-right: 20px; }
+      .letter-content { font-size: 11px; }
+      .letter-reply { font-size: 10px; padding: 6px 8px; }
+      .submit-btn { padding: 6px 16px; font-size: 10px; float: none; display: block; width: 100%; text-align: center; margin-top: 8px; }
+      .mail-stats .stat-num { font-size: 15px; }
+      .mood-btn { width: 32px; height: 32px; font-size: 16px; }
+      .mood-selector { gap: 5px; }
+      .letter-list { gap: 12px; }
     }
 
     /* ===== 暗黑模式 ===== */

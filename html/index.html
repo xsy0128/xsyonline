@@ -500,16 +500,49 @@
       100% { opacity: 0; transform: translateY(100vh) rotate(360deg); }
     }
 
+    /* ===== 平板 (≤900px) ===== */
     @media (max-width: 900px) {
       .container { grid-template-columns: 1fr; }
       .profile-card, .main-content { grid-column: 1; }
-      .hero-title { font-size: 32px; }
+      .hero-title { font-size: 36px; }
       .contact-cards { grid-template-columns: repeat(3, 1fr); }
+      .hero { padding: 40px 16px; }
+      .album-item { width: calc((100% / 3) - 11px); }
     }
 
-    @media (max-width: 600px) {
-      .hero-title { font-size: 24px; }
-      .gallery { grid-template-columns: 1fr; }
+    /* ===== 平板竖屏 (≤700px) ===== */
+    @media (max-width: 700px) {
+      .hero-title { font-size: 28px; }
+      .hero-avatar { width: 80px; height: 80px; font-size: 40px; }
+      .btn-start { font-size: 28px; padding: 4px 10px; }
+      .avatar { width: 130px; height: 130px; }
+      .contact-cards { grid-template-columns: repeat(2, 1fr); }
+      .contact-card { padding: 14px; }
+      .contact-card .contact-icon { font-size: 28px; }
+      .album-item { width: calc((100% / 2) - 8px); }
+      .hero-scroll-hint { font-size: 20px; }
+      .cursor-blink { width: 3px; height: 36px; }
+      .card { padding: 18px; }
+      .page-container { padding: 24px 12px; }
+    }
+
+    /* ===== 手机 (≤480px) ===== */
+    @media (max-width: 480px) {
+      .hero { padding: 30px 12px; }
+      .hero-title { font-size: 22px; }
+      .hero-avatar { width: 70px; height: 70px; font-size: 35px; }
+      .btn-start { font-size: 22px; }
+      .avatar { width: 100px; height: 100px; }
+      .contact-cards { grid-template-columns: 1fr; }
+      .album-item { width: 100%; }
+      .info-item { font-size: 13px; padding: 8px 0; }
+      .info-icon { width: 32px; height: 32px; font-size: 18px; }
+      .album-prev, .album-next { width: 40px; height: 40px; }
+      .music-btn { width: 40px; height: 40px; }
+      .music-visualizer { height: 22px; gap: 2px; }
+      .intro-text { font-size: 11px; line-height: 2; }
+      .section-title { font-size: 18px; }
+      .cursor-blink { width: 2px; height: 24px; }
     }
 
     [data-theme="dark"] .hero-title {

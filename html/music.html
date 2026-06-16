@@ -609,19 +609,65 @@
       margin-top: 6px;
     }
 
-    @media (max-width: 600px) {
-      .singer-grid { grid-template-columns: 1fr 1fr; }
-      .singer-card.featured:nth-child(1) { grid-column: 1 / -1; grid-row: auto; padding: 20px; }
-      .singer-card.featured:nth-child(1) .singer-avatar { width: 100px; height: 100px; font-size: 50px; }
-      .singer-card.featured:nth-child(1) .singer-name { font-size: 16px; }
-      .singer-card.featured:nth-child(1) .singer-desc { font-size: 11px; }
-      .singer-card.featured:nth-child(2) { grid-column: 1 / -1; flex-direction: column; padding: 20px; }
-      .singer-card.featured:nth-child(2) .singer-avatar { width: 100px; height: 100px; font-size: 50px; }
-      .vinyl-showcase { grid-template-columns: 1fr; }
+    /* ===== 平板 (≤900px) ===== */
+    @media (max-width: 900px) {
+      .singer-grid { grid-template-columns: 1fr 1fr 1fr; }
+      .singer-card.featured:nth-child(1) { grid-column: 1 / 3; }
+      .singer-card.featured:nth-child(2) { grid-column: 3 / 5; }
+      .player-section { flex-direction: row; }
+    }
+
+    /* ===== 平板竖屏 (≤700px) ===== */
+    @media (max-width: 700px) {
+      .singer-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+      .singer-card.featured:nth-child(1) { grid-column: 1 / -1; grid-row: auto; padding: 18px; }
+      .singer-card.featured:nth-child(1) .singer-avatar { width: 90px; height: 90px; font-size: 45px; }
+      .singer-card.featured:nth-child(1) .singer-name { font-size: 15px; }
+      .singer-card.featured:nth-child(1) .singer-desc { font-size: 10px; }
+      .singer-card.featured:nth-child(2) { grid-column: 1 / -1; flex-direction: column; padding: 18px; }
+      .singer-card.featured:nth-child(2) .singer-avatar { width: 90px; height: 90px; font-size: 45px; }
+      .singer-avatar { width: 60px; height: 60px; font-size: 30px; }
+      .singer-name { font-size: 12px; }
+      .singer-desc { font-size: 9px; }
+      .singer-card { padding: 14px 10px; }
+      .vinyl-showcase { grid-template-columns: 1fr; gap: 18px; }
       .vinyl-hero { grid-column: 1; }
+      .vinyl-hero .vinyl-disc { max-width: 180px; }
+      .vinyl-hero .hero-label { font-size: 14px; }
+      .vinyl-hero .hero-artist { font-size: 11px; }
+      .vinyl-item { padding: 10px; gap: 10px; }
+      .vinyl-item .vinyl-disc { width: 50px; height: 50px; }
+      .vinyl-item .vinyl-label { font-size: 11px; }
+      .vinyl-item .vinyl-artist { font-size: 9px; }
       .live-grid { grid-template-columns: 1fr; }
       .live-card.featured { grid-template-columns: 1fr; }
-      .live-card.featured .live-img { border-right: none; border-bottom: 4px solid var(--primary); height: 160px; }
+      .live-card.featured .live-img { border-right: none; border-bottom: 4px solid var(--primary); height: 140px; }
+      .player-section { flex-direction: column; }
+      .now-playing { flex-direction: row; gap: 12px; }
+      .np-cover { width: 70px; height: 70px; }
+      .np-title { font-size: 12px; }
+      .pl-song-index { font-size: 10px; }
+      .pl-song-name { font-size: 11px; }
+      .pl-song-artist { font-size: 9px; }
+      .player-header { font-size: 14px; }
+    }
+
+    /* ===== 手机 (≤480px) ===== */
+    @media (max-width: 480px) {
+      .singer-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+      .singer-card { padding: 10px 8px; }
+      .singer-avatar { width: 50px; height: 50px; font-size: 25px; }
+      .singer-name { font-size: 11px; }
+      .singer-desc { font-size: 8px; }
+      .vinyl-hero .vinyl-disc { max-width: 150px; border-width: 4px; }
+      .vinyl-hero .hero-label { font-size: 13px; }
+      .vinyl-hero .hero-badge { font-size: 9px; padding: 2px 10px; }
+      .vinyl-item { padding: 8px; gap: 8px; }
+      .vinyl-item .vinyl-disc { width: 42px; height: 42px; border-width: 2px; }
+      .live-card.featured .live-img { height: 110px; }
+      .np-cover { width: 56px; height: 56px; }
+      .pl-song { padding: 8px; }
+      .pl-song-cover { width: 36px; height: 36px; }
     }
 
     [data-theme="dark"] .np-title {
