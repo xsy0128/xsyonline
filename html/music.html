@@ -745,21 +745,21 @@
     <!-- 板块二：我的唱片墙 -->
     <h2 class="section-title">💿 我的唱片墙</h2>
     <div class="vinyl-showcase" id="vinylWall">
-      <div class="vinyl-album scroll-reveal" data-vinyl-song="Take Care" data-vinyl-artist="Drake">
+      <div class="vinyl-album scroll-reveal" data-vinyl-song="Take Care" data-vinyl-artist="Drake" data-vinyl-pic="../image/album_drake.jpg">
         <div class="vinyl-disc">
           <img src="../image/album_drake.jpg" alt="Take Care" class="vinyl-cover">
         </div>
         <div class="vinyl-label">Take Care (Deluxe)</div>
         <div class="vinyl-artist">Drake</div>
       </div>
-      <div class="vinyl-album scroll-reveal" data-vinyl-song="敷衍" data-vinyl-artist="王菲">
+      <div class="vinyl-album scroll-reveal" data-vinyl-song="敷衍" data-vinyl-artist="王菲" data-vinyl-pic="../image/album_wangfei.jpg">
         <div class="vinyl-disc">
           <img src="../image/album_wangfei.jpg" alt="敷衍" class="vinyl-cover">
         </div>
         <div class="vinyl-label">敷衍</div>
         <div class="vinyl-artist">王菲</div>
       </div>
-      <div class="vinyl-album scroll-reveal" data-vinyl-song="Beyond Live 1991" data-vinyl-artist="Beyond">
+      <div class="vinyl-album scroll-reveal" data-vinyl-song="Beyond Live 1991" data-vinyl-artist="Beyond" data-vinyl-pic="../image/album_beyond.jpg">
         <div class="vinyl-disc">
           <img src="../image/album_beyond.jpg" alt="Beyond Live 1991" class="vinyl-cover">
         </div>
@@ -921,6 +921,7 @@
       item.addEventListener('click', function() {
         var songName = this.dataset.vinylSong;
         var artist = this.dataset.vinylArtist;
+        var vinylPic = this.dataset.vinylPic;
         // 先在已加载的歌单中查找匹配
         var match = null;
         for (var i = 0; i < playlistSongs.length; i++) {
@@ -930,10 +931,12 @@
           }
         }
         if (match) {
+          // 用唱片封面覆盖歌单封面
+          if (vinylPic) match.pic = vinylPic;
           playSong(match);
         } else {
-          // 未匹配到，至少更新显示
-          setNowPlaying(songName, artist, '../image/photo1.jpg');
+          // 未匹配到，显示唱片封面
+          setNowPlaying(songName, artist, vinylPic || '../image/photo1.jpg');
           highlightVinyl(songName);
           // 尝试在歌单中模糊搜索
           var fuzzy = null;
