@@ -285,11 +285,6 @@ nav {
 /* =============================================
    汉堡菜单
    ============================================= */
-/* 手机端通过 JS 立即设置，避免闪烁 */
-.mobile .nav-links { display: none; }
-.mobile .nav-links.open { display: flex; }
-.mobile .hamburger { display: flex; }
-
 .hamburger {
   display: none;
   flex-direction: column;

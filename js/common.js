@@ -129,19 +129,3 @@ document.addEventListener('DOMContentLoaded', function() {
   initThemeToggle();
   initBackToTop();
 });
-
-// 窗口缩放时更新 mobile 类
-(function() {
-  var resizeTimer;
-  window.addEventListener('resize', function() {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(function() {
-      var html = document.documentElement;
-      if (window.innerWidth <= 600) {
-        html.classList.add('mobile');
-      } else {
-        html.classList.remove('mobile');
-      }
-    }, 100);
-  });
-})();
