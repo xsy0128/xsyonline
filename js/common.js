@@ -48,15 +48,9 @@ function initScrollReveal(selector, delay) {
 
 // 汉堡菜单
 function initHamburger() {
-  var nav = document.querySelector('nav');
-  if (!nav) return;
-  var btn = document.createElement('button');
-  btn.className = 'hamburger';
-  btn.setAttribute('aria-label', '菜单');
-  btn.setAttribute('aria-expanded', 'false');
-  btn.innerHTML = '<span></span><span></span><span></span>';
-  var links = nav.querySelector('.nav-links');
-  nav.insertBefore(btn, links);
+  var btn = document.querySelector('.hamburger');
+  var links = document.querySelector('.nav-links');
+  if (!btn || !links) return;
   btn.addEventListener('click', function() {
     btn.classList.toggle('open');
     links.classList.toggle('open');
