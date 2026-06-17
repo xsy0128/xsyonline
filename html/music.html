@@ -660,6 +660,14 @@
       .pl-song-cover { width: 36px; height: 36px; }
     }
 
+    [data-theme="dark"] #audioPlayer {
+      color-scheme: dark;
+    }
+
+    [data-theme="dark"] .player-header {
+      color: #fff;
+    }
+
     [data-theme="dark"] .now-playing {
       background: rgba(255, 64, 129, 0.08);
     }
@@ -902,6 +910,7 @@
       els.npArtist.textContent = artist;
       var isDark = document.documentElement.hasAttribute('data-theme');
       els.nowPlaying.style.background = isDark ? 'rgba(255,64,129,0.08)' : 'linear-gradient(135deg, #FFE4EE, #FFF0F5)';
+      if (isDark) els.audio.style.colorScheme = 'dark';
     }
 
     function highlightActive(sid) {
