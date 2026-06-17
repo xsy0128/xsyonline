@@ -459,11 +459,12 @@ footer {
 }
 
 @media (max-width: 600px) {
-  .nav-links { gap: 6px; }
+  .nav-links { gap: 6px; justify-content: center; }
   .nav-links a {
     font-size: 11px;
     padding: 4px 8px;
   }
+  nav { justify-content: center; }
 
   .page-title    { font-size: var(--text-2xl); }
   .page-subtitle { font-size: var(--text-sm); }
