@@ -855,13 +855,20 @@
           <span class="live-tag">演唱会</span>
         </div>
       </div>
-      <div class="live-card scroll-reveal">
-        <div class="live-img">🎤</div>
+      <div class="live-card scroll-reveal" id="liveTaikong" data-images="taikong1.jpg,taikong2.jpg,taikong3.jpg,taikong4.jpg,taikong5.jpg,taikong6.jpg" data-emoji="🚀">
+        <div class="live-img">
+          <div class="live-slideshow">
+            <div class="live-slide-placeholder">🚀</div>
+            <button class="live-slide-btn prev">◀</button>
+            <button class="live-slide-btn next">▶</button>
+            <div class="live-slide-counter">1/6</div>
+          </div>
+        </div>
         <div class="live-info">
-          <div class="live-title">Livehouse 独立音乐夜</div>
-          <div class="live-detail">📅 2025年 | 📍 长沙</div>
-          <div class="live-detail">小众乐队的现场，惊喜不断</div>
-          <span class="live-tag">Livehouse</span>
+          <div class="live-title">武汉太空奇缘音乐节</div>
+          <div class="live-detail">📅 2025年11月31日 | 📍 武汉</div>
+          <div class="live-detail">太空主题音乐节，舞台设计超有未来感！灯光与科幻元素交织，仿佛置身星际。</div>
+          <span class="live-tag">音乐节</span>
         </div>
       </div>
     </div>
@@ -1063,6 +1070,7 @@
 
     initLiveSlideshow('liveLyl');
     initLiveSlideshow('liveXrz');
+    initLiveSlideshow('liveTaikong');
   </script>
 </body>
 
