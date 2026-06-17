@@ -257,9 +257,16 @@ nav {
 }
 
 .nav-links {
-  display: flex;
+  display: none;
   gap: 24px;
   align-items: center;
+}
+
+/* 桌面端显示导航 */
+@media (min-width: 601px) {
+  .nav-links {
+    display: flex;
+  }
 }
 
 .nav-links a {
