@@ -185,6 +185,19 @@
       box-shadow: 0 8px 24px rgba(0,0,0,0.3);
     }
 
+    /* 唱片中心专辑封面 */
+    .vinyl-cover {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 28%; height: 28%;
+      border-radius: 50%;
+      object-fit: cover;
+      z-index: 2;
+      border: 2px solid rgba(255, 215, 0, 0.3);
+      pointer-events: none;
+    }
+
     .vinyl-hero .vinyl-disc::after {
       content: '';
       position: absolute;
@@ -834,20 +847,26 @@
     <h2 class="section-title">💿 我的唱片墙</h2>
     <div class="vinyl-showcase" id="vinylWall">
       <div class="vinyl-hero scroll-reveal" data-vinyl-song="Take Care" data-vinyl-artist="Drake">
-        <div class="vinyl-disc"></div>
+        <div class="vinyl-disc">
+          <img src="../image/album_drake.jpg" alt="Take Care" class="vinyl-cover">
+        </div>
         <div class="hero-label">Take Care (Deluxe)</div>
         <div class="hero-artist">Drake</div>
         <div class="hero-badge">🔥 最近最爱</div>
       </div>
       <div class="vinyl-item scroll-reveal" data-vinyl-song="敷衍" data-vinyl-artist="王菲">
-        <div class="vinyl-disc"></div>
+        <div class="vinyl-disc">
+          <img src="../image/album_wangfei.jpg" alt="敷衍" class="vinyl-cover">
+        </div>
         <div class="vinyl-info">
           <div class="vinyl-label">敷衍</div>
           <div class="vinyl-artist">王菲</div>
         </div>
       </div>
       <div class="vinyl-item scroll-reveal" data-vinyl-song="Beyond Live 1991" data-vinyl-artist="Beyond">
-        <div class="vinyl-disc"></div>
+        <div class="vinyl-disc">
+          <img src="../image/album_beyond.jpg" alt="Beyond Live 1991" class="vinyl-cover">
+        </div>
         <div class="vinyl-info">
           <div class="vinyl-label">Beyond Live 1991</div>
           <div class="vinyl-artist">Beyond</div>
