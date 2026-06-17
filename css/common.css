@@ -1,3 +1,8 @@
+/* === 页面切换动画 === */
+@view-transition {
+  navigation: auto;
+}
+
 /* === XSYonline Design System ===
  * 设计方向：Retro Pixel Romantic
  * 签名元素：像素角标边框 (.pixel-frame)

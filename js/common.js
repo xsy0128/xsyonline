@@ -128,4 +128,22 @@ document.addEventListener('DOMContentLoaded', function() {
   initHamburger();
   initThemeToggle();
   initBackToTop();
+  initPreload();
 });
+
+// 导航链接预加载——hover 时提前加载下一页
+function initPreload() {
+  var links = document.querySelectorAll('.nav-links a');
+  var prefetched = {};
+  links.forEach(function(a) {
+    a.addEventListener('mouseenter', function() {
+      if (!prefetched[a.href]) {
+        var link = document.createElement('link');
+        link.rel = 'prefetch';
+        link.href = a.href;
+        document.head.appendChild(link);
+        prefetched[a.href] = true;
+      }
+    });
+  });
+}
