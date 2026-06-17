@@ -152,161 +152,71 @@
       color: var(--text-dim);
     }
 
-    /* === 唱片陈列 === */
+    /* === 唱片陈列 — 三张专辑一行 === */
     .vinyl-showcase {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
       gap: 30px;
       margin-bottom: 50px;
-      align-items: start;
     }
 
-    /* 主推唱片 — 大尺寸 */
-    .vinyl-hero {
-      grid-row: span 2;
+    .vinyl-album {
       display: flex;
       flex-direction: column;
       align-items: center;
       cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .vinyl-album:hover {
+      transform: translateY(-5px);
+    }
+
+    .vinyl-album .vinyl-disc {
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 5px solid var(--primary);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+      position: relative;
       transition: all 0.4s;
     }
 
-    .vinyl-hero:hover { transform: translateY(-6px); }
-
-    .vinyl-hero .vinyl-disc {
-      width: 100%;
-      max-width: 240px;
-      aspect-ratio: 1;
-      border-radius: 50%;
-      background: radial-gradient(circle, var(--secondary) 12%, #333 13%, #333 28%, #555 29%, #333 48%, #555 49%, #333 68%, #555 69%, #333 88%, #555 89%, #333 100%);
-      border: 5px solid var(--primary);
-      position: relative;
-      animation: spin 4s linear infinite;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    .vinyl-album:hover .vinyl-disc {
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+      border-color: #FFD700;
     }
 
-    /* 唱片中心专辑封面 */
-    .vinyl-cover {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: 28%; height: 28%;
-      border-radius: 50%;
-      object-fit: cover;
-      z-index: 2;
-      border: 2px solid rgba(255, 215, 0, 0.3);
-      pointer-events: none;
-    }
-
-    .vinyl-hero .vinyl-disc::after {
-      content: '';
-      position: absolute;
-      top: 50%; left: 50%;
-      width: 28%; height: 28%;
-      transform: translate(-50%, -50%);
-      border-radius: 50%;
-      background: var(--bg-light);
-      border: 3px solid #FFD700;
-    }
-
-    .vinyl-hero .hero-label {
-      margin-top: 14px;
-      font-size: 16px;
-      color: var(--primary);
-      font-weight: bold;
-    }
-
-    .vinyl-hero .hero-artist {
-      font-size: 12px;
-      color: var(--text-dim);
-      margin-top: 4px;
-    }
-
-    .vinyl-hero .hero-badge {
-      margin-top: 10px;
-      font-size: 10px;
-      background: var(--primary);
-      color: #fff;
-      padding: 3px 12px;
-      border: 2px solid var(--secondary);
-    }
-
-    /* 小唱片 */
-    .vinyl-item {
-      cursor: pointer;
-      transition: all 0.3s;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      background: var(--bg-card);
-      border: 3px solid var(--primary);
-      padding: 12px;
-      box-shadow: 3px 3px 0 var(--secondary);
-    }
-
-    .vinyl-item:hover {
-      transform: translateY(-3px);
-      box-shadow: 5px 5px 0 var(--secondary);
-    }
-
-    .vinyl-item .vinyl-disc {
-      width: 64px;
-      height: 64px;
-      flex-shrink: 0;
-      border-radius: 50%;
-      background: radial-gradient(circle, var(--secondary) 12%, #333 13%, #333 28%, #555 29%, #333 48%, #555 49%, #333 68%, #555 69%, #333 88%, #555 89%, #333 100%);
-      border: 3px solid var(--primary);
-      position: relative;
-      transition: all 0.5s;
-    }
-
-    .vinyl-item .vinyl-disc::after {
-      content: '';
-      position: absolute;
-      top: 50%; left: 50%;
-      width: 28%; height: 28%;
-      transform: translate(-50%, -50%);
-      border-radius: 50%;
-      background: var(--bg-light);
-      border: 2px solid var(--primary);
-    }
-
-    .vinyl-item:hover .vinyl-disc {
+    .vinyl-album.playing .vinyl-disc {
       animation: spin 2s linear infinite;
     }
 
-    .vinyl-item.playing .vinyl-disc {
-      animation: spin 1.5s linear infinite;
-      border-color: #FFD700;
+    .vinyl-album .vinyl-cover {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
 
-    .vinyl-hero.playing .vinyl-disc {
-      border-color: #FFD700;
-      box-shadow: 0 0 30px rgba(255,215,0,0.5);
+    .vinyl-album .vinyl-label {
+      margin-top: 14px;
+      font-size: 14px;
+      color: var(--primary);
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .vinyl-album .vinyl-artist {
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-top: 4px;
+      text-align: center;
     }
 
     @keyframes spin {
       from { transform: rotate(0deg); }
       to { transform: rotate(360deg); }
-    }
-
-    .vinyl-item .vinyl-info {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .vinyl-item .vinyl-label {
-      font-size: 12px;
-      color: var(--primary);
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .vinyl-item .vinyl-artist {
-      font-size: 10px;
-      color: var(--text-dim);
-      margin-top: 2px;
     }
 
     .player-section {
@@ -718,15 +628,9 @@
       .singer-name { font-size: 12px; }
       .singer-desc { font-size: 9px; }
       .singer-card { padding: 14px 10px; }
-      .vinyl-showcase { grid-template-columns: 1fr; gap: 18px; }
-      .vinyl-hero { grid-column: 1; }
-      .vinyl-hero .vinyl-disc { max-width: 180px; }
-      .vinyl-hero .hero-label { font-size: 14px; }
-      .vinyl-hero .hero-artist { font-size: 11px; }
-      .vinyl-item { padding: 10px; gap: 10px; }
-      .vinyl-item .vinyl-disc { width: 50px; height: 50px; }
-      .vinyl-item .vinyl-label { font-size: 11px; }
-      .vinyl-item .vinyl-artist { font-size: 9px; }
+      .vinyl-showcase { grid-template-columns: 1fr 1fr; gap: 18px; }
+      .vinyl-album .vinyl-label { font-size: 12px; }
+      .vinyl-album .vinyl-artist { font-size: 10px; }
       .live-grid { grid-template-columns: 1fr; }
       .live-card.featured { grid-template-columns: 1fr; }
       .live-card.featured .live-img { border-right: none; border-bottom: 4px solid var(--primary); height: 140px; }
@@ -749,11 +653,10 @@
       .singer-avatar { width: 50px; height: 50px; font-size: 25px; }
       .singer-name { font-size: 11px; }
       .singer-desc { font-size: 8px; }
-      .vinyl-hero .vinyl-disc { max-width: 150px; border-width: 4px; }
-      .vinyl-hero .hero-label { font-size: 13px; }
-      .vinyl-hero .hero-badge { font-size: 9px; padding: 2px 10px; }
-      .vinyl-item { padding: 8px; gap: 8px; }
-      .vinyl-item .vinyl-disc { width: 42px; height: 42px; border-width: 2px; }
+      .vinyl-showcase { grid-template-columns: 1fr; gap: 20px; }
+      .vinyl-album .vinyl-disc { max-width: 240px; margin: 0 auto; }
+      .vinyl-album .vinyl-label { font-size: 13px; }
+      .vinyl-album .vinyl-artist { font-size: 10px; }
       .live-card.featured .live-img { height: 110px; }
       .live-slide-btn { width: 40px !important; height: 40px !important; font-size: 16px !important; }
       .live-slide-placeholder { font-size: 40px; }
@@ -766,15 +669,11 @@
       color: #FF80AB;
     }
 
-    [data-theme="dark"] .vinyl-item {
-      box-shadow: 3px 3px 0 #FF4081;
+    [data-theme="dark"] .vinyl-album .vinyl-disc {
+      border-color: #FF4081;
     }
 
-    [data-theme="dark"] .vinyl-item:hover {
-      box-shadow: 5px 5px 0 #FF80AB;
-    }
-
-    [data-theme="dark"] .vinyl-hero .hero-badge {
+    [data-theme="dark"] .vinyl-album:hover .vinyl-disc {
       border-color: #FF80AB;
     }
   </style>
@@ -846,31 +745,26 @@
     <!-- 板块二：我的唱片墙 -->
     <h2 class="section-title">💿 我的唱片墙</h2>
     <div class="vinyl-showcase" id="vinylWall">
-      <div class="vinyl-hero scroll-reveal" data-vinyl-song="Take Care" data-vinyl-artist="Drake">
+      <div class="vinyl-album scroll-reveal" data-vinyl-song="Take Care" data-vinyl-artist="Drake">
         <div class="vinyl-disc">
           <img src="../image/album_drake.jpg" alt="Take Care" class="vinyl-cover">
         </div>
-        <div class="hero-label">Take Care (Deluxe)</div>
-        <div class="hero-artist">Drake</div>
-        <div class="hero-badge">🔥 最近最爱</div>
+        <div class="vinyl-label">Take Care (Deluxe)</div>
+        <div class="vinyl-artist">Drake</div>
       </div>
-      <div class="vinyl-item scroll-reveal" data-vinyl-song="敷衍" data-vinyl-artist="王菲">
+      <div class="vinyl-album scroll-reveal" data-vinyl-song="敷衍" data-vinyl-artist="王菲">
         <div class="vinyl-disc">
           <img src="../image/album_wangfei.jpg" alt="敷衍" class="vinyl-cover">
         </div>
-        <div class="vinyl-info">
-          <div class="vinyl-label">敷衍</div>
-          <div class="vinyl-artist">王菲</div>
-        </div>
+        <div class="vinyl-label">敷衍</div>
+        <div class="vinyl-artist">王菲</div>
       </div>
-      <div class="vinyl-item scroll-reveal" data-vinyl-song="Beyond Live 1991" data-vinyl-artist="Beyond">
+      <div class="vinyl-album scroll-reveal" data-vinyl-song="Beyond Live 1991" data-vinyl-artist="Beyond">
         <div class="vinyl-disc">
           <img src="../image/album_beyond.jpg" alt="Beyond Live 1991" class="vinyl-cover">
         </div>
-        <div class="vinyl-info">
-          <div class="vinyl-label">Beyond Live 1991</div>
-          <div class="vinyl-artist">Beyond</div>
-        </div>
+        <div class="vinyl-label">Beyond Live 1991</div>
+        <div class="vinyl-artist">Beyond</div>
       </div>
     </div>
 
@@ -948,7 +842,7 @@
 
   <script src="../js/common.js"></script>
   <script>
-    initScrollReveal('.singer-card, .vinyl-hero, .vinyl-item, .live-card', 80);
+    initScrollReveal('.singer-card, .vinyl-album, .live-card', 80);
 
     // --- 最近的歌单（直连网易云CDN封面）---
     var PLAYLIST_ID = '18053568287';
@@ -996,8 +890,8 @@
     }
 
     function highlightVinyl(name) {
-      document.querySelectorAll('.vinyl-hero, .vinyl-item').forEach(function(el) { el.classList.remove('playing'); });
-      var vinyl = document.querySelector('.vinyl-hero[data-vinyl-song="' + name + '"], .vinyl-item[data-vinyl-song="' + name + '"]');
+      document.querySelectorAll('.vinyl-album').forEach(function(el) { el.classList.remove('playing'); });
+      var vinyl = document.querySelector('.vinyl-album[data-vinyl-song="' + name + '"]');
       if (vinyl) vinyl.classList.add('playing');
     }
 
@@ -1023,7 +917,7 @@
     }
 
     // 唱片墙点击 → 在歌单中匹配并播放
-    document.querySelectorAll('.vinyl-hero, .vinyl-item').forEach(function(item) {
+    document.querySelectorAll('.vinyl-album').forEach(function(item) {
       item.addEventListener('click', function() {
         var songName = this.dataset.vinylSong;
         var artist = this.dataset.vinylArtist;
