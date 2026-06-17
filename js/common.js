@@ -46,27 +46,6 @@ function initScrollReveal(selector, delay) {
   els.forEach(function(el) { observer.observe(el); });
 }
 
-// 汉堡菜单
-function initHamburger() {
-  var btn = document.querySelector('.hamburger');
-  var links = document.querySelector('.nav-links');
-  if (!btn || !links) return;
-  btn.addEventListener('click', function() {
-    btn.classList.toggle('open');
-    links.classList.toggle('open');
-    var isOpen = links.classList.contains('open');
-    btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-  });
-  // 点击链接后关闭
-  links.querySelectorAll('a').forEach(function(a) {
-    a.addEventListener('click', function() {
-      btn.classList.remove('open');
-      links.classList.remove('open');
-      btn.setAttribute('aria-expanded', 'false');
-    });
-  });
-}
-
 // 主题切换
 function initThemeToggle() {
   var nav = document.querySelector('nav');
@@ -125,7 +104,6 @@ function initBackToTop() {
 
 // 自动初始化
 document.addEventListener('DOMContentLoaded', function() {
-  initHamburger();
   initThemeToggle();
   initBackToTop();
   initPreload();
