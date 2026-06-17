@@ -262,20 +262,9 @@ nav {
 }
 
 .nav-links {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  flex-direction: column;
-  background: var(--secondary);
-  padding: var(--space-3);
-  gap: var(--space-2);
-  border-bottom: 4px solid var(--primary);
-}
-
-.nav-links.open {
   display: flex;
+  gap: 24px;
+  align-items: center;
 }
 
 .nav-links a {
@@ -302,7 +291,7 @@ nav {
    汉堡菜单
    ============================================= */
 .hamburger {
-  display: flex;
+  display: none;
   flex-direction: column;
   gap: 5px;
   cursor: pointer;
@@ -504,6 +493,21 @@ footer {
 }
 
 @media (max-width: 600px) {
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    flex-direction: column;
+    background: var(--secondary);
+    padding: var(--space-3);
+    gap: var(--space-2);
+    border-bottom: 4px solid var(--primary);
+  }
+
+  .nav-links.open { display: flex; }
+
   .nav-links a {
     font-size: var(--text-sm);
     padding: var(--space-2) var(--space-3);
