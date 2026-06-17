@@ -660,8 +660,21 @@
       .pl-song-cover { width: 36px; height: 36px; }
     }
 
+    [data-theme="dark"] .now-playing {
+      background: rgba(255, 64, 129, 0.08);
+    }
+
+    [data-theme="dark"] .player-section {
+      background: var(--bg-card);
+      border-color: rgba(255, 64, 129, 0.2);
+    }
+
     [data-theme="dark"] .np-title {
       color: #FF80AB;
+    }
+
+    [data-theme="dark"] .np-artist {
+      color: #C8C8D8;
     }
 
     [data-theme="dark"] .pl-song:hover {
@@ -887,7 +900,8 @@
       els.npCover.innerHTML = '<img src="' + pic + '" alt="' + name + '" onerror="this.style.display=\'none\';this.parentElement.innerHTML=\'&#127925;\'">';
       els.npTitle.innerHTML = '<span class="np-playing-dot"></span>' + name;
       els.npArtist.textContent = artist;
-      els.nowPlaying.style.background = 'linear-gradient(135deg, #FFE4EE, #FFF0F5)';
+      var isDark = document.documentElement.hasAttribute('data-theme');
+      els.nowPlaying.style.background = isDark ? 'rgba(255,64,129,0.08)' : 'linear-gradient(135deg, #FFE4EE, #FFF0F5)';
     }
 
     function highlightActive(sid) {
