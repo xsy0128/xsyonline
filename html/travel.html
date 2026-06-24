@@ -3,6 +3,9 @@
 
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>旅行日记 - XSY</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -153,12 +156,56 @@
       border-style: solid;
     }
 
-    /* === 明信片墙 === */
+    /* === 明信片墙：12列网格 → 3+3+4 === */
     .postcard-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-columns: repeat(12, 1fr);
       gap: 24px;
       margin-bottom: 50px;
+    }
+
+    /* 第一行：3个 */
+    .postcard:nth-child(1) { grid-column: 1 / 5; }
+    .postcard:nth-child(2) { grid-column: 5 / 9; }
+    .postcard:nth-child(3) { grid-column: 9 / 13; }
+
+    /* 第二行：3个 */
+    .postcard:nth-child(4) { grid-column: 1 / 5; }
+    .postcard:nth-child(5) { grid-column: 5 / 9; }
+    .postcard:nth-child(6) { grid-column: 9 / 13; }
+
+    /* 第三行：4个 — 卡片稍窄，图片占比加大 */
+    .postcard:nth-child(7)  { grid-column: 1 / 4; }
+    .postcard:nth-child(8)  { grid-column: 4 / 7; }
+    .postcard:nth-child(9)  { grid-column: 7 / 10; }
+    .postcard:nth-child(10) { grid-column: 10 / 13; }
+
+    /* 底部4张卡片：减内边距，图片比例放宽 */
+    .postcard:nth-child(n+7):nth-child(-n+10) {
+      padding: 10px;
+    }
+
+    .postcard:nth-child(n+7):nth-child(-n+10) .slideshow-container {
+      aspect-ratio: 3 / 4;
+    }
+
+    .postcard:nth-child(n+7):nth-child(-n+10) .travel-info {
+      padding: 10px;
+    }
+
+    .postcard:nth-child(n+7):nth-child(-n+10) .travel-location {
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+
+    .postcard:nth-child(n+7):nth-child(-n+10) .travel-desc {
+      font-size: 11px;
+      line-height: 1.7;
+    }
+
+    .postcard:nth-child(n+7):nth-child(-n+10) .travel-tag {
+      font-size: 9px;
+      padding: 2px 6px;
     }
 
     /* 单张明信片 */
@@ -168,7 +215,7 @@
       box-shadow: 4px 4px 0 rgba(160, 140, 120, 0.3);
       position: relative;
       transition: all 0.35s;
-      padding: 14px;
+      padding: 16px;
       overflow: hidden;
     }
 
@@ -271,30 +318,6 @@
       font-weight: bold;
     }
 
-    /* 大卡片（跨两列） */
-    .postcard.featured {
-      grid-column: span 2;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      padding: 0;
-    }
-
-    .postcard.featured .pc-photo-wrap {
-      border-right: 3px dashed #E0D5C5;
-    }
-
-    .postcard.featured .slideshow-container {
-      aspect-ratio: 3 / 4;
-      border-bottom: none;
-    }
-
-    .postcard.featured .pc-body {
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
     /* 照片区 */
     .pc-photo-wrap {
       position: relative;
@@ -395,7 +418,7 @@
     }
 
     .travel-info {
-      padding: 20px;
+      padding: 18px;
     }
 
     .travel-location {
@@ -448,7 +471,11 @@
       .map-pin { font-size: 12px; padding: 10px 6px; }
       .postcard-grid { grid-template-columns: 1fr 1fr; gap: 18px; }
       .postcard { transform: rotate(0deg) !important; }
-      .postcard.featured { grid-column: 1 / -1; }
+      .postcard:nth-child(n) { grid-column: auto !important; padding: 14px; }
+      .postcard:nth-child(n) .travel-location { font-size: 14px; margin-bottom: 6px; }
+      .postcard:nth-child(n) .travel-desc { font-size: 12px; line-height: 1.9; }
+      .postcard:nth-child(n) .travel-tag { font-size: 10px; padding: 3px 8px; }
+      .postcard:nth-child(n) .travel-info { padding: 14px; }
       #china-map { height: 400px; }
       .china-map-container { margin-bottom: 30px; }
     }
@@ -457,10 +484,6 @@
     @media (max-width: 700px) {
       .map-places { grid-template-columns: repeat(3, 1fr); }
       .postcard-grid { grid-template-columns: 1fr; gap: 16px; }
-      .postcard.featured { grid-template-columns: 1fr; }
-      .postcard.featured .pc-photo-wrap { border-right: none; border-bottom: 3px dashed #E0D5C5; }
-      .postcard.featured .slideshow-container { aspect-ratio: 4 / 3; }
-      .postcard.featured .pc-body { padding: 16px 18px; }
       .postcard { padding: 12px; }
       .postcard:hover { transform: translateY(-3px) !important; }
       #china-map { height: 340px; }
@@ -488,7 +511,6 @@
       .map-pin:nth-child(odd),
       .map-pin:nth-child(even) { transform: none !important; }
       .postcard-grid { gap: 14px; }
-      .postcard.featured .slideshow-container { aspect-ratio: 3 / 4; }
       #china-map { height: 280px; }
       .map-banner { padding: 14px 10px; }
       .map-banner h3 { font-size: 15px; }
@@ -505,8 +527,8 @@
 
     [data-theme="dark"] .postcard {
       background: #252540;
-      border-color: #3a3050;
-      box-shadow: 4px 4px 0 rgba(255, 64, 129, 0.2);
+      border-color: var(--primary);
+      box-shadow: 4px 4px 0 rgba(255, 64, 129, 0.3);
     }
 
     [data-theme="dark"] .pc-postmark {
@@ -624,7 +646,7 @@
       </div>
 
       <!-- 2024 长沙 -->
-      <div class="postcard" id="changsha" data-images="changsha1.jpg,changsha2.jpg" data-emoji="🌶️">
+      <div class="postcard" id="changsha" data-images="changsha1.jpg,changsha2.jpg,changsha3.jpg,changsha4.jpg,changsha5.jpg,changsha6.jpg,changsha7.jpg,changsha8.jpg,changsha9.jpg,changsha10.jpg,changsha11.jpg,changsha12.jpg,changsha13.jpg" data-emoji="🌶️">
         <div class="pc-postmark"><span class="pm-year">2024</span>11月</div>
         <div class="slideshow-container">
           <div class="slide-placeholder">🌶️</div>
@@ -656,7 +678,7 @@
       </div>
 
       <!-- 2025 绍兴 -->
-      <div class="postcard" id="shaoxing" data-images="shaoxing1.jpg,shaoxing2.jpg" data-emoji="🚢">
+      <div class="postcard" id="shaoxing" data-images="shaoxing1.jpg,shaoxing2.jpg,shaoxing3.jpg,shaoxing4.jpg,shaoxing5.jpg,shaoxing6.jpg" data-emoji="🚢">
         <div class="pc-postmark"><span class="pm-year">2025</span>03月</div>
         <div class="slideshow-container">
           <div class="slide-placeholder">🚢</div>
@@ -671,23 +693,19 @@
         </div>
       </div>
 
-      <!-- 2025 杭州 · 大卡片 -->
-      <div class="postcard featured" id="hangzhou" data-images="hangzhou1.jpg,hangzhou2.jpg,hangzhou3.jpg,hangzhou4.jpg,hangzhou5.jpg,hangzhou6.jpg,hangzhou7.jpg,hangzhou8.jpg" data-emoji="🏞️">
+      <!-- 2025 杭州 -->
+      <div class="postcard" id="hangzhou" data-images="hangzhou1.jpg,hangzhou2.jpg,hangzhou3.jpg,hangzhou4.jpg,hangzhou5.jpg,hangzhou6.jpg,hangzhou7.jpg,hangzhou8.jpg" data-emoji="🏞️">
         <div class="pc-postmark"><span class="pm-year">2025</span>03月</div>
-        <div class="pc-photo-wrap">
-          <div class="slideshow-container">
-            <div class="slide-placeholder">🏞️</div>
-            <button class="slide-btn prev">◀</button>
-            <button class="slide-btn next">▶</button>
-            <div class="slide-counter">1/1</div>
-          </div>
+        <div class="slideshow-container">
+          <div class="slide-placeholder">🏞️</div>
+          <button class="slide-btn prev">◀</button>
+          <button class="slide-btn next">▶</button>
+          <div class="slide-counter">1/1</div>
         </div>
-        <div class="pc-body">
-          <div class="travel-info">
-            <div class="travel-location">📍 杭州 · 人间天堂</div>
-            <div class="travel-desc">西湖十景名不虚传，灵隐寺的禅意让人心静，龙井茶香飘满城，断桥残雪的传说浪漫至极。三月柳浪闻莺，苏堤春晓。</div>
-            <div class="travel-tags"><span class="travel-tag">西湖</span><span class="travel-tag">灵隐寺</span><span class="travel-tag">龙井茶</span></div>
-          </div>
+        <div class="travel-info">
+          <div class="travel-location">📍 杭州 · 人间天堂</div>
+          <div class="travel-desc">西湖十景名不虚传，灵隐寺的禅意让人心静，龙井茶香飘满城，断桥残雪的传说浪漫至极。三月柳浪闻莺，苏堤春晓。</div>
+          <div class="travel-tags"><span class="travel-tag">西湖</span><span class="travel-tag">灵隐寺</span><span class="travel-tag">龙井茶</span></div>
         </div>
       </div>
 
@@ -723,31 +741,26 @@
         </div>
       </div>
 
-      <!-- 2026 西安 · 大卡片 -->
-      <div class="postcard featured" id="xian" data-images="xian1.jpg,xian2.jpg,xian3.jpg,xian4.jpg,xian5.jpg,xian6.jpg,xian7.jpg,xian8.jpg,xian9.jpg,xian10.jpg,xian11.jpg" data-emoji="🏯">
+      <!-- 2026 西安 -->
+      <div class="postcard" id="xian" data-images="xian1.jpg,xian2.jpg,xian3_new.jpg,xian4_new.jpg,xian5.jpg,xian6_new.jpg,xian7_new.jpg,xian8.jpg,xian9.jpg,xian10.jpg,xian11.jpg" data-emoji="🏯">
         <div class="pc-postmark"><span class="pm-year">2026</span>04月</div>
-        <div class="pc-photo-wrap">
-          <div class="slideshow-container">
-            <div class="slide-placeholder">🏯</div>
-            <button class="slide-btn prev">◀</button>
-            <button class="slide-btn next">▶</button>
-            <div class="slide-counter">1/1</div>
-          </div>
+        <div class="slideshow-container">
+          <div class="slide-placeholder">🏯</div>
+          <button class="slide-btn prev">◀</button>
+          <button class="slide-btn next">▶</button>
+          <div class="slide-counter">1/1</div>
         </div>
-        <div class="pc-body">
-          <div class="travel-info">
-            <div class="travel-location">📍 西安 · 千年古都</div>
-            <div class="travel-desc">兵马俑的壮观震撼心灵，回民街的羊肉泡馍、大雁塔的音乐喷泉、城墙上的骑行，每一刻都是穿越时空的体验。</div>
-            <div class="travel-tags"><span class="travel-tag">兵马俑</span><span class="travel-tag">回民街</span><span class="travel-tag">大雁塔</span><span class="travel-tag">城墙</span></div>
-          </div>
+        <div class="travel-info">
+          <div class="travel-location">📍 西安 · 千年古都</div>
+          <div class="travel-desc">兵马俑的壮观震撼心灵，回民街的羊肉泡馍、大雁塔的音乐喷泉、城墙上的骑行，每一刻都是穿越时空的体验。</div>
+          <div class="travel-tags"><span class="travel-tag">兵马俑</span><span class="travel-tag">回民街</span><span class="travel-tag">大雁塔</span><span class="travel-tag">城墙</span></div>
         </div>
       </div>
     </div>
   </div>
 
   <footer>
-    <p>&copy; 2026 许诗怡 | 中南财经政法大学</p>
-    <p style="margin-top: 10px; opacity: 0.8;">Made with 💖 in Quanzhou</p>
+    <p>&copy; 2026 许诗怡 | 中南财经政法大学 💖</p>
   </footer>
 
   <script src="../js/common.js"></script>

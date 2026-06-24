@@ -1,0 +1,28 @@
+## 一、实验设备（环境）
+
+**1. 硬件设备：
+个人笔记本电脑一台（Windows 11 Home系统，版本10.0.26200，16GB内存，Intel Core i7处理器），用于代码编写、本地调试与页面效果预览。在开发过程中，这台设备同时作为开发服务器（运行Node.js HTTP服务器）和测试客户端（使用Chrome浏览器访问localhost:3000），实现了"开发即预览"的即时反馈循环。
+
+**2. 软件环境：
+（1）操作系统：Windows 11 Home 64位，版本10.0.26200；
+（2）代码编辑器：Trae IDE（基于VS Code内核的定制化IDE），充分利用其语法高亮、Emmet代码补全、Live Preview扩展、内置终端和Git集成功能，大幅提升了HTML/CSS/JS代码的编写效率；
+（3）本地开发服务器：使用Node.js内置的http模块手写的轻量级静态服务器（server.js），共计45行代码，监听3000端口，提供MIME类型映射（支持HTML、CSS、JS、JSON、PNG、JPG、GIF、SVG、ICO、TTF、WOFF/WOFF2共11种类型）、根路径重定向、文件读取与404处理等基本功能；
+（4）版本控制：Git 2.x，托管平台为GitHub（仓库地址：xsy0128/xsyonline），用于代码版本管理、提交历史追踪和与远程仓库的同步协作；
+（5）浏览器及调试工具：Google Chrome 浏览器，利用其开发者工具（DevTools）中的Elements面板进行HTML/CSS实时编辑与审查、Console面板进行JavaScript调试与输出、Network面板监控资源加载时序与性能瓶颈、Lighthouse面板进行性能和可访问性审计、Responsive Mode进行多设备视口模拟；
+（6）部署环境：GitHub Pages，通过.github/workflows/pages.yml工作流配置文件实现推送代码后的自动构建与部署，无需手动上传文件。
+
+**3. 外部资源与技术依赖：
+（1）字体资源：Google Fonts CDN提供的Press Start 2P英文字体（像素风格，用于按钮、标题和导航栏Logo），以及本地fonts/目录下的Zpix中文像素字体文件（zpix.ttf，约4MB，11px点阵，支持简繁中文及日文假名，采用font-display: swap策略确保文字在字体加载期间不出现空白）；
+（2）图表库：ECharts 5.5.0（从CDN引入，使用defer属性延迟加载，确保脚本不阻塞HTML解析和首屏渲染），用于旅行日记页面的中国地图足迹可视化；
+（3）地图地理数据：阿里云DataV的GeoJSON数据API（URL: https://geo.datav.aliyun.com/areas_v3/bound/100000_full.json），通过fetch API异步获取全国省份边界坐标数据，注册为ECharts的地图底图；
+（4）音乐服务：网易云音乐的外链播放接口（https://music.163.com/song/media/outer/url），以及网易云音乐CDN上的专辑封面图片资源，用于音乐墙页面的在线歌单播放功能。
+
+**4. 技术栈概况与选型理由：
+前端核心技术栈为HTML5 + CSS3 + 原生JavaScript（ES6+），没有使用任何前端框架（如React、Vue.js）、CSS预处理器（如Sass、Less）、构建工具（如Webpack、Vite）或TypeScript。选择纯原生技术栈的核心理由有三点：第一，6个核心页面的规模下，原生写法完全可控，不会出现代码组织混乱的问题；第二，零依赖意味着零构建配置、零node_modules膨胀——整个项目clone后即可直接在浏览器中打开，也可以使用任意HTTP服务器运行，部署门槛极低；第三，在课程学习阶段，深入理解浏览器原生的渲染机制、CSS布局算法和DOM API的工作原理，远比掌握某个框架的API更有长期价值——框架会过时，但浏览器标准是前端技术的根基。
+
+所有HTML页面集中在html/目录，公共样式文件common.css（约470行）统一管理全站视觉风格，公共脚本文件common.js（约110行）封装了粒子特效、滚动渐显、主题切换、回到顶部等全站通用交互功能。图片资源约180张，按内容类型混合存放于image/目录，避免过度嵌套的子目录结构。
+
+[IMG:开发环境——Trae IDE编辑界面与Chrome DevTools并排截图]
+[IMG:项目根目录完整文件结构展示]
+
+--pagebreak--

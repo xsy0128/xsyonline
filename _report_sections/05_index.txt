@@ -1,0 +1,33 @@
+### 2.4 首页制作（index.html）
+
+首页是用户访问XSYonline时的第一印象，承担"抓住注意力 + 传递核心信息 + 引导深入浏览"的三重任务。
+
+#### 2.4.1 Hero英雄区——四层视觉构建
+
+Hero区位于页面最顶部，视觉元素由四个层次叠加。底层：SVG内联背景（data:image/svg+xml）绘制三色"像素地面"——粉色#F48FB1（高150px）+深红#C2185B（高15px）+暗紫#880E4F（高10px），模拟夕阳地平线。第二层：CSS绘制的3朵云（border-radius组合+cloudFloat动画，8-10秒周期水平漂移）和6颗星（clip-path五角星路径+twinkle动画，2秒周期闪烁），动画延迟交错（2s/1s偏移）避免同步机械感。第三层：100px圆形头像框（4px粉色边框+box-shadow）+打字机标题（52px大字号，text-shadow粉色阴影）+闪烁光标（4px竖线，step-end动画，0.8s周期）+Start像素按钮（36px，Press Start 2P字体，hover时沿对角线移动-3px）。第四层：↓箭头emoji以bounce动画上下弹跳（1.5s周期），暗示页面下方还有内容。
+
+#### 2.4.2 打字机标题——setTimeout状态机
+
+typeWriter函数是经典的setTimeout递归状态机。文本队列四段循环——"Hi, I'm XSY"→"许诗怡"→"中南财经政法大学"→"来自福建 泉州"——在四个身份维度间切换。两个状态变量：isDeleting控制输入/删除阶段，charIndex跟踪当前字符位置。输入120ms/字，输入完停留2000ms，删除60ms/字（两倍速）。光标使用step-end动画实现硬切换（而非渐变），完美模拟终端光标行为。约30行代码实现了一个完整的多段打字机效果。
+
+#### 2.4.3 个人资料卡
+
+侧边栏card样式的个人资料卡：180px圆形头像（6px粉色边框+5px白色内边距+box-shadow）+8项信息（姓名、性别、年龄、学校、年级、专业、家乡、爱好），每项配对应emoji图标（👤♀🎂🏫📚📖🏠🎵）在40x40px方框中，项间2px虚线分隔。信息排列顺序从个人信息→学术信息→背景信息，由近及远。
+
+#### 2.4.4 横向滚动相册
+
+6张照片以"左箭头+overflow-x:auto滚动视口+右箭头"结构展示，每张占约1/4宽度，3:4竖版比例。scrollAlbum(direction)函数通过container.scrollLeft+scrollTo实现平滑滚动，Math.max(0, Math.min(...))限制范围。滚动条通过scrollbar-width: none（Firefox）+::-webkit-scrollbar { display: none }（Chrome）双重隐藏。
+
+#### 2.4.5 联系方式与Clipboard API
+
+三张联系方式卡片（邮箱、手机、微信）使用navigator.clipboard.writeText() API复制到剪贴板。复制成功后生成toast提示条（position: fixed，粉色背景白字，1.8s后移除）。选择Clipboard API而非document.execCommand('copy')是因为前者是Promise-based异步接口，且后者已被废弃。
+
+#### 2.4.6 Konami Code彩蛋
+
+按键序列检测系统监听keydown事件，维护序列索引指针逐位比对"↑↑↓↓←→←→BA"。10位全部匹配后触发两阶段庆祝：阶段一以80ms间隔生成50个随机emoji从顶部飘落（rainFall动画，3s周期）；阶段二弹出全屏深紫覆盖层（konami-overlay）+祝贺文字+关闭按钮（konamiIn缩放动画，0.5s）。彩蛋遵循"可发现但不干扰"原则。
+
+[IMG:首页Hero区——打字机效果标题与云朵星星动画]
+[IMG:首页完整布局——侧边栏资料卡+主内容区+相册+联系方式]
+[IMG:Konami Code触发后的花雨与覆盖层效果]
+
+--pagebreak--

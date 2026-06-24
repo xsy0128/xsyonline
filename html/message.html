@@ -3,6 +3,9 @@
 
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>留言板 - XSY</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -10,78 +13,89 @@
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/common.css">
   <style>
-    /* ===== 信纸表单 ===== */
-    .letter-form {
+    /* ========================================
+       留言板 — 邮局公告板主题
+       ======================================== */
+
+    /* ---- 写信台：横线信纸 ---- */
+    .writing-desk {
       background: #FFFEF9;
       border: 4px solid var(--primary);
       box-shadow: 6px 6px 0 var(--secondary);
-      padding: 30px 30px 30px 50px;
-      margin-bottom: 30px;
+      padding: 32px 32px 32px 54px;
+      margin-bottom: 28px;
       position: relative;
       overflow: hidden;
       background-image:
-        repeating-linear-gradient(0deg, transparent, transparent 29px, #ECF0F4 29px, #ECF0F4 30px);
+        repeating-linear-gradient(0deg, transparent, transparent 31px, #E8ECF2 31px, #E8ECF2 32px);
     }
 
-    .letter-form::before {
+    /* 红色 margin 线 */
+    .writing-desk::before {
       content: '';
       position: absolute;
-      left: 42px;
+      left: 44px;
       top: 0;
       bottom: 0;
       width: 2px;
-      background: rgba(255, 100, 130, 0.3);
+      background: rgba(233, 30, 140, 0.35);
     }
 
     /* 信封角标装饰 */
-    .letter-form::after {
+    .writing-desk::after {
       content: '';
       position: absolute;
-      top: -30px;
-      right: -30px;
-      width: 80px;
-      height: 80px;
+      top: -36px;
+      right: -36px;
+      width: 90px;
+      height: 90px;
       background: var(--primary);
       transform: rotate(45deg);
-      opacity: 0.08;
+      opacity: 0.06;
     }
 
-    .letter-form h3 {
-      font-size: 15px;
+    .writing-desk .desk-title {
+      font-size: 14px;
       color: var(--primary);
-      margin-bottom: 18px;
+      margin-bottom: 20px;
       position: relative;
       z-index: 1;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
     }
 
-    .letter-form h3::after {
+    .writing-desk .desk-title::after {
       content: '';
       flex: 1;
       height: 2px;
       background: repeating-linear-gradient(90deg, var(--primary) 0, var(--primary) 4px, transparent 4px, transparent 8px);
-      opacity: 0.3;
+      opacity: 0.25;
     }
 
-    .form-group {
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
       margin-bottom: 16px;
       position: relative;
       z-index: 1;
     }
 
+    .form-group { position: relative; z-index: 1; }
+    .form-group.full { grid-column: 1 / -1; margin-bottom: 4px; }
+
     .form-group label {
       display: block;
-      font-size: 11px;
+      font-size: 10px;
       color: var(--text-dim);
-      margin-bottom: 5px;
+      margin-bottom: 6px;
+      letter-spacing: 1px;
     }
 
-    .form-group input,
-    .form-group textarea {
+    .form-group input {
       width: 100%;
-      padding: 8px 12px;
+      padding: 9px 12px;
       font-family: 'Zpix', 'Press Start 2P', 'Courier New', monospace;
       font-size: 12px;
       border: none;
@@ -89,100 +103,142 @@
       background: transparent;
       color: var(--text);
       outline: none;
-      line-height: 1.8;
+      line-height: 1.6;
       transition: border-color 0.2s;
     }
 
-    .form-group input:focus,
-    .form-group textarea:focus {
+    .form-group input:focus {
       border-bottom-color: var(--primary);
     }
 
-    .form-group textarea {
-      height: 80px;
-      resize: vertical;
-    }
-
-    .mood-selector {
+    /* ---- 心情选择器 ---- */
+    .mood-picker {
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
+      margin-bottom: 16px;
     }
 
-    .mood-btn {
-      width: 40px;
-      height: 40px;
+    .mood-dot {
+      width: 42px;
+      height: 42px;
       padding: 0;
       border: 3px solid var(--primary);
       background: var(--bg-light);
       cursor: pointer;
-      font-size: 18px;
+      font-size: 20px;
       display: flex;
       align-items: center;
       justify-content: center;
       transition: all 0.2s;
+      position: relative;
       font-family: 'Zpix', 'Press Start 2P', 'Courier New', monospace;
     }
 
-    .mood-btn:hover,
-    .mood-btn:focus-visible {
+    .mood-dot:hover {
       background: #FFF0F5;
       transform: translateY(-2px);
       box-shadow: 3px 3px 0 var(--secondary);
-      outline: 2px solid var(--primary);
-      outline-offset: 2px;
     }
 
-    .mood-btn.active {
+    .mood-dot.active {
       background: var(--primary);
-      color: #fff;
       transform: translateY(-2px);
       box-shadow: 3px 3px 0 var(--secondary);
     }
 
-    .submit-btn {
+    .mood-dot.active::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0; height: 0;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 6px solid var(--primary);
+    }
+
+    /* ---- 信件正文区 ---- */
+    .letter-textarea-wrap {
+      position: relative;
+      z-index: 1;
+      margin-bottom: 12px;
+    }
+
+    .letter-textarea-wrap textarea {
+      width: 100%;
+      height: 90px;
+      padding: 12px;
+      font-family: 'Zpix', 'Press Start 2P', 'Courier New', monospace;
+      font-size: 12px;
+      border: 2px dashed #DDD;
+      background: rgba(255,255,255,0.5);
+      color: var(--text);
+      outline: none;
+      line-height: 1.9;
+      resize: vertical;
+      transition: border-color 0.2s;
+    }
+
+    .letter-textarea-wrap textarea:focus {
+      border-color: var(--primary);
+      background: rgba(255,255,255,0.8);
+    }
+
+    /* ---- 投递按钮 ---- */
+    .send-btn {
       background: var(--primary);
       color: #fff;
       border: 3px solid var(--secondary);
-      padding: 10px 28px;
+      padding: 10px 30px;
       font-family: 'Zpix', 'Press Start 2P', 'Courier New', monospace;
       font-size: 13px;
       cursor: pointer;
       box-shadow: 4px 4px 0 var(--secondary);
       transition: all 0.2s;
-      float: right;
-      margin-top: 4px;
+      position: relative;
+      z-index: 1;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
     }
 
-    .submit-btn:hover,
-    .submit-btn:focus-visible {
+    .send-btn:hover {
       transform: translateY(-2px);
       box-shadow: 6px 6px 0 var(--secondary);
-      outline: 2px solid #fff;
-      outline-offset: 2px;
     }
 
-    .submit-btn:active {
+    .send-btn:active {
       transform: translateY(0);
       box-shadow: 2px 2px 0 var(--secondary);
     }
 
-    /* ===== 统计栏 ===== */
-    .mail-stats {
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ---- 邮票统计条 ---- */
+    .stamp-stats {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+      padding: 14px 20px;
       background: var(--bg-card);
       border: 4px solid var(--primary);
       box-shadow: 4px 4px 0 var(--secondary);
-      padding: 16px 22px;
-      margin-bottom: 28px;
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      flex-wrap: wrap;
       position: relative;
     }
 
     /* 像素角标 */
-    .mail-stats::after {
+    .stamp-stats::after {
       content: '';
       position: absolute;
       inset: -4px;
@@ -199,7 +255,7 @@
         linear-gradient(to top, var(--ink) 8px, transparent 8px) 100% 100% / 3px 12px no-repeat;
     }
 
-    [data-theme="dark"] .mail-stats::after {
+    [data-theme="dark"] .stamp-stats::after {
       background:
         linear-gradient(to right, var(--primary) 8px, transparent 8px) 0 0 / 12px 3px no-repeat,
         linear-gradient(to bottom, var(--primary) 8px, transparent 8px) 0 0 / 3px 12px no-repeat,
@@ -211,194 +267,256 @@
         linear-gradient(to top, var(--primary) 8px, transparent 8px) 100% 100% / 3px 12px no-repeat;
     }
 
-    .mail-stats .stat-total {
-      font-size: 15px;
-      color: var(--primary);
-      padding-right: 20px;
-      border-right: 3px dashed var(--bg-light);
+    .stamp-stats .stat-divider {
+      width: 2px;
+      height: 28px;
+      background: repeating-linear-gradient(0deg, var(--primary) 0, var(--primary) 3px, transparent 3px, transparent 6px);
+      opacity: 0.3;
+      flex-shrink: 0;
+    }
+
+    .stamp-stats .stat-count {
       display: flex;
       align-items: center;
       gap: 8px;
+      font-size: 14px;
+      color: var(--primary);
     }
 
-    .mail-stats .stat-num {
+    .stamp-stats .stat-badge {
       background: var(--primary);
       color: #fff;
-      padding: 2px 10px;
+      padding: 3px 12px;
       font-size: 18px;
+      min-width: 32px;
+      text-align: center;
     }
 
-    .mail-stats .stat-moods {
+    .stamp-stats .stamp-row {
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
       align-items: center;
     }
 
-    .mail-stats .stat-mood-item {
+    .mini-stamp {
       display: flex;
       align-items: center;
-      gap: 4px;
-      font-size: 12px;
+      gap: 5px;
+      font-size: 11px;
       color: var(--text-dim);
       background: var(--bg-light);
-      padding: 4px 10px;
-      border: 2px solid var(--primary);
+      padding: 5px 10px;
+      border: 2px dashed var(--primary);
+      border-radius: 3px;
     }
 
-    .mail-stats .stat-mood-item .mood-emoji {
-      font-size: 16px;
+    .mini-stamp .ms-emoji { font-size: 16px; }
+    .mini-stamp .ms-count { color: var(--primary); font-weight: bold; }
+
+    /* ---- 软木板 ---- */
+    .cork-board {
+      background:
+        repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(139,115,85,0.04) 3px, rgba(139,115,85,0.04) 6px),
+        linear-gradient(160deg, #D7C4A8 0%, #C8A87C 30%, #D4BC98 60%, #BF9E72 100%);
+      border: 6px solid #A08060;
+      box-shadow:
+        inset 0 2px 20px rgba(0,0,0,0.08),
+        6px 6px 0 rgba(139,115,85,0.3);
+      padding: 28px 24px 32px;
+      position: relative;
     }
 
-    .mail-stats .stat-mood-item .mood-count {
-      color: var(--primary);
+    /* 软木板像素边框 */
+    .cork-board::before {
+      content: '';
+      position: absolute;
+      inset: -6px;
+      pointer-events: none;
+      z-index: 2;
+      background:
+        linear-gradient(to right, #6B5030 6px, transparent 6px) 0 0 / 10px 3px no-repeat,
+        linear-gradient(to bottom, #6B5030 6px, transparent 6px) 0 0 / 3px 10px no-repeat,
+        linear-gradient(to left, #6B5030 6px, transparent 6px) 100% 0 / 10px 3px no-repeat,
+        linear-gradient(to bottom, #6B5030 6px, transparent 6px) 100% 0 / 3px 10px no-repeat,
+        linear-gradient(to right, #6B5030 6px, transparent 6px) 0 100% / 10px 3px no-repeat,
+        linear-gradient(to top, #6B5030 6px, transparent 6px) 0 100% / 3px 10px no-repeat,
+        linear-gradient(to left, #6B5030 6px, transparent 6px) 100% 100% / 10px 3px no-repeat,
+        linear-gradient(to top, #6B5030 6px, transparent 6px) 100% 100% / 3px 10px no-repeat;
     }
 
-    /* ===== 信封留言列表 ===== */
-    .letter-list {
-      display: flex;
-      flex-direction: column;
-      gap: 22px;
+    /* ---- 留言卡片（钉在软木板上） ---- */
+    .msg-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px 20px;
+      position: relative;
+      z-index: 1;
     }
 
-    .letter-card {
+    .msg-card {
       background: #FFFEF7;
-      border: 4px solid var(--primary);
-      box-shadow: 5px 5px 0 var(--secondary);
-      padding: 24px 22px 18px;
+      border: 3px solid #D4C5B2;
+      box-shadow: 3px 3px 0 rgba(139,115,85,0.2);
+      padding: 24px 20px 18px;
       position: relative;
       transition: all 0.3s;
     }
 
-    /* 像素角标 — ::after 因为 ::before 已被信封折痕占用 */
-    .letter-card::after {
+    /* 像素角标 */
+    .msg-card::after {
       content: '';
       position: absolute;
-      inset: -4px;
+      inset: -3px;
       pointer-events: none;
       z-index: 1;
       background:
-        linear-gradient(to right, var(--ink) 8px, transparent 8px) 0 0 / 12px 3px no-repeat,
-        linear-gradient(to bottom, var(--ink) 8px, transparent 8px) 0 0 / 3px 12px no-repeat,
-        linear-gradient(to left, var(--ink) 8px, transparent 8px) 100% 0 / 12px 3px no-repeat,
-        linear-gradient(to bottom, var(--ink) 8px, transparent 8px) 100% 0 / 3px 12px no-repeat,
-        linear-gradient(to right, var(--ink) 8px, transparent 8px) 0 100% / 12px 3px no-repeat,
-        linear-gradient(to top, var(--ink) 8px, transparent 8px) 0 100% / 3px 12px no-repeat,
-        linear-gradient(to left, var(--ink) 8px, transparent 8px) 100% 100% / 12px 3px no-repeat,
-        linear-gradient(to top, var(--ink) 8px, transparent 8px) 100% 100% / 3px 12px no-repeat;
+        linear-gradient(to right, var(--ink) 7px, transparent 7px) 0 0 / 10px 2px no-repeat,
+        linear-gradient(to bottom, var(--ink) 7px, transparent 7px) 0 0 / 2px 10px no-repeat,
+        linear-gradient(to left, var(--ink) 7px, transparent 7px) 100% 0 / 10px 2px no-repeat,
+        linear-gradient(to bottom, var(--ink) 7px, transparent 7px) 100% 0 / 2px 10px no-repeat,
+        linear-gradient(to right, var(--ink) 7px, transparent 7px) 0 100% / 10px 2px no-repeat,
+        linear-gradient(to top, var(--ink) 7px, transparent 7px) 0 100% / 2px 10px no-repeat,
+        linear-gradient(to left, var(--ink) 7px, transparent 7px) 100% 100% / 10px 2px no-repeat,
+        linear-gradient(to top, var(--ink) 7px, transparent 7px) 100% 100% / 2px 10px no-repeat;
     }
 
-    [data-theme="dark"] .letter-card::after {
+    [data-theme="dark"] .msg-card::after {
       background:
-        linear-gradient(to right, var(--primary) 8px, transparent 8px) 0 0 / 12px 3px no-repeat,
-        linear-gradient(to bottom, var(--primary) 8px, transparent 8px) 0 0 / 3px 12px no-repeat,
-        linear-gradient(to left, var(--primary) 8px, transparent 8px) 100% 0 / 12px 3px no-repeat,
-        linear-gradient(to bottom, var(--primary) 8px, transparent 8px) 100% 0 / 3px 12px no-repeat,
-        linear-gradient(to right, var(--primary) 8px, transparent 8px) 0 100% / 12px 3px no-repeat,
-        linear-gradient(to top, var(--primary) 8px, transparent 8px) 0 100% / 3px 12px no-repeat,
-        linear-gradient(to left, var(--primary) 8px, transparent 8px) 100% 100% / 12px 3px no-repeat,
-        linear-gradient(to top, var(--primary) 8px, transparent 8px) 100% 100% / 3px 12px no-repeat;
+        linear-gradient(to right, var(--primary) 7px, transparent 7px) 0 0 / 10px 2px no-repeat,
+        linear-gradient(to bottom, var(--primary) 7px, transparent 7px) 0 0 / 2px 10px no-repeat,
+        linear-gradient(to left, var(--primary) 7px, transparent 7px) 100% 0 / 10px 2px no-repeat,
+        linear-gradient(to bottom, var(--primary) 7px, transparent 7px) 100% 0 / 2px 10px no-repeat,
+        linear-gradient(to right, var(--primary) 7px, transparent 7px) 0 100% / 10px 2px no-repeat,
+        linear-gradient(to top, var(--primary) 7px, transparent 7px) 0 100% / 2px 10px no-repeat,
+        linear-gradient(to left, var(--primary) 7px, transparent 7px) 100% 100% / 10px 2px no-repeat,
+        linear-gradient(to top, var(--primary) 7px, transparent 7px) 100% 100% / 2px 10px no-repeat;
     }
 
-    .letter-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 8px 8px 0 var(--secondary);
+    /* 微微旋转，像随手钉上去的 */
+    .msg-card:nth-child(odd)  { transform: rotate(-1.2deg); }
+    .msg-card:nth-child(even) { transform: rotate(0.8deg); }
+    .msg-card:nth-child(3n)   { transform: rotate(1.5deg); }
+
+    .msg-card:hover {
+      transform: translateY(-6px) rotate(0deg) !important;
+      box-shadow: 6px 6px 0 rgba(139,115,85,0.35);
+      z-index: 5;
     }
 
-    /* 信封折痕 */
-    .letter-card::before {
-      content: '';
+    /* 📌 图钉 */
+    .msg-pin {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 26px;
-      background:
-        linear-gradient(to bottom right, transparent 49%, rgba(0,0,0,0.06) 50%) top left,
-        linear-gradient(to bottom left, transparent 49%, rgba(0,0,0,0.06) 50%) top right;
-      background-size: 50.5% 100%;
-      background-repeat: no-repeat;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 22px;
+      z-index: 4;
+      filter: drop-shadow(1px 2px 1px rgba(0,0,0,0.25));
       pointer-events: none;
     }
 
     /* 蜡封 = 心情 */
-    .letter-seal {
+    .msg-seal {
       position: absolute;
       top: -16px;
-      right: 18px;
-      width: 44px;
-      height: 44px;
+      right: 16px;
+      width: 42px;
+      height: 42px;
       border-radius: 50%;
-      background: radial-gradient(circle at 35% 30%, #FF8EAA, #D63864);
+      background: radial-gradient(circle at 35% 28%, #FFB0C8, #D63864);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 22px;
+      font-size: 20px;
       box-shadow: 2px 3px 8px rgba(0,0,0,0.2);
-      z-index: 2;
-      border: 2px solid rgba(255,255,255,0.3);
+      z-index: 3;
+      border: 2px solid rgba(255,255,255,0.25);
     }
 
-    .letter-header {
+    .msg-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 10px;
-      padding-right: 30px;
+      padding-right: 28px;
     }
 
-    .letter-name {
-      font-size: 14px;
+    .msg-name {
+      font-size: 13px;
       color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
-    .letter-time {
-      font-size: 10px;
+    .msg-name::before {
+      content: '✉';
+      font-size: 14px;
+    }
+
+    .msg-time {
+      font-size: 9px;
       color: var(--text-dim);
     }
 
-    /* 邮戳装饰 */
-    .letter-stamp {
-      position: absolute;
-      bottom: 12px;
-      right: 14px;
-      width: 50px;
-      height: 50px;
-      border: 3px dashed rgba(0,0,0,0.08);
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 8px;
-      color: rgba(0,0,0,0.15);
-      transform: rotate(12deg);
-      pointer-events: none;
-      line-height: 1.4;
-      text-align: center;
-    }
-
-    .letter-content {
+    .msg-body {
       font-size: 13px;
       color: #5D4E37;
-      line-height: 2;
-      padding-right: 40px;
+      line-height: 2.0;
     }
 
-    .letter-reply {
+    /* 回复气泡 */
+    .msg-reply {
       margin-top: 14px;
       padding: 10px 14px;
       background: #FFF0F5;
       border-left: 4px solid var(--primary);
-      font-size: 12px;
+      border-radius: 0 8px 8px 0;
+      font-size: 11px;
       color: #999;
+      position: relative;
     }
 
-    .letter-reply::before {
+    .msg-reply::before {
       content: '🐰 回复：';
       color: var(--primary);
     }
 
-    /* Toast */
+    /* ---- 浮动信件 ---- */
+    .float-mail {
+      position: fixed;
+      pointer-events: none;
+      z-index: 0;
+      font-size: 24px;
+      opacity: 0.18;
+      animation: floatDrift 7s ease-in-out infinite;
+    }
+    .float-mail.f1 { top: 12%; left: 6%; animation-delay: 0s; font-size: 22px; }
+    .float-mail.f2 { top: 18%; right: 8%; animation-delay: 1.5s; font-size: 28px; }
+    .float-mail.f3 { top: 55%; left: 4%; animation-delay: 3s; font-size: 20px; }
+    .float-mail.f4 { top: 65%; right: 5%; animation-delay: 4.5s; font-size: 26px; }
+    .float-mail.f5 { top: 35%; left: 50%; animation-delay: 2s; font-size: 18px; opacity: 0.12; }
+    .float-mail.f6 { top: 78%; left: 48%; animation-delay: 5.5s; font-size: 22px; opacity: 0.13; }
+
+    @keyframes floatDrift {
+      0%, 100% { transform: translateY(0) translateX(0) rotate(0deg); }
+      25%  { transform: translateY(-18px) translateX(10px) rotate(5deg); }
+      50%  { transform: translateY(-8px) translateX(-6px) rotate(-3deg); }
+      75%  { transform: translateY(-22px) translateX(14px) rotate(7deg); }
+    }
+
+    /* 平板端减少浮动 */
+    @media (max-width: 700px) {
+      .float-mail.f5, .float-mail.f6 { display: none; }
+      .float-mail { opacity: 0.1; font-size: 18px; }
+    }
+
+    @media (max-width: 480px) {
+      .float-mail { opacity: 0.07; font-size: 16px; }
+    }
+
+    /* ---- Toast ---- */
     .toast {
       position: fixed;
       top: 80px;
@@ -420,105 +538,127 @@
       to { opacity: 1; transform: translateX(-50%) translateY(0); }
     }
 
-    /* ===== 响应式 ===== */
     /* ===== 平板 (≤900px) ===== */
     @media (max-width: 900px) {
-      .mail-stats { gap: 12px; padding: 12px 16px; }
-      .letter-list { gap: 16px; }
+      .form-row { grid-template-columns: 1fr; }
+      .stamp-stats { gap: 10px; padding: 10px 14px; }
+      .msg-grid { gap: 20px 16px; }
+      .cork-board { padding: 22px 16px 26px; }
     }
 
     /* ===== 平板竖屏 (≤700px) ===== */
     @media (max-width: 700px) {
-      .letter-form { padding: 18px 14px 18px 34px; }
-      .letter-form::before { left: 26px; }
-      .letter-form h3 { font-size: 14px; }
-      .letter-seal { width: 34px; height: 34px; font-size: 17px; top: -12px; right: 10px; }
-      .letter-stamp { width: 38px; height: 38px; font-size: 7px; }
-      .letter-card { padding: 18px 16px 14px; }
-      .letter-card::before { height: 20px; }
-      .letter-content { padding-right: 0; font-size: 12px; line-height: 1.8; }
-      .letter-name { font-size: 12px; }
-      .letter-reply { font-size: 11px; padding: 8px 10px; }
-      .submit-btn { padding: 8px 20px; font-size: 11px; }
-      .mail-stats { flex-direction: column; align-items: flex-start; gap: 8px; padding: 12px 16px; }
-      .mail-stats .stat-total { border-right: none; padding-right: 0; font-size: 13px; }
-      .form-group input, .form-group textarea { font-size: 11px; }
-      .form-group label { font-size: 10px; }
-      .mood-btn { width: 36px; height: 36px; }
+      .writing-desk { padding: 18px 14px 18px 34px; }
+      .writing-desk::before { left: 26px; }
+      .writing-desk .desk-title { font-size: 13px; }
+      .msg-grid { grid-template-columns: 1fr; gap: 18px; }
+      .msg-card:nth-child(odd),
+      .msg-card:nth-child(even),
+      .msg-card:nth-child(3n) { transform: rotate(0deg); }
+      .msg-card { padding: 18px 14px 14px; }
+      .msg-seal { width: 34px; height: 34px; font-size: 16px; top: -12px; }
+      .msg-body { font-size: 12px; line-height: 1.8; }
+      .msg-name { font-size: 12px; }
+      .msg-reply { font-size: 10px; padding: 8px 10px; }
+      .send-btn { padding: 8px 20px; font-size: 11px; }
+      .mood-dot { width: 36px; height: 36px; font-size: 17px; }
+      .stamp-stats { flex-direction: column; align-items: flex-start; gap: 6px; }
+      .stamp-stats .stat-divider { display: none; }
+      .stamp-stats .stat-count { font-size: 12px; }
+      .stamp-stats .stat-badge { font-size: 15px; padding: 2px 10px; }
+      .cork-board { padding: 18px 12px 22px; }
     }
 
     /* ===== 手机 (≤480px) ===== */
     @media (max-width: 480px) {
-      .letter-form { padding: 14px 10px 14px 28px; }
-      .letter-form::before { left: 20px; }
-      .letter-seal { width: 28px; height: 28px; font-size: 14px; top: -10px; right: 6px; }
-      .letter-stamp { display: none; }
-      .letter-card { padding: 14px 12px 10px; }
-      .letter-card::before { height: 16px; }
-      .letter-header { padding-right: 20px; }
-      .letter-content { font-size: 11px; }
-      .letter-reply { font-size: 10px; padding: 6px 8px; }
-      .submit-btn { padding: 6px 16px; font-size: 10px; float: none; display: block; width: 100%; text-align: center; margin-top: 8px; }
-      .mail-stats .stat-num { font-size: 15px; }
-      .mood-btn { width: 32px; height: 32px; font-size: 16px; }
-      .mood-selector { gap: 5px; }
-      .letter-list { gap: 12px; }
+      .writing-desk { padding: 12px 8px 12px 24px; }
+      .writing-desk::before { left: 18px; }
+      .msg-seal { width: 28px; height: 28px; font-size: 14px; top: -10px; right: 8px; }
+      .msg-pin { font-size: 18px; top: -10px; }
+      .msg-card { padding: 14px 10px 10px; }
+      .msg-header { padding-right: 16px; }
+      .msg-body { font-size: 11px; }
+      .msg-reply { font-size: 10px; padding: 6px 8px; }
+      .send-btn { padding: 6px 16px; font-size: 10px; }
+      .mood-dot { width: 32px; height: 32px; font-size: 15px; }
+      .mood-picker { gap: 5px; }
+      .form-group input { font-size: 10px; padding: 7px 10px; }
+      .letter-textarea-wrap textarea { font-size: 10px; height: 70px; }
+      .cork-board { padding: 14px 8px 18px; border-width: 4px; }
     }
 
-    /* ===== 暗黑模式 ===== */
-    [data-theme="dark"] .letter-form {
+    /* ===== 暗色模式 ===== */
+    [data-theme="dark"] .writing-desk {
       background-color: #2A2A3C;
-      background-image: repeating-linear-gradient(0deg, transparent, transparent 29px, rgba(255,255,255,0.03) 29px, rgba(255,255,255,0.03) 30px);
+      background-image: repeating-linear-gradient(0deg, transparent, transparent 31px, rgba(255,255,255,0.03) 31px, rgba(255,255,255,0.03) 32px);
     }
 
-    [data-theme="dark"] .letter-form::before {
+    [data-theme="dark"] .writing-desk::before {
       background: rgba(255,100,130,0.2);
     }
 
     [data-theme="dark"] .form-group input,
-    [data-theme="dark"] .form-group textarea {
+    [data-theme="dark"] .letter-textarea-wrap textarea {
       color: #DDD;
-      border-bottom-color: rgba(255,255,255,0.12);
+      border-bottom-color: rgba(255,255,255,0.1);
     }
 
-    [data-theme="dark"] .letter-card {
-      background: #2A2A38;
+    [data-theme="dark"] .letter-textarea-wrap textarea {
+      background: rgba(255,255,255,0.03);
+      border-color: rgba(255,255,255,0.1);
     }
 
-    [data-theme="dark"] .letter-card::before {
+    [data-theme="dark"] .letter-textarea-wrap textarea:focus {
+      background: rgba(255,255,255,0.06);
+    }
+
+    [data-theme="dark"] .cork-board {
       background:
-        linear-gradient(to bottom right, transparent 49%, rgba(255,255,255,0.04) 50%) top left,
-        linear-gradient(to bottom left, transparent 49%, rgba(255,255,255,0.04) 50%) top right;
-      background-size: 50.5% 100%;
-      background-repeat: no-repeat;
+        repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,255,255,0.02) 3px, rgba(255,255,255,0.02) 6px),
+        linear-gradient(160deg, #3D3528 0%, #4A3D2E 30%, #423828 60%, #3A2E20 100%);
+      border-color: var(--primary);
+      box-shadow: inset 0 2px 20px rgba(0,0,0,0.3), 6px 6px 0 rgba(255, 64, 129, 0.25);
     }
 
-    [data-theme="dark"] .letter-content {
+    [data-theme="dark"] .msg-card {
+      background: #2A2A38;
+      border-color: var(--primary);
+      box-shadow: 3px 3px 0 rgba(255, 64, 129, 0.25);
+    }
+
+    [data-theme="dark"] .msg-body {
       color: #D0C8B8;
     }
 
-    [data-theme="dark"] .letter-reply {
-      background: rgba(255,64,129,0.1);
+    [data-theme="dark"] .msg-reply {
+      background: rgba(255,64,129,0.08);
       color: #BBB;
     }
 
-    [data-theme="dark"] .letter-stamp {
-      border-color: rgba(255,255,255,0.08);
-      color: rgba(255,255,255,0.12);
+    [data-theme="dark"] .mood-dot {
+      background: var(--bg-card);
     }
 
-    [data-theme="dark"] .mood-btn {
-      background: var(--bg-card);
+    [data-theme="dark"] .mini-stamp {
+      border-color: rgba(255,255,255,0.12);
     }
   </style>
 </head>
 
 <body>
+  <!-- 浮动信件 -->
+  <div class="float-mail f1">✉️</div>
+  <div class="float-mail f2">💌</div>
+  <div class="float-mail f3">📨</div>
+  <div class="float-mail f4">✉️</div>
+  <div class="float-mail f5">💌</div>
+  <div class="float-mail f6">📨</div>
+
   <div class="bg-deco bg-deco-1">✉️</div>
   <div class="bg-deco bg-deco-2">📮</div>
   <div class="bg-deco bg-deco-3">✉️</div>
   <div class="bg-deco bg-deco-4">💌</div>
-  <div class="bg-deco bg-deco-5">✉️</div>
+  <div class="bg-deco bg-deco-5">📌</div>
   <div class="bg-deco bg-deco-6">📮</div>
 
   <nav>
@@ -537,96 +677,103 @@
     <h1 class="page-title">💌 留言板</h1>
     <p class="page-subtitle">展信佳，见字如面</p>
 
-    <!-- 信纸表单 -->
-    <div class="letter-form">
-      <h3>✍️ 写一封信</h3>
-      <div class="form-group">
-        <label>寄信人</label>
-        <input type="text" id="msg-name" placeholder="你的名字">
-      </div>
-      <div class="form-group">
-        <label>今日心情</label>
-        <div class="mood-selector">
-          <button class="mood-btn active" data-mood="😊">😊</button>
-          <button class="mood-btn" data-mood="🥰">🥰</button>
-          <button class="mood-btn" data-mood="😎">😎</button>
-          <button class="mood-btn" data-mood="🤔">🤔</button>
-          <button class="mood-btn" data-mood="😢">😢</button>
-          <button class="mood-btn" data-mood="🥳">🥳</button>
+    <!-- 写信台 -->
+    <div class="writing-desk">
+      <div class="desk-title">🪶 写一封信</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>寄信人</label>
+          <input type="text" id="msg-name" placeholder="你的名字" autocomplete="name" required>
+        </div>
+        <div class="form-group">
+          <label>今日心情</label>
+          <div class="mood-picker" style="margin-bottom:0">
+            <button class="mood-dot active" data-mood="😊" aria-label="开心" title="开心">😊</button>
+            <button class="mood-dot" data-mood="🥰" aria-label="喜欢" title="喜欢">🥰</button>
+            <button class="mood-dot" data-mood="😎" aria-label="酷" title="酷">😎</button>
+            <button class="mood-dot" data-mood="🤔" aria-label="思考" title="思考">🤔</button>
+            <button class="mood-dot" data-mood="😢" aria-label="难过" title="难过">😢</button>
+            <button class="mood-dot" data-mood="🥳" aria-label="庆祝" title="庆祝">🥳</button>
+          </div>
         </div>
       </div>
-      <div class="form-group">
+      <div class="form-group full">
         <label>信件内容</label>
-        <textarea id="msg-content" placeholder="在这里写下想说的话..."></textarea>
+        <div class="letter-textarea-wrap">
+          <textarea id="msg-content" placeholder="在这里写下想说的话..."></textarea>
+        </div>
       </div>
-      <button class="submit-btn" id="submit-msg">📨 投递信件</button>
-      <div style="clear:both"></div>
-    </div>
-
-    <!-- 统计栏 -->
-    <div class="mail-stats" id="msg-stats">
-      <div class="stat-total">📬 共 <span class="stat-num" id="stat-total">3</span> 封信</div>
-      <div class="stat-moods" id="stat-moods">
-        <div class="stat-mood-item"><span class="mood-emoji">🥰</span><span class="mood-count">1</span></div>
-        <div class="stat-mood-item"><span class="mood-emoji">😎</span><span class="mood-count">1</span></div>
-        <div class="stat-mood-item"><span class="mood-emoji">😊</span><span class="mood-count">1</span></div>
+      <div class="form-actions">
+        <button class="send-btn" id="submit-msg">📨 投递信件</button>
       </div>
     </div>
 
-    <!-- 信件列表 -->
-    <div class="letter-list" id="msg-list">
-      <div class="letter-card scroll-reveal">
-        <div class="letter-seal">🥰</div>
-        <div class="letter-header">
-          <div class="letter-name">小丸子</div>
-          <div class="letter-time">2025-03-15</div>
-        </div>
-        <div class="letter-content">诗怡的网页好可爱！粉色像素风太有感觉了～</div>
-        <div class="letter-reply">谢谢小丸子！你也好可爱呀～</div>
-        <div class="letter-stamp">MAR<br>15</div>
+    <!-- 邮票统计条 -->
+    <div class="stamp-stats" id="msg-stats">
+      <div class="stat-count">📬 共 <span class="stat-badge" id="stat-total">3</span> 封来信</div>
+      <span class="stat-divider"></span>
+      <div class="stamp-row" id="stat-moods">
+        <div class="mini-stamp"><span class="ms-emoji">🥰</span><span class="ms-count">1</span></div>
+        <div class="mini-stamp"><span class="ms-emoji">😎</span><span class="ms-count">1</span></div>
+        <div class="mini-stamp"><span class="ms-emoji">😊</span><span class="ms-count">1</span></div>
       </div>
-      <div class="letter-card scroll-reveal">
-        <div class="letter-seal">😎</div>
-        <div class="letter-header">
-          <div class="letter-name">阿杰</div>
-          <div class="letter-time">2025-04-02</div>
+    </div>
+
+    <!-- 软木板 + 信件 -->
+    <div class="cork-board">
+      <div class="msg-grid" id="msg-list">
+        <div class="msg-card scroll-reveal">
+          <div class="msg-pin">📌</div>
+          <div class="msg-seal">🥰</div>
+          <div class="msg-header">
+            <div class="msg-name">小丸子</div>
+            <div class="msg-time">2025-03-15</div>
+          </div>
+          <div class="msg-body">诗怡的网页好可爱！粉色像素风太有感觉了～</div>
+          <div class="msg-reply">谢谢小丸子！你也好可爱呀～</div>
         </div>
-        <div class="letter-content">旅行日记那个地图太酷了吧！下次一起去玩！</div>
-        <div class="letter-reply">好呀好呀！下次一起出发！✈️</div>
-        <div class="letter-stamp">APR<br>2</div>
-      </div>
-      <div class="letter-card scroll-reveal">
-        <div class="letter-seal">😊</div>
-        <div class="letter-header">
-          <div class="letter-name">奶茶控</div>
-          <div class="letter-time">2025-05-10</div>
+        <div class="msg-card scroll-reveal">
+          <div class="msg-pin">📌</div>
+          <div class="msg-seal">😎</div>
+          <div class="msg-header">
+            <div class="msg-name">阿杰</div>
+            <div class="msg-time">2025-04-02</div>
+          </div>
+          <div class="msg-body">旅行日记那个地图太酷了吧！下次一起去玩！</div>
+          <div class="msg-reply">好呀好呀！下次一起出发！✈️</div>
         </div>
-        <div class="letter-content">烘焙大赏看得我都饿了，什么时候做给我吃！</div>
-        <div class="letter-reply">哈哈随时欢迎来蹭吃！🍰</div>
-        <div class="letter-stamp">MAY<br>10</div>
+        <div class="msg-card scroll-reveal">
+          <div class="msg-pin">📌</div>
+          <div class="msg-seal">😊</div>
+          <div class="msg-header">
+            <div class="msg-name">奶茶控</div>
+            <div class="msg-time">2025-05-10</div>
+          </div>
+          <div class="msg-body">烘焙大赏看得我都饿了，什么时候做给我吃！</div>
+          <div class="msg-reply">哈哈随时欢迎来蹭吃！🍰</div>
+        </div>
       </div>
     </div>
   </div>
 
   <footer>
-    <p>&copy; 2026 许诗怡 | 中南财经政法大学</p>
-    <p style="margin-top: 10px; opacity: 0.8;">Made with 💖 in Quanzhou</p>
+    <p>&copy; 2026 许诗怡 | 中南财经政法大学 💖</p>
   </footer>
 
   <script src="../js/common.js"></script>
   <script>
-    initScrollReveal('.letter-card', 100);
+    initScrollReveal('.msg-card', 100);
 
     var monthAbbr = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
 
     function updateStats() {
-      var items = document.querySelectorAll('#msg-list .letter-card');
+      var items = document.querySelectorAll('#msg-list .msg-card');
       var total = items.length;
       document.getElementById('stat-total').textContent = total;
 
       var moodCounts = {};
       items.forEach(function(item) {
-        var moodEl = item.querySelector('.letter-seal');
+        var moodEl = item.querySelector('.msg-seal');
         if (moodEl) {
           var mood = moodEl.textContent.trim();
           moodCounts[mood] = (moodCounts[mood] || 0) + 1;
@@ -636,15 +783,15 @@
       var sorted = Object.entries(moodCounts).sort(function(a, b) { return b[1] - a[1]; });
       var moodHtml = '';
       sorted.forEach(function(entry) {
-        moodHtml += '<div class="stat-mood-item"><span class="mood-emoji">' + entry[0] + '</span><span class="mood-count">' + entry[1] + '</span></div>';
+        moodHtml += '<div class="mini-stamp"><span class="ms-emoji">' + entry[0] + '</span><span class="ms-count">' + entry[1] + '</span></div>';
       });
       document.getElementById('stat-moods').innerHTML = moodHtml;
     }
 
     var selectedMood = '😊';
-    document.querySelectorAll('.mood-btn').forEach(function(btn) {
+    document.querySelectorAll('.mood-dot').forEach(function(btn) {
       btn.addEventListener('click', function() {
-        document.querySelectorAll('.mood-btn').forEach(function(b) { b.classList.remove('active'); });
+        document.querySelectorAll('.mood-dot').forEach(function(b) { b.classList.remove('active'); });
         btn.classList.add('active');
         selectedMood = btn.dataset.mood;
       });
@@ -663,13 +810,12 @@
       }
       var now = new Date();
       var dateStr = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
-      var stampStr = monthAbbr[now.getMonth()] + '<br>' + now.getDate();
       var item = document.createElement('div');
-      item.className = 'letter-card scroll-reveal visible';
-      item.innerHTML = '<div class="letter-seal">' + selectedMood + '</div>' +
-        '<div class="letter-header"><div class="letter-name">' + name + '</div><div class="letter-time">' + dateStr + '</div></div>' +
-        '<div class="letter-content">' + content + '</div>' +
-        '<div class="letter-stamp">' + stampStr + '</div>';
+      item.className = 'msg-card scroll-reveal visible';
+      item.innerHTML = '<div class="msg-pin">📌</div>' +
+        '<div class="msg-seal">' + selectedMood + '</div>' +
+        '<div class="msg-header"><div class="msg-name">' + name + '</div><div class="msg-time">' + dateStr + '</div></div>' +
+        '<div class="msg-body">' + content + '</div>';
       var list = document.getElementById('msg-list');
       list.insertBefore(item, list.firstChild);
       updateStats();
@@ -677,7 +823,7 @@
       document.getElementById('msg-content').value = '';
       var toast = document.createElement('div');
       toast.className = 'toast';
-      toast.textContent = '✅ 信件已投递';
+      toast.textContent = '✅ 信件已投递，已钉在公告板上';
       document.body.appendChild(toast);
       setTimeout(function() { toast.remove(); }, 2000);
     });

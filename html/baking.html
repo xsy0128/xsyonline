@@ -3,6 +3,9 @@
 
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>烘焙大赏 - XSY</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -124,13 +127,26 @@
       min-height: 24px;
     }
 
-    /* === 配方卡片墙 === */
+    /* === 配方卡片墙：6列网格 → 2+3 布局 === */
     .recipe-wall {
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-columns: repeat(6, 1fr);
       gap: 25px;
       margin-bottom: 40px;
       padding: 10px;
+    }
+
+    /* 第一行：2个，各跨3列 (50%) */
+    .recipe-index-card:nth-child(1),
+    .recipe-index-card:nth-child(2) {
+      grid-column: span 3;
+    }
+
+    /* 第二行：3个，各跨2列 (33%) */
+    .recipe-index-card:nth-child(3),
+    .recipe-index-card:nth-child(4),
+    .recipe-index-card:nth-child(5) {
+      grid-column: span 2;
     }
 
     .recipe-index-card {
@@ -251,13 +267,13 @@
     }
 
     .recipe-index-card.tall .ric-photo {
-      aspect-ratio: 4 / 3;
+      aspect-ratio: 3 / 4;
     }
 
-    /* 照片区 */
+    /* 照片区 — 竖版 */
     .ric-photo {
       width: 100%;
-      aspect-ratio: 4 / 3;
+      aspect-ratio: 3 / 4;
       background: #F5EFE6;
       border: 3px solid #E0D5C5;
       display: flex;
@@ -439,8 +455,8 @@
 
     .basque-panel {
       background: linear-gradient(150deg, #FFFEF7, #FFF8F0);
-      border: 4px solid #D4C5B2;
-      box-shadow: 6px 6px 0 rgba(160, 140, 120, 0.35);
+      border: 3px solid #D4C5B2;
+      box-shadow: 4px 4px 0 rgba(160, 140, 120, 0.35);
       overflow: hidden;
       position: relative;
       transition: all 0.3s;
@@ -478,7 +494,7 @@
 
     .basque-panel:hover {
       transform: translateY(-5px);
-      box-shadow: 10px 10px 0 rgba(160, 140, 120, 0.45);
+      box-shadow: 6px 6px 0 rgba(160, 140, 120, 0.45);
     }
 
     .basque-panel .bp-img {
@@ -487,7 +503,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 90px;
+      font-size: 60px;
       position: relative;
       overflow: hidden;
       border-bottom: 3px solid #D4C5B2;
@@ -504,11 +520,11 @@
 
     .basque-panel .bp-badge {
       position: absolute;
-      top: 20px;
-      right: -28px;
+      top: 16px;
+      right: -30px;
       color: #fff;
-      font-size: 11px;
-      padding: 5px 34px;
+      font-size: 10px;
+      padding: 4px 32px;
       transform: rotate(45deg);
       z-index: 3;
     }
@@ -517,11 +533,11 @@
     .basque-panel:nth-child(2) .bp-badge { background: #66BB6A; }
 
     .basque-panel .bp-body {
-      padding: 22px;
+      padding: 16px;
     }
 
     .basque-panel .bp-name {
-      font-size: 20px;
+      font-size: 16px;
       color: #5D4037;
       margin-bottom: 6px;
     }
@@ -534,18 +550,18 @@
 
     .basque-panel .bp-tags span {
       background: #F5EFE6;
-      padding: 3px 10px;
-      font-size: 11px;
+      padding: 3px 8px;
+      font-size: 10px;
       color: #8D6E63;
       border: 2px solid #D4C5B2;
       border-radius: 12px;
     }
 
     .basque-panel .bp-desc {
-      font-size: 13px;
+      font-size: 12px;
       color: #8B7355;
-      line-height: 2.2;
-      margin-bottom: 14px;
+      line-height: 2.0;
+      margin-bottom: 12px;
     }
 
     .basque-panel .bp-steps {
@@ -556,7 +572,7 @@
     }
 
     .basque-panel .bp-steps li {
-      font-size: 11px;
+      font-size: 10px;
       color: #8B7355;
       padding: 4px 0;
       display: flex;
@@ -636,10 +652,7 @@
       .baking-header .hero-visual { max-width: 300px; margin: 0 auto; }
       .basque-banner { grid-template-columns: 1fr 1fr; }
       .recipe-wall { grid-template-columns: 1fr 1fr; }
-      .recipe-index-card.featured { grid-column: 1 / -1; grid-template-columns: 1fr; }
-      .recipe-index-card.featured .ric-left { border-right: none; }
-      .recipe-index-card.featured .ric-photo { aspect-ratio: 16 / 9; border-bottom: 2px dashed #E0D5C5; }
-      .recipe-index-card.tall { grid-column: auto; grid-row: auto; }
+      .recipe-index-card:nth-child(n) { grid-column: auto; }  /* 重置 2+3 */
       .recipe-index-card:nth-child(even),
       .recipe-index-card:nth-child(3) { transform: none; }
       .slideshow:hover .slide-arrow,
@@ -657,7 +670,6 @@
       .recipe-wall { grid-template-columns: 1fr; }
       .recipe-index-card { transform: rotate(0deg) !important; }
       .ric-steps-btn { padding: 8px 14px; font-size: 10px; }
-      .recipe-index-card.featured .ric-photo { aspect-ratio: 4 / 3; }
       .slide-arrow { width: 36px; height: 36px; }
       .baking-tip { font-size: 11px; }
     }
@@ -671,8 +683,6 @@
       .slot-name { font-size: 12px; }
       .recipe-index-card { padding: 12px 14px 16px; }
       .recipe-index-card::before { width: 60px; height: 12px; top: -10px; left: 12px; }
-      .ric-photo { height: 100px; }
-      .recipe-index-card.featured .ric-photo { aspect-ratio: 3 / 4; }
       .ric-name { font-size: 14px; }
       .ing-tag { font-size: 10px; padding: 3px 8px; }
       .ric-desc { font-size: 11px; line-height: 1.7; }
@@ -688,7 +698,7 @@
     [data-theme="dark"] .ric-tip,
     [data-theme="dark"] .ing-tag {
       background: #252540;
-      border-color: #3a3050;
+      border-color: var(--primary);
       box-shadow: 4px 4px 0 rgba(255, 64, 129, 0.2);
     }
 
@@ -722,8 +732,8 @@
 
     [data-theme="dark"] .basque-panel {
       background: linear-gradient(150deg, #252540, #1e1e35);
-      border-color: #3a3050;
-      box-shadow: 4px 4px 0 rgba(255, 64, 129, 0.2);
+      border-color: var(--primary);
+      box-shadow: 4px 4px 0 rgba(255, 64, 129, 0.3);
     }
 
     [data-theme="dark"] .ric-steps li::before {
@@ -824,7 +834,7 @@
         </div>
         <div class="bp-body">
           <div class="bp-name">原味巴斯克</div>
-          <div class="bp-tags"><span>⏱ 50分钟</span><span>🌡 220度</span><span>芝士</span></div>
+          <div class="bp-tags"><span>⏱ 35分钟</span><span>🌡 220度</span><span>芝士</span></div>
           <div class="ric-ingredients" style="margin-bottom:10px;">
             <span class="ing-tag">🧀 奶油奶酪 350g</span><span class="ing-tag">🥛 淡奶油 200g</span><span class="ing-tag">🥚 鸡蛋 3个</span><span class="ing-tag">🍬 细砂糖 100g</span><span class="ing-tag">🌽 玉米淀粉 15g</span>
           </div>
@@ -848,7 +858,7 @@
         </div>
         <div class="bp-body">
           <div class="bp-name">抹茶巴斯克</div>
-          <div class="bp-tags"><span>⏱ 55分钟</span><span>🌡 220度</span><span>抹茶</span></div>
+          <div class="bp-tags"><span>⏱ 35分钟</span><span>🌡 220度</span><span>抹茶</span></div>
           <div class="ric-ingredients" style="margin-bottom:10px;">
             <span class="ing-tag">🧀 奶油奶酪 350g</span><span class="ing-tag">🍵 抹茶粉 15g</span><span class="ing-tag">🥛 淡奶油 200g</span><span class="ing-tag">🥚 鸡蛋 3个</span><span class="ing-tag">🍬 细砂糖 100g</span><span class="ing-tag">🌽 玉米淀粉 15g</span>
           </div>
@@ -865,28 +875,26 @@
     </div>
 
     <!-- 配方卡片墙 -->
-    <h2 class="section-title">📇 烘焙配方卡</h2>
+    <h2 class="section-title">🍰 我的烘焙作品</h2>
     <div class="recipe-wall">
-      <!-- 1. 纽约芝士 — 横跨两列 -->
-      <div class="recipe-index-card featured scroll-reveal">
-        <div class="ric-left">
-          <div class="ric-photo slideshow" data-images="niuyuezhishidangao1.jpg,niuyuezhishidangao2.jpg">
-            <img src="../image/niuyuezhishidangao1.jpg" alt="纽约芝士蛋糕" onerror="this.style.display='none'">
-            <img src="../image/niuyuezhishidangao2.jpg" alt="纽约芝士蛋糕" onerror="this.style.display='none'" style="display:none">
-            🗽
-            <div class="ric-diff">⭐⭐⭐</div>
-            <div class="slide-dots"><span class="dot active"></span><span class="dot"></span></div>
-          </div>
-          <div class="ric-tip">💡 小贴士：所有材料必须室温，否则容易水油分离；水浴要用热水，烤盘水的高度要到模具的一半。</div>
+      <!-- 1. 纽约芝士 -->
+      <div class="recipe-index-card scroll-reveal">
+        <div class="ric-photo slideshow" data-images="niuyuezhishidangao1.jpg,niuyuezhishidangao2.jpg">
+          <img src="../image/niuyuezhishidangao1.jpg" alt="纽约芝士蛋糕" onerror="this.style.display='none'">
+          <img src="../image/niuyuezhishidangao2.jpg" alt="纽约芝士蛋糕" onerror="this.style.display='none'" style="display:none">
+          🗽
+          <div class="ric-diff">⭐⭐⭐</div>
+          <div class="slide-dots"><span class="dot active"></span><span class="dot"></span></div>
         </div>
         <div class="ric-body">
           <div class="ric-category">🧀 芝士蛋糕</div>
           <div class="ric-name">纽约芝士蛋糕</div>
           <div class="ric-meta"><span>⏱ 70分钟</span><span>🌡 160度</span></div>
-          <div class="ric-desc">经典美式重芝士蛋糕，是芝士蛋糕中最浓郁扎实的存在。酸奶油与奶油奶酪的双重奏让奶香层层叠进，水浴法慢烤赋予了它云朵般入口即化的绵密质地。消化饼干底用黄油压实，每一口都是酥脆与绵密的完美碰撞。出炉后表面微微膨胀又回缩是它最美的标志，冷藏后淋上酸奶油镜面，一刀切下是纯粹的纽约味道。</div>
+          <div class="ric-desc">经典美式重芝士蛋糕，是芝士蛋糕中最浓郁扎实的存在。酸奶油与奶油奶酪的双重奏让奶香层层叠进，水浴法慢烤赋予了它云朵般入口即化的绵密质地。消化饼干底用黄油压实，每一口都是酥脆与绵密的完美碰撞。</div>
           <div class="ric-ingredients">
             <span class="ing-tag">🧈 奶油奶酪 500g</span><span class="ing-tag">🥛 酸奶油 200g</span><span class="ing-tag">🥚 鸡蛋 3个</span><span class="ing-tag">🍪 消化饼干 150g</span><span class="ing-tag">🧈 黄油 60g</span><span class="ing-tag">🍬 细砂糖 120g</span>
           </div>
+          <div class="ric-tip">💡 小贴士：所有材料必须室温，否则容易水油分离；水浴要用热水，烤盘水的高度要到模具的一半。</div>
           <button class="ric-steps-btn" onclick="toggleSteps(this)">📋 查看步骤</button>
           <ol class="ric-steps">
             <li>消化饼干碾碎加融化黄油压入模底压实</li>
@@ -900,8 +908,8 @@
         </div>
       </div>
 
-      <!-- 2. 抹茶草莓布蕾 — 占右列两行 -->
-      <div class="recipe-index-card tall scroll-reveal">
+      <!-- 2. 抹茶草莓布蕾 -->
+      <div class="recipe-index-card scroll-reveal">
         <div class="ric-photo slideshow" data-images="mochacaomeidangao1.jpg,mochacaomeidangao2.jpg">
           <img src="../image/mochacaomeidangao1.jpg" alt="抹茶草莓布蕾蛋糕" onerror="this.style.display='none'">
           <img src="../image/mochacaomeidangao2.jpg" alt="抹茶草莓布蕾蛋糕" onerror="this.style.display='none'" style="display:none">
@@ -913,7 +921,7 @@
           <div class="ric-category">🍓 水果蛋糕</div>
           <div class="ric-name">抹茶草莓布蕾蛋糕</div>
           <div class="ric-meta"><span>⏱ 90分钟</span><span>🌡 170度</span></div>
-          <div class="ric-desc">抹茶戚风做底，夹层是新鲜草莓和卡仕达酱，表面焦糖脆壳是点睛之笔。一勺下去，脆、软、甜、酸四种口感在口中爆开。</div>
+          <div class="ric-desc">抹茶戚风做底，轻盈如云带着微苦茶香；新鲜草莓切片铺满夹层，每一口都藏着酸甜汁水的惊喜。手工卡仕达酱温润绵密将层层蛋糕紧紧相拥，表面焦糖脆壳是点睛之笔——一勺下去，脆壳碎裂、戚风回弹、草莓爆汁、卡仕达融化，四种口感在舌尖层层递进，是春天最温柔的一块蛋糕。</div>
           <div class="ric-ingredients">
             <span class="ing-tag">🍵 抹茶粉 10g</span><span class="ing-tag">🍓 草莓 200g</span><span class="ing-tag">🥛 淡奶油 300g</span><span class="ing-tag">🥚 鸡蛋 4个</span><span class="ing-tag">🍬 细砂糖 100g</span><span class="ing-tag">🌾 低筋面粉 80g</span>
           </div>
@@ -1011,8 +1019,7 @@
   </div>
 
   <footer>
-    <p>&copy; 2026 许诗怡 | 中南财经政法大学</p>
-    <p style="margin-top: 10px; opacity: 0.8;">Made with 💖 in Quanzhou</p>
+    <p>&copy; 2026 许诗怡 | 中南财经政法大学 💖</p>
   </footer>
 
   <script src="../js/common.js"></script>

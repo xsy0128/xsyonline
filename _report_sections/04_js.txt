@@ -1,0 +1,28 @@
+### 2.3 公共交互脚本设计（common.js）
+
+common.js封装了XSYonline全站通用的五个功能模块，约110行代码，通过<script src="../js/common.js">在每个页面中引入。所有功能在DOMContentLoaded事件中自动初始化。代码量不大，但每个模块都体现了对浏览器API、性能优化和用户体验的深入思考。
+
+#### 2.3.1 鼠标粒子追踪特效
+
+监听document的mousemove事件，使用概率门控（Math.random() > 0.85，即约15%概率）控制粒子生成密度，在不使用throttle/debounce的前提下自然控制了性能开销。每个粒子是4-8px随机大小的div元素，颜色从5种粉色系中随机选取，绝对定位在鼠标clientX/clientY坐标处。消失动画通过CSS @keyframes particleFade实现——opacity从1到0、scale从1到0、translateY(-30px)，1秒完成。动画仅涉及opacity和transform属性，属于composite-only动画，不需要浏览器Layout或Paint，在合成器线程中即可保持60fps。
+
+#### 2.3.2 点击爱心特效
+
+监听click事件，在点击位置生成随机emoji（💖💗💓💕🩷🌸✨），heartFloat动画向上飘浮120px并放大（scale: 1→1.5）和淡出，2秒后移除DOM。与粒子特效的被动跟随不同，点击爱心是"用户操作的正向反馈"——每一次点击都获得视觉回应，让交互充满愉悦感。
+
+#### 2.3.3 IntersectionObserver滚动渐显
+
+initScrollReveal(selector, delay)函数使用IntersectionObserver API监听元素可见性。当元素至少10%进入视口时添加.visible类触发CSS过渡。delay参数控制交错动画（staggered animation）节奏——如首页100ms间隔让卡片逐个浮现。选择IntersectionObserver而非scroll事件是关键的架构决策：前者由浏览器在合成器线程中原生处理可见性检测，不阻塞主线程，且不需要手动节流。语义上也更直观——"当元素进入视口时通知我"。
+
+#### 2.3.4 主题切换与持久化
+
+initThemeToggle()动态创建圆形日月emoji按钮（44px，☀️/🌙），挂载导航栏右侧。主题通过双重状态管理：<html>的data-theme属性触发CSS规则切换，localStorage的theme键实现跨会话持久化。两者缺一不可——CSS无法直接读取localStorage，而localStorage无法触发CSS选择器。
+
+#### 2.3.5 回到顶部按钮
+
+initBackToTop()创建固定右下角的"↑"按钮，scroll超过400px时显示，点击平滑滚动至顶部。按钮延续像素风格——深紫红背景、3px粉色边框、box-shadow立体阴影、hover上浮。
+
+[IMG:鼠标粒子特效与点击爱心效果——动态过程截图]
+[IMG:滚动渐显动画——卡片逐个浮现的序列截图]
+
+--pagebreak--

@@ -1,5 +1,12 @@
 /* === XSYonline 公共脚本 === */
 
+// 全局懒加载
+(function() {
+  document.querySelectorAll('img').forEach(function(img) {
+    img.setAttribute('loading', 'lazy');
+  });
+})();
+
 // 粒子跟随鼠标
 (function() {
   document.addEventListener('mousemove', function(e) {
@@ -84,6 +91,7 @@ function initThemeToggle() {
 
 // 回到顶部
 function initBackToTop() {
+  if (document.querySelector('.back-to-top')) return;
   var btn = document.createElement('button');
   btn.className = 'back-to-top';
   btn.textContent = '↑';
@@ -104,24 +112,19 @@ function initBackToTop() {
 
 // 自动初始化
 document.addEventListener('DOMContentLoaded', function() {
+  // 注入跳过链接
+  if (!document.querySelector('.skip-link')) {
+    var skip = document.createElement('a');
+    skip.className = 'skip-link';
+    skip.href = '#main-content';
+    skip.textContent = '跳到主内容';
+    document.body.insertBefore(skip, document.body.firstChild);
+  }
+  // 给主要内容区加 id
+  var pageContainer = document.querySelector('.page-container');
+  if (pageContainer && !pageContainer.id) {
+    pageContainer.id = 'main-content';
+  }
   initThemeToggle();
   initBackToTop();
-  initPreload();
 });
-
-// 导航链接预加载——hover 时提前加载下一页
-function initPreload() {
-  var links = document.querySelectorAll('.nav-links a');
-  var prefetched = {};
-  links.forEach(function(a) {
-    a.addEventListener('mouseenter', function() {
-      if (!prefetched[a.href]) {
-        var link = document.createElement('link');
-        link.rel = 'prefetch';
-        link.href = a.href;
-        document.head.appendChild(link);
-        prefetched[a.href] = true;
-      }
-    });
-  });
-}

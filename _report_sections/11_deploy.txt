@@ -1,0 +1,19 @@
+### 2.10 本地开发与线上部署
+
+#### 2.10.1 Node.js本地服务器
+
+使用Node.js的http模块编写了轻量级静态服务器（server.js，约45行），监听3000端口。核心逻辑：解析请求URL（去除查询参数）→根路径重定向到/html/index.html→根据path.extname映射MIME类型（支持11种文件类型）→fs.readFile异步读取并响应（成功200，失败404）。选择手写而非Live Server的原因：第一，45行代码即可满足需求，不需要额外依赖；第二，编写过程加深了对HTTP请求-响应模型的理解。
+
+#### 2.10.2 Git版本管理
+
+使用Git进行版本管理，托管在GitHub仓库（xsy0128/xsyonline）。遵循"小步提交"原则——初始项目搭建→各页面逐一完成→图片批量添加→性能优化（图片374M→46M压缩）→导航栏重构（汉堡菜单→flex-wrap横向导航）→GitHub Pages部署配置。.gitignore排除了node_modules、.agents、.claude、.trae等工具目录及临时文件。
+
+#### 2.10.3 GitHub Pages自动部署
+
+通过.github/workflows/pages.yml实现CD（持续部署）。工作流配置：push到main分支触发→actions/checkout@v4检出代码→actions/configure-pages@v4配置Pages环境→actions/upload-pages-artifact@v3上传根目录为部署产物→actions/deploy-pages@v4部署到GitHub Pages。整个部署全自动化——"代码即部署"（What you push is what you deploy），无需手动上传文件。
+
+[IMG:本地开发服务器运行截图——localhost:3000]
+[IMG:GitHub仓库提交历史——小步提交的可视化展示]
+[IMG:GitHub Pages部署成功的线上页面访问截图]
+
+--pagebreak--
